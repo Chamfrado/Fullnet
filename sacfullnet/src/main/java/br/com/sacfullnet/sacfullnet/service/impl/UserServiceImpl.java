@@ -18,5 +18,15 @@ public class UserServiceImpl implements UserService{
     public List<User> find(){
         return userDao.find();
     }
+
+    @Override
+    public int save(User user){
+        return userDao.save(user);
+    }
+
+    @Override
+    public boolean update(User user){
+        return userDao.update(user);
+    }
     
 }

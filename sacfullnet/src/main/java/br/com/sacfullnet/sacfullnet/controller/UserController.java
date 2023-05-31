@@ -13,10 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/user")
 @CrossOrigin(origins = "*")
 public class UserController {
     
@@ -33,5 +36,34 @@ public class UserController {
 
         return ResponseEntity.ok(users);
         
+    }
+
+    @PostMapping("")
+    public ResponseEntity<Integer> save(@RequestBody User user){
+
+        int id = -1;
+
+        id = userService.save(user);
+
+        if( id == -1 ){
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(id);
+
+
+    }
+
+    @PutMapping("")
+    public ResponseEntity<String> update(@RequestBody User user){
+        boolean ok = false;
+
+        ok = userService.update(user);
+
+        if(ok == true){
+            return ResponseEntity.ok("Atualizado com sucesso!");
+        }
+
+        return ResponseEntity.badRequest().build();
     }
 }

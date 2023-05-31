@@ -7,5 +7,9 @@ import br.com.sacfullnet.sacfullnet.model.User;
 public interface UserService {
     List<User> find();
 
+    int save(User user);
+
+    boolean update(User user);
+
     
 }

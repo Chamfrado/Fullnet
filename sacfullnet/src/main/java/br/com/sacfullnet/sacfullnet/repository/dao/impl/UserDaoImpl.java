@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +48,87 @@ public class UserDaoImpl implements UserDao{
         
     }
 
+    @Override
+    public int save(User user){
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        int id = -1;
+
+        try{
+            final String sql = "INSERT INTO usuario (id, email, senha, tipo) VALUES (DEFAULT, ?, ?, ?)";
+
+            connection = ConnectionFactory.getConnection();
+            connection.setAutoCommit(false);
+
+            preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, user.getEmail());
+            preparedStatement.setString(2, user.getSenha());
+            preparedStatement.setInt(3, user.getTipo());
+
+            preparedStatement.execute();
+
+            resultSet = preparedStatement.getGeneratedKeys();
+
+            if(resultSet.next()){
+                id = resultSet.getInt(1);
+            }
+            connection.commit();
+            return id;
+        }catch (Exception e) {
+            e.printStackTrace();
+
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                e.printStackTrace();
+            }
+
+            return id;
+        } finally {
+            ConnectionFactory.close(connection, preparedStatement, resultSet);
+        }
+    }
+
+    @Override
+    public boolean update(User user){
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+
+        try{
+            final String sql = "UPDATE usuario set email=? ,senha=? ,tipo=?  WHERE id =?";
+
+            connection = ConnectionFactory.getConnection();
+            connection.setAutoCommit(false);
+
+            preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, user.getEmail());
+            preparedStatement.setString(2, user.getSenha());
+            preparedStatement.setInt(3, user.getTipo());
+            preparedStatement.setInt(4, user.getId());
+
+            preparedStatement.executeUpdate();
+            System.out.println(preparedStatement);
+            connection.commit();
+            return true;
+        }catch (Exception e) {
+            e.printStackTrace();
+
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                e.printStackTrace();
+            }
+
+            return false;
+        } finally {
+            ConnectionFactory.close(connection, preparedStatement, resultSet);
+        }
+    }
 
     @Override
     public User loadValues(ResultSet resultSet) throws SQLException {

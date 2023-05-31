@@ -9,6 +9,10 @@ import java.util.List;
 public interface UserDao{
     List<User> find();
 
+    int save(User user);
+
+    boolean update(User user);
+
     User loadValues(ResultSet resultSet) throws SQLException;
 
     
