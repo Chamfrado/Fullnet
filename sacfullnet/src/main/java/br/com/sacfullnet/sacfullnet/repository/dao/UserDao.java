@@ -13,6 +13,8 @@ public interface UserDao{
 
     boolean update(User user);
 
+    boolean delete(Integer id);
+
     User loadValues(ResultSet resultSet) throws SQLException;
 
     

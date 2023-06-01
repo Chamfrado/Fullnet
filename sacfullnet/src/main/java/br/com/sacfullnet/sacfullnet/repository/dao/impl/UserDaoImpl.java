@@ -131,6 +131,42 @@ public class UserDaoImpl implements UserDao{
     }
 
     @Override
+    public boolean delete(Integer id){
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try{
+            final String sql = "Delete from usuario where id = ?";
+
+            connection = ConnectionFactory.getConnection();
+            connection.setAutoCommit(false);
+
+            preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setInt(1, id);
+            preparedStatement.execute();
+
+            connection.commit();
+
+            return true;
+        }catch (Exception e) {
+            e.printStackTrace();
+
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                e.printStackTrace();
+            }
+
+            return false;
+        } finally {
+            ConnectionFactory.close(connection, preparedStatement, resultSet);
+        }
+
+
+    }
+
+    @Override
     public User loadValues(ResultSet resultSet) throws SQLException {
         User user = new User();
         
