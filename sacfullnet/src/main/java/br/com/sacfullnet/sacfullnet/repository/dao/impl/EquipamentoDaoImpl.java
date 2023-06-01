@@ -10,74 +10,77 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import br.com.sacfullnet.sacfullnet.model.User;
+import br.com.sacfullnet.sacfullnet.model.Equipamento;
 import br.com.sacfullnet.sacfullnet.repository.connection.ConnectionFactory;
-import br.com.sacfullnet.sacfullnet.repository.dao.UserDao;
+import br.com.sacfullnet.sacfullnet.repository.dao.EquipamentoDao;
 
 @Repository
-public class UserDaoImpl implements UserDao{
-
+public class EquipamentoDaoImpl implements EquipamentoDao {
 
     @Override
-    public List<User> find(){
-        List<User> users =  new ArrayList<>();
+    public List<Equipamento> find() {
 
-        final String sql = "SELECT * from usuario";
+        List<Equipamento> equipamentos = new ArrayList<>();
+
+        final String sql = "SELECT * from equipamento";
 
         Connection connection = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
 
-        try{
+        try {
+
             connection = ConnectionFactory.getConnection();
             ps = connection.prepareStatement(sql);
             rs = ps.executeQuery();
 
-            while(rs.next()){
-                User user = loadValues(rs);
+            while (rs.next()) {
+                Equipamento equipamento = loadValues(rs);
 
-                users.add(user);
+                equipamentos.add(equipamento);
             }
-        }catch (Exception e) {
+
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
             ConnectionFactory.close(connection, ps, rs);
         }
+        return equipamentos;
 
-        return users;
-        
     }
 
     @Override
-    public int save(User user){
-
+    public int save(Equipamento equipamento) {
         Connection connection = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
 
         int id = -1;
 
-        try{
-            final String sql = "INSERT INTO usuario (id, email, senha, tipo) VALUES (DEFAULT, ?, ?, ?)";
+        try {
+            final String sql = "INSERT INTO equipamento (id, nome, configuracao, descricao, imagem) VALUES (DEFAULT, ?, ?, ?, ?)";
 
             connection = ConnectionFactory.getConnection();
             connection.setAutoCommit(false);
 
             ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, user.getEmail());
-            ps.setString(2, user.getSenha());
-            ps.setInt(3, user.getTipo());
+            ps.setString(1, equipamento.getNome());
+            ps.setString(2, equipamento.getConfiguracao());
+            ps.setString(3, equipamento.getDescricao());
+            ps.setBytes(4, equipamento.getImagem());
 
             ps.execute();
 
             rs = ps.getGeneratedKeys();
 
-            if(rs.next()){
+            if (rs.next()) {
                 id = rs.getInt(1);
             }
+
             connection.commit();
+
             return id;
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
 
             try {
@@ -90,32 +93,35 @@ public class UserDaoImpl implements UserDao{
         } finally {
             ConnectionFactory.close(connection, ps, rs);
         }
+
     }
 
     @Override
-    public boolean update(User user){
+    public boolean update(Equipamento equipamento) {
+
         Connection connection = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
 
-
-        try{
-            final String sql = "UPDATE usuario set email=? ,senha=? ,tipo=?  WHERE id =?";
+        try {
+            final String sql = "UPDATE equipamento set nome=? ,configuracao=? ,descricao=?, imagem=?  WHERE id =?";
 
             connection = ConnectionFactory.getConnection();
             connection.setAutoCommit(false);
 
             ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, user.getEmail());
-            ps.setString(2, user.getSenha());
-            ps.setInt(3, user.getTipo());
-            ps.setInt(4, user.getId());
+            ps.setString(1, equipamento.getNome());
+            ps.setString(2, equipamento.getConfiguracao());
+            ps.setString(3, equipamento.getDescricao());
+            ps.setBytes(4, equipamento.getImagem());
+            ps.setInt(5, equipamento.getId());
 
-            ps.executeUpdate();
-            System.out.println(ps);
+            ps.execute();
             connection.commit();
+
             return true;
-        }catch (Exception e) {
+
+        } catch (Exception e) {
             e.printStackTrace();
 
             try {
@@ -123,7 +129,6 @@ public class UserDaoImpl implements UserDao{
             } catch (SQLException ex) {
                 e.printStackTrace();
             }
-
             return false;
         } finally {
             ConnectionFactory.close(connection, ps, rs);
@@ -131,13 +136,12 @@ public class UserDaoImpl implements UserDao{
     }
 
     @Override
-    public boolean delete(Integer id){
+    public boolean delete(int id) {
         Connection connection = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-
-        try{
-            final String sql = "Delete from usuario where id = ?";
+        try {
+            final String sql = "Delete from equipamento where id = ?";
 
             connection = ConnectionFactory.getConnection();
             connection.setAutoCommit(false);
@@ -149,7 +153,7 @@ public class UserDaoImpl implements UserDao{
             connection.commit();
 
             return true;
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
 
             try {
@@ -162,18 +166,20 @@ public class UserDaoImpl implements UserDao{
         } finally {
             ConnectionFactory.close(connection, ps, rs);
         }
-
-
     }
 
+    
     @Override
-    public User loadValues(ResultSet rs) throws SQLException {
-        User user = new User();
+    public Equipamento loadValues(ResultSet rs) throws SQLException {
+        Equipamento equipamento = new Equipamento();
         
-        user.setId(rs.getInt("id"));
-        user.setEmail(rs.getString("email"));
-        user.setSenha(rs.getString("senha"));
-        user.setTipo(rs.getInt("tipo"));
-        return user;
+        equipamento.setId(rs.getInt("id"));
+        equipamento.setNome(rs.getString("nome"));
+        equipamento.setConfiguracao(rs.getString("configuracao"));
+        equipamento.setDescricao(rs.getString("descricao"));
+        equipamento.setImagem(rs.getBytes("imagem"));
+
+        return equipamento;
     }
+
 }
