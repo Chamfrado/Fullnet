@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import Header from '../Components/Header/Header';
-import { Card, CardBody, CardTitle, Col, Label, Row } from 'reactstrap';
-import ProductCard from '../Components/ProductCard/ProductCard';
+import { Card, CardBody, CardTitle,  Label, Row } from 'reactstrap';
+import ProductList from '../Components/ProductList/ProductList';
 
 
 const HomeView = ({ handleLogin }) => {
@@ -21,46 +21,13 @@ const HomeView = ({ handleLogin }) => {
                     </CardTitle>
                     <Row >
                         
-                        <Col style={{marginTop: 20}}>
-                        <ProductCard></ProductCard>
-                        </Col>
-                        <Col style={{marginTop: 20}}>
-                        <ProductCard></ProductCard>
-                        </Col>
-                        <Col style={{marginTop: 20}}>
-                        <ProductCard></ProductCard>
-                        </Col>
+                      <ProductList>
+
+                      </ProductList>
                         
                        
                     </Row>
-                    <Row >
-                        
-                        <Col style={{marginTop: 20}}>
-                        <ProductCard></ProductCard>
-                        </Col>
-                        <Col style={{marginTop: 20}}>
-                        <ProductCard></ProductCard>
-                        </Col>
-                        <Col style={{marginTop: 20}}>
-                        <ProductCard></ProductCard>
-                        </Col>
-                        
-                       
-                    </Row>
-                    <Row >
-                        
-                        <Col style={{marginTop: 20}}>
-                        <ProductCard></ProductCard>
-                        </Col>
-                        <Col style={{marginTop: 20}}>
-                        <ProductCard></ProductCard>
-                        </Col>
-                        <Col style={{marginTop: 20}}>
-                        <ProductCard></ProductCard>
-                        </Col>
-                        
-                       
-                    </Row>
+                    
                 </CardBody>
             </Card>
         </div>

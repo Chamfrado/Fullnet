@@ -13,5 +13,7 @@ public interface UserService {
 
     boolean delete(Integer id);
 
+    User authenticate(String username, String password);
+
     
 }

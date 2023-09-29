@@ -4,16 +4,21 @@ import java.util.Arrays;
 
 public class Equipamento {
     private int id;
+    private int id_tipo_equipamento;
+    private String ip_address;
     private String nome;
     private String configuracao;
     private String descricao;
-    private byte[] imagem;
+    private String imagem;
 
     public Equipamento() {
     }
 
-    public Equipamento(int id, String nome, String configuracao, String descricao, byte[] imagem) {
+    public Equipamento(int id, int id_tipo_equipamento, String ip_address, String nome, String configuracao, String descricao,
+            String imagem) {
         this.id = id;
+        this.id_tipo_equipamento = id_tipo_equipamento;
+        this.ip_address = ip_address;
         this.nome = nome;
         this.configuracao = configuracao;
         this.descricao = descricao;
@@ -26,6 +31,22 @@ public class Equipamento {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getId_tipo_equipamento() {
+        return id_tipo_equipamento;
+    }
+
+    public void setId_tipo_equipamento(int id_tipo_equipamento) {
+        this.id_tipo_equipamento = id_tipo_equipamento;
+    }
+
+    public String getIpAddress() {
+        return ip_address;
+    }
+
+    public void setIpAddress(String ip_address) {
+        this.ip_address = ip_address;
     }
 
     public String getNome() {
@@ -52,22 +73,12 @@ public class Equipamento {
         this.descricao = descricao;
     }
 
-    public byte[] getImagem() {
+    public String getImagem() {
         return imagem;
     }
 
-    public void setImagem(byte[] imagem) {
+    public void setImagem(String imagem) {
         this.imagem = imagem;
     }
 
-    @Override
-    public String toString() {
-        return "Equipamento{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", configuracao='" + configuracao + '\'' +
-                ", descricao='" + descricao + '\'' +
-                ", imagem=" + Arrays.toString(imagem) +
-                '}';
-    }
 }

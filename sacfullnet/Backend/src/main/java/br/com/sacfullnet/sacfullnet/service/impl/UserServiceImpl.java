@@ -33,5 +33,10 @@ public class UserServiceImpl implements UserService{
     public boolean delete(Integer id){
         return userDao.delete(id);
     }
+
+    @Override
+    public User authenticate(String username, String password ){
+        return userDao.authenticate(username, password);
+    }
     
 }

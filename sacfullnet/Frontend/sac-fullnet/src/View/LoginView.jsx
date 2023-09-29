@@ -1,8 +1,9 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from "react";
-import LogoPng from "../Resources/image.png";
+import LogoPng from "../Resources/logo.jpeg";
 import { Alert, Button, Card, CardBody, Col, Form, FormGroup, Input, Label, Row } from "reactstrap";
 import { useNavigate } from "react-router-dom";
+
 
 const Login = ({handleLogin }) => {
     const navigate = useNavigate();

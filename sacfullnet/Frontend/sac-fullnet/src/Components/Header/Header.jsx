@@ -6,7 +6,7 @@ import {
 	Button,
 } from "reactstrap";
 import {  BiExit } from "react-icons/bi";
-import logoImage from "../../Resources/image.png";
+import logoImage from "../../Resources/logo.jpeg";
 import { useState } from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";

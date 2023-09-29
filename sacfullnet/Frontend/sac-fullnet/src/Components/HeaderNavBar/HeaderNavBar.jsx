@@ -31,7 +31,7 @@ const HeaderNavBar = ({ open, handleClose }) => {
                                 <Nav fill pills vertical>
                                     <NavItem style={{ marginBottom: 30 }}>
                                         <Link
-                                            className="nav-link nav-link-active bg-primary" style={{ color: "white" }} to="/clientes">Lista de Equipamentos</Link>
+                                            className="nav-link nav-link-active bg-primary" style={{ color: "white" }} to="/equipamentos">Lista de Equipamentos</Link>
                                     </NavItem>
                                     <NavItem>
                                         <Link className="nav-link nav-link-active bg-primary" style={{ color: "white" }} >
@@ -50,7 +50,7 @@ const HeaderNavBar = ({ open, handleClose }) => {
                             <AccordionBody accordionId="2">
                                 <Nav fill pills vertical>
                                     <NavItem style={{ marginBottom: 30 }}>
-                                        <Link className="nav-link nav-link-active bg-primary" style={{ color: "white" }} to="/vendas">Lista de Usuários</Link>
+                                        <Link className="nav-link nav-link-active bg-primary" style={{ color: "white" }} to="/users">Lista de Usuários</Link>
                                     </NavItem>
                                     <NavItem>
                                         <Link className="nav-link nav-link-active bg-primary" style={{ color: "white" }} >
@@ -69,10 +69,10 @@ const HeaderNavBar = ({ open, handleClose }) => {
                             <AccordionBody accordionId="3">
                                 <Nav fill pills vertical>
                                     <NavItem style={{ marginBottom: 30 }}>
-                                        <Link className="nav-link nav-link-active bg-primary" style={{ color: "white" }} to="/relatorio">Lista de FAQs</Link>
+                                        <Link className="nav-link nav-link-active bg-primary" style={{ color: "white" }} to="/faqs">Lista de FAQs</Link>
                                     </NavItem>
                                     <NavItem>
-                                        <Link className="nav-link nav-link-active bg-primary" style={{ color: "white" }} to="/relatorio">Cadastrar FAQs</Link>
+                                        <Link className="nav-link nav-link-active bg-primary" style={{ color: "white" }} to="/faqs/add">Cadastrar FAQs</Link>
                                     </NavItem>
                                 </Nav>
                             </AccordionBody>

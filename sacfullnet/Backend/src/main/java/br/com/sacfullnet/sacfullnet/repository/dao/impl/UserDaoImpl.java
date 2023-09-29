@@ -15,12 +15,11 @@ import br.com.sacfullnet.sacfullnet.repository.connection.ConnectionFactory;
 import br.com.sacfullnet.sacfullnet.repository.dao.UserDao;
 
 @Repository
-public class UserDaoImpl implements UserDao{
-
+public class UserDaoImpl implements UserDao {
 
     @Override
-    public List<User> find(){
-        List<User> users =  new ArrayList<>();
+    public List<User> find() {
+        List<User> users = new ArrayList<>();
 
         final String sql = "SELECT * from usuario";
 
@@ -28,28 +27,28 @@ public class UserDaoImpl implements UserDao{
         PreparedStatement ps = null;
         ResultSet rs = null;
 
-        try{
+        try {
             connection = ConnectionFactory.getConnection();
             ps = connection.prepareStatement(sql);
             rs = ps.executeQuery();
 
-            while(rs.next()){
+            while (rs.next()) {
                 User user = loadValues(rs);
 
                 users.add(user);
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
             ConnectionFactory.close(connection, ps, rs);
         }
 
         return users;
-        
+
     }
 
     @Override
-    public int save(User user){
+    public int save(User user) {
 
         Connection connection = null;
         PreparedStatement ps = null;
@@ -57,7 +56,7 @@ public class UserDaoImpl implements UserDao{
 
         int id = -1;
 
-        try{
+        try {
             final String sql = "INSERT INTO usuario (id, email, senha, tipo) VALUES (DEFAULT, ?, ?, ?)";
 
             connection = ConnectionFactory.getConnection();
@@ -72,12 +71,12 @@ public class UserDaoImpl implements UserDao{
 
             rs = ps.getGeneratedKeys();
 
-            if(rs.next()){
+            if (rs.next()) {
                 id = rs.getInt(1);
             }
             connection.commit();
             return id;
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
 
             try {
@@ -93,13 +92,12 @@ public class UserDaoImpl implements UserDao{
     }
 
     @Override
-    public boolean update(User user){
+    public boolean update(User user) {
         Connection connection = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
 
-
-        try{
+        try {
             final String sql = "UPDATE usuario set email=? ,senha=? ,tipo=?  WHERE id =?";
 
             connection = ConnectionFactory.getConnection();
@@ -115,7 +113,7 @@ public class UserDaoImpl implements UserDao{
             System.out.println(ps);
             connection.commit();
             return true;
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
 
             try {
@@ -131,12 +129,12 @@ public class UserDaoImpl implements UserDao{
     }
 
     @Override
-    public boolean delete(Integer id){
+    public boolean delete(Integer id) {
         Connection connection = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
 
-        try{
+        try {
             final String sql = "Delete from usuario where id = ?";
 
             connection = ConnectionFactory.getConnection();
@@ -149,7 +147,7 @@ public class UserDaoImpl implements UserDao{
             connection.commit();
 
             return true;
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
 
             try {
@@ -163,13 +161,63 @@ public class UserDaoImpl implements UserDao{
             ConnectionFactory.close(connection, ps, rs);
         }
 
-
     }
+
+    @Override
+public User authenticate(String username, String password) {
+
+    Connection connection = null;
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+    User user = new User();
+
+    try {
+        final String sql = "SELECT * from usuario WHERE email=? AND senha=?";
+
+        connection = ConnectionFactory.getConnection();
+        connection.setAutoCommit(false);
+
+        ps = connection.prepareStatement(sql);
+        
+        ps.setString(1, username);
+        ps.setString(2, password);
+
+        rs = ps.executeQuery();
+        
+        if (rs.next()) {
+            user = loadValues(rs);
+        }
+
+        // Commit a transação se um usuário válido foi encontrado
+        if (user != null) {
+            connection.commit();
+        } else {
+            // Caso contrário, faça o rollback da transação
+            connection.rollback();
+        }
+
+        return user;
+    } catch (Exception e) {
+        e.printStackTrace();
+
+        try {
+            if (connection != null) {
+                connection.rollback();
+            }
+        } catch (SQLException ex) {
+            e.printStackTrace();
+        }
+
+        return null;
+    } finally {
+        ConnectionFactory.close(connection, ps, rs);
+    }
+}
 
     @Override
     public User loadValues(ResultSet rs) throws SQLException {
         User user = new User();
-        
+
         user.setId(rs.getInt("id"));
         user.setEmail(rs.getString("email"));
         user.setSenha(rs.getString("senha"));

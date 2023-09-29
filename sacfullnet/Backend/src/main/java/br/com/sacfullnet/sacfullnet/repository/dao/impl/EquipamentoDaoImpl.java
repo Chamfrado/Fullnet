@@ -1,5 +1,7 @@
 package br.com.sacfullnet.sacfullnet.repository.dao.impl;
 
+
+import java.io.Console;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -36,6 +38,11 @@ public class EquipamentoDaoImpl implements EquipamentoDao {
 
             while (rs.next()) {
                 Equipamento equipamento = loadValues(rs);
+               
+
+                
+
+
 
                 equipamentos.add(equipamento);
             }
@@ -67,7 +74,7 @@ public class EquipamentoDaoImpl implements EquipamentoDao {
             ps.setString(1, equipamento.getNome());
             ps.setString(2, equipamento.getConfiguracao());
             ps.setString(3, equipamento.getDescricao());
-            ps.setBytes(4, equipamento.getImagem());
+            ps.setString(4, equipamento.getImagem());
 
             ps.execute();
 
@@ -113,7 +120,7 @@ public class EquipamentoDaoImpl implements EquipamentoDao {
             ps.setString(1, equipamento.getNome());
             ps.setString(2, equipamento.getConfiguracao());
             ps.setString(3, equipamento.getDescricao());
-            ps.setBytes(4, equipamento.getImagem());
+            ps.setString(4, equipamento.getImagem());
             ps.setInt(5, equipamento.getId());
 
             ps.execute();
@@ -177,7 +184,7 @@ public class EquipamentoDaoImpl implements EquipamentoDao {
         equipamento.setNome(rs.getString("nome"));
         equipamento.setConfiguracao(rs.getString("configuracao"));
         equipamento.setDescricao(rs.getString("descricao"));
-        equipamento.setImagem(rs.getBytes("imagem"));
+        equipamento.setImagem(rs.getString("imagem"));
 
         return equipamento;
     }

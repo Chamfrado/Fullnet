@@ -15,6 +15,8 @@ public interface UserDao{
 
     boolean delete(Integer id);
 
+    User authenticate(String username, String password);
+
     User loadValues(ResultSet resultSet) throws SQLException;
 
     

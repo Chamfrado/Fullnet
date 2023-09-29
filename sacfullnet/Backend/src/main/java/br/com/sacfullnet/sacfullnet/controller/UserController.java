@@ -40,6 +40,28 @@ public class UserController {
         
     }
 
+    @PostMapping("/auth")
+    public ResponseEntity<User> authenticate(@RequestBody String username,@RequestBody String password){
+        
+        User user = userService.authenticate(username, password);
+        System.out.println(user);
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(user);
+        
+    }
+    //public ResponseEntity<User> authenticate(@RequestBody String username,@RequestBody String password){
+    //   User user = userService.authenticate(username, password);
+    //    System.out.println(user);
+    //    if (user == null) {
+    //        return ResponseEntity.notFound().build();
+    //    }
+//
+    //    return ResponseEntity.ok(user);
+    //    
+    //}
+
     @PostMapping("")
     public ResponseEntity<Integer> save(@RequestBody User user){
 
