@@ -1,11 +1,17 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect } from "react";
-import { Button, Card, CardBody, CardTitle, Container, Label, Modal, ModalBody, ModalFooter, ModalHeader, Row } from "reactstrap";
+import { Button, Card, CardBody, CardTitle, Container, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Label, Modal, ModalBody, ModalFooter, ModalHeader, Row } from "reactstrap";
+import ProductUpdateCard from "./ProductUpdateCard";
 
 const ProductCard = ({ item }) => {
     const [modal, setModal] = useState(false);
 
-    const toggle = () => setModal(!modal);
+    const [updateModal, setUpdateModal] = useState(false);
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+
+    const toggleDropdown = () => setDropdownOpen((prevState) => !prevState);
+
+    const toggleModal = () => setModal(!modal);
 
 
     const [image, setImage] = useState(null);
@@ -23,7 +29,7 @@ const ProductCard = ({ item }) => {
 
     return (
         <Container style={{ display: "flex", justifyContent: "center", alignItems: "center" }} >
-            <Card   onClick={toggle} className="bg-primary" style={{ cursor: "pointer" }}>
+            <Card onClick={toggleModal} className="bg-primary" style={{ cursor: "pointer" }}>
                 {image && (
                     <img
                         id="equip1"
@@ -38,30 +44,48 @@ const ProductCard = ({ item }) => {
             </Card>
 
 
-            <Modal isOpen={modal} toggle={toggle} size="lg">
-                <ModalHeader toggle={toggle}>{item.nome}</ModalHeader>
+            <Modal isOpen={modal} toggle={toggleModal} size="lg">
+                <ModalHeader toggle={toggleModal}>
+
+                    {item.nome}
+
+
+                </ModalHeader>
                 <ModalBody>
-                    
-                    <Row style={{padding: 10}}>
+
+                    <Row style={{ padding: 10 }}>
                         <Label tag="h5">Descrição: </Label>
-                        
+
                         <Label>{item.descricao}</Label>
-                       
-                        
+
+
                     </Row>
-                    <Row style={{padding: 10}}>
+                    <Row style={{ padding: 10 }}>
                         <Label tag="h5">Configuração: </Label>
                         <Label>{item.configuracao}</Label>
                     </Row>
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="primary" onClick={toggle}>
+                    <Dropdown isOpen={dropdownOpen} toggle={toggleDropdown}>
+                        <DropdownToggle caret >
+                            Opções
+                        </DropdownToggle>
+                        <DropdownMenu>
+                            <DropdownItem onClick={() => setUpdateModal(!updateModal)}>Atualizar</DropdownItem>
+                            <DropdownItem>Deletar</DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown>
+                    <Button color="primary" onClick={toggleModal}>
                         Voltar
                     </Button>
-                   
+
+
                 </ModalFooter>
             </Modal>
+            {updateModal && <ProductUpdateCard item={item} open={updateModal} />}
         </Container>
+
+        
 
     );
 };

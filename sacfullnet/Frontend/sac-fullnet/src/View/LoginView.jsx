@@ -25,7 +25,7 @@ const Login = ({handleLogin }) => {
     };
 
     const handleSubmit = () => {
-		if (user.username === "chamfrado" && user.password === "123") {
+		if (user.username === "chamfrado" && user.password === "1524") {
 			// Call the handleLogin function to update authentication status
 			handleLogin();
 
