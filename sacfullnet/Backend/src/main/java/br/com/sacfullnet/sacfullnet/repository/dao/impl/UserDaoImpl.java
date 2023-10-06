@@ -21,7 +21,7 @@ public class UserDaoImpl implements UserDao {
     public List<User> find() {
         List<User> users = new ArrayList<>();
 
-        final String sql = "SELECT * from usuario";
+        final String sql = "SELECT * from usuario order by email";
 
         Connection connection = null;
         PreparedStatement ps = null;

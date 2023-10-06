@@ -31,7 +31,7 @@ public class FAQDaoImpl implements FAQDao {
                 "array_agg(fe.id_equipamento) AS equipamentos_relacionados " +
                 "FROM faq f " +
                 "LEFT JOIN faq_has_equipamento fe ON f.id = fe.id_FAQ " +
-                "GROUP BY f.id, f.titulo, f.solucao";
+                "GROUP BY f.id, f.titulo, f.solucao order by f.titulo";
 
         Connection connection = null;
         PreparedStatement ps = null;

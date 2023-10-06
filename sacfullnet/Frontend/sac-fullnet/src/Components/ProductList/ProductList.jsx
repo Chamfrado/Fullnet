@@ -89,7 +89,7 @@ const ProductList = ({onSaveSucess, onDeleteSucess, onAddSucess}) => {
               type="search"
             />
             
-            <Button>
+            <Button color="primary">
               <BsSearch/>
             </Button>
           </InputGroup>

@@ -24,7 +24,7 @@ public class EquipamentoDaoImpl implements EquipamentoDao {
 
         List<Equipamento> equipamentos = new ArrayList<>();
 
-        final String sql = "SELECT * from equipamento";
+        final String sql = "SELECT * from equipamento order by nome";
 
         Connection connection = null;
         PreparedStatement ps = null;
