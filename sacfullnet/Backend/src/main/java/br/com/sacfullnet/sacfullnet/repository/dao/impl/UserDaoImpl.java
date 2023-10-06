@@ -37,6 +37,7 @@ public class UserDaoImpl implements UserDao {
 
                 users.add(user);
             }
+            System.out.println(sql);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -75,6 +76,7 @@ public class UserDaoImpl implements UserDao {
                 id = rs.getInt(1);
             }
             connection.commit();
+            System.out.println(sql);
             return id;
         } catch (Exception e) {
             e.printStackTrace();
@@ -112,6 +114,7 @@ public class UserDaoImpl implements UserDao {
             ps.executeUpdate();
             System.out.println(ps);
             connection.commit();
+            System.out.println(sql);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -145,6 +148,8 @@ public class UserDaoImpl implements UserDao {
             ps.execute();
 
             connection.commit();
+
+            System.out.println(sql);
 
             return true;
         } catch (Exception e) {

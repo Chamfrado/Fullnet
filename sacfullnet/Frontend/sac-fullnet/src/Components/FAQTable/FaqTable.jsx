@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react"
 import { Badge, Button, Col, Container, Input, InputGroup, Row, Table } from "reactstrap"
-import { BsSearch } from "react-icons/bs";
+import { BsFillPatchPlusFill, BsPersonPlus, BsSearch } from "react-icons/bs";
 import SacfullnetAPI from "../../Services/SacfullnetApi";
 import FaqDetail from "../FaqDetail/FaqDetail";
 
@@ -11,10 +11,12 @@ const FaqTable = () => {
     const [tableData, setTableData] = useState([]);
     const [productNames, setProductNames] = useState({
         id: -1
-    }); // Store product names
+    }); 
     const [isLoading, setIsLoading] = useState(true);
     const [selectedFaq, setSelectedFaq] = useState({
-
+        
+            id: -1
+        
     });
     const [toggleModal, setToggleModal] = useState(false);
 
@@ -102,6 +104,9 @@ const FaqTable = () => {
                             <BsSearch />
                         </Button>
                     </InputGroup>
+                </Col>
+                <Col>
+                    <Button color="primary" onClick={() => alert("Add Event")}><BsFillPatchPlusFill/> Adicionar FAQ</Button>
                 </Col>
             </Row>
             <Row style={{ padding: 20 }}>

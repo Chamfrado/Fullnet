@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import Login from './View/LoginView';
 import HomeView from './View/HomeView';
 import FaqView from './View/FaqView';
+import UserView from './View/UserView';
 
 function App() {
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -41,6 +42,7 @@ function App() {
 				/>
 				<Route path="/home" element={<ProtectedRoute element={HomeView} />} />
 				<Route path="/faqs" element={<ProtectedRoute element={FaqView}/>} />
+				<Route path="/users" element={ <ProtectedRoute element={UserView}/>} />
 			</Routes>
       </Router>
 		</div>

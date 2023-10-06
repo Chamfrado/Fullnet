@@ -3,53 +3,50 @@
 import React, { useState, useEffect } from "react";
 import { Button, Card, CardBody, Col, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Row } from "reactstrap";
 import SacfullnetAPI from "../../Services/SacfullnetApi";
+import image from "../../Resources/image.jpeg"
 
-const ProductUpdateCard = ({ item, open, onSaveSucess }) => {
+const ProductAddCard = ({ open, onAddSucess }) => {
     const [modal, setModal] = useState(false);
 
+    
     const [productForm, setProductForm] = useState({
-        nome: item.nome,
-        ip: item.ipAddress,
-        config: item.configuracao,
-        desc: item.descricao,
-        imagem: item.imagem
+        nome: "",
+        ip: "",
+        config: "",
+        desc: "",
+        imagem: ""
     });
 
 
     const handleChange = (event) => {
-		const { name, value } = event.target;
+        const { name, value } = event.target;
 
-		if(name === "cnpj" || name=== "telefone"){
-			setProductForm((prevFormData) => ({
-				...prevFormData,
-				[name]: value.replace(/\D/g, "")
-			}));
-		}else{
-			setProductForm((prevFormData) => ({
-				...prevFormData,
-				[name]: value
-			}));
-		}
-		
-	};
+
+        setProductForm((prevFormData) => ({
+            ...prevFormData,
+            [name]: value
+        }));
+
+
+    };
 
 
 
 
 
 
-    const save = () => {
+    const add = () => {
         try {
-            SacfullnetAPI.put("equipamento", {
-                id: item.id,
-                id_tipo_equipamento: item.id_tipo_equipamento,
+            SacfullnetAPI.post("equipamento", {
+                
+                id_tipo_equipamento: 1,
                 nome: productForm.nome,
                 ip_address: productForm.ip,
                 configuracao: productForm.config,
                 descricao: productForm.desc,
-                imagem: productForm.imagem
+                imagem: "image"
             });
-            onSaveSucess();
+            onAddSucess();
             toggle();
 
         } catch (error) {
@@ -74,48 +71,37 @@ const ProductUpdateCard = ({ item, open, onSaveSucess }) => {
         setModal(open);
     }, [open])
 
-    const [image, setImage] = useState(null);
 
-    useEffect(() => {
-        // Dynamically load the image when the component mounts ${item.imagem}
-        import(`../../../public/equipament_img/${item.imagem}.jpeg`)
-            .then((module) => {
-                setImage(module.default);
-            })
-            .catch((error) => {
-                console.error("Error loading image:", error);
-            });
-    }, [item.imagem]);
+
 
 
     return (
         <Modal fullscreen isOpen={modal} toggle={toggle} >
-            <ModalHeader className="bg-primary" toggle={toggle}>Atualizar Equipamento</ModalHeader>
+            <ModalHeader className="bg-primary" toggle={toggle}>Adicionar Equipamento</ModalHeader>
             <ModalBody>
                 <Row >
                     <Col style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                         <Card>
                             <CardBody>
-                                {image && (
+                               
                                     <img
                                         id="equip1"
                                         style={{ width: "50vh", cursor: "pointer", padding: 10 }}
                                         src={image}
                                         alt="logo"
                                     />
-                                )}
+
                             </CardBody>
 
                         </Card>
                         <div style={{ padding: 10 }}>
                             <Input type="file" onChange={handleImageUpload} />
                             {selectedImage && (
-                                <img
+                                <><img
                                     src={URL.createObjectURL(selectedImage)}
                                     alt="Preview"
                                     width="200"
-                                    height="200"
-                                />
+                                    height="200" /><Label>IMAGEM DE UPLOAD - TESTE</Label></>
                             )}
                         </div>
 
@@ -185,7 +171,7 @@ const ProductUpdateCard = ({ item, open, onSaveSucess }) => {
 
             </ModalBody>
             <ModalFooter>
-                <Button color="primary" onClick={save}>
+                <Button color="primary" onClick={add}>
                     Salvar
                 </Button>{' '}
                 <Button color="secondary" onClick={toggle}>
@@ -197,4 +183,4 @@ const ProductUpdateCard = ({ item, open, onSaveSucess }) => {
     );
 };
 
-export default ProductUpdateCard;
+export default ProductAddCard;

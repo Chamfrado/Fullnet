@@ -2,10 +2,12 @@
 import React, { useState, useEffect } from "react";
 import { Button, Card, CardBody, CardTitle, Container, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Label, Modal, ModalBody, ModalFooter, ModalHeader, Row } from "reactstrap";
 import ProductUpdateCard from "./ProductUpdateCard";
+import ProductDeleteCard from "./ProductDeleteCard";
 
-const ProductCard = ({ item }) => {
+const ProductCard = ({ item , Saved, Deleted }) => {
     const [modal, setModal] = useState(false);
 
+    const [deleteModal, setDeleteModal] = useState(false);
     const [updateModal, setUpdateModal] = useState(false);
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -15,6 +17,18 @@ const ProductCard = ({ item }) => {
 
 
     const [image, setImage] = useState(null);
+
+
+    const onSaveSucessfull = () => {
+        
+        Saved();
+        toggleModal();
+    }
+
+    const onDeleteSucessfull = () => {
+        Deleted();
+        toggleModal();
+    }
 
     useEffect(() => {
         // Dynamically load the image when the component mounts ${item.imagem}
@@ -29,11 +43,12 @@ const ProductCard = ({ item }) => {
 
     return (
         <Container style={{ display: "flex", justifyContent: "center", alignItems: "center" }} >
+            
             <Card onClick={toggleModal} className="bg-primary" style={{ cursor: "pointer" }}>
                 {image && (
                     <img
                         id="equip1"
-                        style={{ width: "50vh", cursor: "pointer", padding: 10 }}
+                        style={{ width: "50vh", height: "35vh", cursor: "pointer", padding: 10 }}
                         src={image}
                         alt="logo"
                     />
@@ -72,7 +87,7 @@ const ProductCard = ({ item }) => {
                         </DropdownToggle>
                         <DropdownMenu>
                             <DropdownItem onClick={() => setUpdateModal(!updateModal)}>Atualizar</DropdownItem>
-                            <DropdownItem>Deletar</DropdownItem>
+                            <DropdownItem onClick={() => setDeleteModal(!deleteModal)}>Deletar</DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
                     <Button color="primary" onClick={toggleModal}>
@@ -82,7 +97,8 @@ const ProductCard = ({ item }) => {
 
                 </ModalFooter>
             </Modal>
-            {updateModal && <ProductUpdateCard item={item} open={updateModal} />}
+            {updateModal && <ProductUpdateCard item={item} onSaveSucess={onSaveSucessfull} open={updateModal} />}
+            {deleteModal && <ProductDeleteCard item={item} onDeleteSucess={onDeleteSucessfull} open={deleteModal} />}
         </Container>
 
         
