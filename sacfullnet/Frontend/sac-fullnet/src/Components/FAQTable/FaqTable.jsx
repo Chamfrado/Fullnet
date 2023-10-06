@@ -77,7 +77,7 @@ const FaqTable = () => {
 
     useEffect(() => {
 
-       if(selectedFaq.id !== -1 ){
+       if(selectedFaq.id !== -1 && selectedFaq !== null ){
         toggle();
        }
             
@@ -128,7 +128,7 @@ const FaqTable = () => {
                     </tbody>
                 </Table>
             </Row>
-            <FaqDetail selectedFaq={selectedFaq} productNames={productNames} isOpen={toggleModal} onDismiss={dismiss} />
+            { selectedFaq !== -1 ? <FaqDetail selectedFaq={selectedFaq} productNames={productNames} isOpen={toggleModal} onDismiss={dismiss} /> : <></>}
         </Container>
     );
 }

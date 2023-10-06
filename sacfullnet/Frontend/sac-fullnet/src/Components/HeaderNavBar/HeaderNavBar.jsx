@@ -31,10 +31,10 @@ const HeaderNavBar = ({ open, handleClose }) => {
                                 <Nav fill pills vertical>
                                     <NavItem style={{ marginBottom: 30 }}>
                                         <Link
-                                            className="nav-link nav-link-active bg-primary" style={{ color: "white" }} to="/equipamentos">Lista de Equipamentos</Link>
+                                            className="nav-link nav-link-active bg-primary" style={{ color: "white" }} to="/home">Lista de Equipamentos</Link>
                                     </NavItem>
-                                    <NavItem>
-                                        <Link className="nav-link nav-link-active bg-primary" style={{ color: "white" }} >
+                                    <NavItem >
+                                        <Link  className="nav-link nav-link-active bg-primary" style={{ color: "white" }} >
                                             Cadastrar Equipamento
                                         </Link>
                                     </NavItem>
@@ -72,7 +72,7 @@ const HeaderNavBar = ({ open, handleClose }) => {
                                         <Link className="nav-link nav-link-active bg-primary" style={{ color: "white" }} to="/faqs">Lista de FAQs</Link>
                                     </NavItem>
                                     <NavItem>
-                                        <Link className="nav-link nav-link-active bg-primary" style={{ color: "white" }} to="/faqs/add">Cadastrar FAQs</Link>
+                                        <Link className="nav-link nav-link-active bg-primary" style={{ color: "white" }} >Cadastrar FAQs</Link>
                                     </NavItem>
                                 </Nav>
                             </AccordionBody>

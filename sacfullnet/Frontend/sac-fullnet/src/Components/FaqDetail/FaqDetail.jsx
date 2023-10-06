@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react"
-import { Button, Col, Modal, ModalBody, ModalFooter, ModalHeader, Row, Table } from "reactstrap"
+import { Button, Col, Label, Modal, ModalBody, ModalFooter, ModalHeader, Row, Table } from "reactstrap"
 import SacfullnetAPI from "../../Services/SacfullnetApi";
 
 const FaqDetail = ({selectedFaq, isOpen, onDismiss}) => {
@@ -9,8 +9,12 @@ const FaqDetail = ({selectedFaq, isOpen, onDismiss}) => {
     const [modal, setModal] = useState(false);
 
     useEffect(() => {
-        setModal(isOpen);
-        fetchEquipamentos(selectedFaq);
+        
+          
+          setModal(isOpen);
+          fetchEquipamentos(selectedFaq);
+        
+        
     },[isOpen])
 
 
@@ -75,7 +79,9 @@ const FaqDetail = ({selectedFaq, isOpen, onDismiss}) => {
                 </Col>
 
             </Row>
-            <Row>
+            <Row style={{paddingTop: 20}}>
+              <Col >
+              <Label tag="h5">Lista de Equipamentos para a solução</Label>
               <Table hover responsive>
                 <thead>
                 <tr>
@@ -101,6 +107,8 @@ const FaqDetail = ({selectedFaq, isOpen, onDismiss}) => {
                  ))}
                 </tbody>
               </Table>
+              </Col>
+              
             </Row>
             
           
