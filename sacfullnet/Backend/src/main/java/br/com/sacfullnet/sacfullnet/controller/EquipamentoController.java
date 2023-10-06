@@ -29,15 +29,26 @@ public class EquipamentoController {
     EquipamentoService equipamentoService;
 
     @GetMapping("")
-    public ResponseEntity<List<Equipamento>> findAllUsers(){
-        List<Equipamento> users = equipamentoService.find();
+    public ResponseEntity<List<Equipamento>> findAllEquipamentos(){
+        List<Equipamento> equipamentos = equipamentoService.find();
 
-        if (users == null) {
+        if (equipamentos == null) {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(users);
+        return ResponseEntity.ok(equipamentos);
         
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Equipamento> findById(@PathVariable int id){
+        Equipamento equipamento = equipamentoService.findById(id);
+
+        if(equipamento == null){
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(equipamento);
     }
 
     @PostMapping("")

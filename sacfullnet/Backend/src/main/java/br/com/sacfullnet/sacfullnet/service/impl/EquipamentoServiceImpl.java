@@ -13,26 +13,31 @@ import br.com.sacfullnet.sacfullnet.service.EquipamentoService;
 public class EquipamentoServiceImpl implements EquipamentoService {
 
     @Autowired
-    EquipamentoDao userDao;
+    EquipamentoDao equipamentoDao;
 
     @Override
     public List<Equipamento> find(){
-        return userDao.find();
+        return equipamentoDao.find();
+    }
+
+    @Override
+    public Equipamento findById(int id){
+        return equipamentoDao.findById(id);
     }
 
     @Override
     public int save(Equipamento user){
-        return userDao.save(user);
+        return equipamentoDao.save(user);
     }
 
     @Override
     public boolean update(Equipamento user){
-        return userDao.update(user);
+        return equipamentoDao.update(user);
     }
 
     @Override
     public boolean delete(int id){
-        return userDao.delete(id);
+        return equipamentoDao.delete(id);
     }
     
 }

@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Login from './View/LoginView';
 import HomeView from './View/HomeView';
+import FaqView from './View/FaqView';
 
 function App() {
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -32,13 +33,14 @@ function App() {
 					path="/"
 					element={
 						isAuthenticated ? (
-							<Navigate to="/protected" />
+							<Navigate to="/home" />
 						) : (
 							<Navigate to="/login" />
 						)
 					}
 				/>
-				<Route path="/protected" element={<ProtectedRoute element={HomeView} />} />
+				<Route path="/home" element={<ProtectedRoute element={HomeView} />} />
+				<Route path="/faqs" element={<ProtectedRoute element={FaqView}/>} />
 			</Routes>
       </Router>
 		</div>

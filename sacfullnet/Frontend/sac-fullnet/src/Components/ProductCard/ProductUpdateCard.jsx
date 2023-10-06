@@ -2,6 +2,7 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect } from "react";
 import { Button, Card, CardBody, CardHeader, CardSubtitle, CardText, CardTitle, Col, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Row } from "reactstrap";
+import SacfullnetAPI from "../../Services/SacfullnetApi";
 
 const ProductUpdateCard = ({ item, open }) => {
     const [modal, setModal] = useState(false);
@@ -11,10 +12,52 @@ const ProductUpdateCard = ({ item, open }) => {
         ip: item.ipAddress,
         config: item.configuracao,
         desc: item.descricao,
-        imagem: item.imagem,
-        id: item.id,
-        tipo: item.id_tipo_equipamento
+        imagem: item.imagem
     });
+
+
+    const handleChange = (event) => {
+		const { name, value } = event.target;
+
+		if(name === "cnpj" || name=== "telefone"){
+			setProductForm((prevFormData) => ({
+				...prevFormData,
+				[name]: value.replace(/\D/g, "")
+			}));
+		}else{
+			setProductForm((prevFormData) => ({
+				...prevFormData,
+				[name]: value
+			}));
+		}
+		
+	};
+
+
+
+
+
+
+    const save = () => {
+        try {
+            SacfullnetAPI.put("equipamento", {
+                id: item.id,
+                id_tipo_equipamento: item.id_tipo_equipamento,
+                nome: productForm.nome,
+                ip_address: productForm.ip,
+                configuracao: productForm.config,
+                descricao: productForm.desc,
+                imagem: productForm.imagem
+            });
+            alert("produto atualizado com sucesso");
+
+        } catch (error) {
+            alert(error);
+        }
+
+    }
+
+
 
     const [selectedImage, setSelectedImage] = useState(null);
 
@@ -46,7 +89,7 @@ const ProductUpdateCard = ({ item, open }) => {
 
     return (
         <Modal fullscreen isOpen={modal} toggle={toggle} >
-            <ModalHeader toggle={toggle}>Atualizar Equipamento</ModalHeader>
+            <ModalHeader className="bg-primary" toggle={toggle}>Atualizar Equipamento</ModalHeader>
             <ModalBody>
                 <Row >
                     <Col style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -63,17 +106,17 @@ const ProductUpdateCard = ({ item, open }) => {
                             </CardBody>
 
                         </Card>
-                        <div>
-                    <Input type="file" onChange={handleImageUpload} />
-                    {selectedImage && (
-                        <img
-                            src={URL.createObjectURL(selectedImage)}
-                            alt="Preview"
-                            width="200"
-                            height="200"
-                        />
-                    )}
-                </div>
+                        <div style={{ padding: 10 }}>
+                            <Input type="file" onChange={handleImageUpload} />
+                            {selectedImage && (
+                                <img
+                                    src={URL.createObjectURL(selectedImage)}
+                                    alt="Preview"
+                                    width="200"
+                                    height="200"
+                                />
+                            )}
+                        </div>
 
                     </Col>
 
@@ -88,6 +131,7 @@ const ProductUpdateCard = ({ item, open }) => {
                                 placeholder="Insira o nome do equipamento"
                                 value={productForm.nome}
                                 type="text"
+                                onChange={handleChange}
                             />
                         </FormGroup>
                         <FormGroup>
@@ -100,6 +144,7 @@ const ProductUpdateCard = ({ item, open }) => {
                                 placeholder="Digite o IP"
                                 type="text"
                                 value={productForm.ip}
+                                onChange={handleChange}
                             />
                         </FormGroup>
                         <FormGroup>
@@ -112,6 +157,7 @@ const ProductUpdateCard = ({ item, open }) => {
                                 value={productForm.config}
                                 placeholder="Digite a Configuração"
                                 type="textarea"
+                                onChange={handleChange}
                             />
                         </FormGroup>
                         <FormGroup>
@@ -124,31 +170,21 @@ const ProductUpdateCard = ({ item, open }) => {
                                 placeholder="Digite a Digite a Descrição"
                                 value={productForm.desc}
                                 type="textarea"
+                                onChange={handleChange}
                             />
                         </FormGroup>
-                        <FormGroup>
-                            <Label for="imagem">
-                                imagem
-                            </Label>
-                            <Input
-                                id="imagem"
-                                name="imagem"
 
-                                placeholder="Digite a Digite a Descrição"
-                                type="image"
-                            />
-                        </FormGroup>
                     </Col>
                     <Col>
                     </Col>
 
 
                 </Row>
-                
+
 
             </ModalBody>
             <ModalFooter>
-                <Button color="primary" onClick={() => alert(item.id)}>
+                <Button color="primary" onClick={save}>
                     Salvar
                 </Button>{' '}
                 <Button color="secondary" onClick={toggle}>

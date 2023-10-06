@@ -17,5 +17,7 @@ public interface EquipamentoDao {
 
     boolean delete(int id);
 
-    Equipamento loadValues(ResultSet resultSet) throws SQLException;    
+    Equipamento loadValues(ResultSet resultSet) throws SQLException;
+
+    Equipamento findById(int id); 
 }

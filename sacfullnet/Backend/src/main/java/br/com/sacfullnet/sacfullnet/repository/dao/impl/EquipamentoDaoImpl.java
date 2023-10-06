@@ -36,6 +36,7 @@ public class EquipamentoDaoImpl implements EquipamentoDao {
             ps = connection.prepareStatement(sql);
             rs = ps.executeQuery();
 
+            System.out.println(sql);
             while (rs.next()) {
                 Equipamento equipamento = loadValues(rs);
                
@@ -53,6 +54,45 @@ public class EquipamentoDaoImpl implements EquipamentoDao {
             ConnectionFactory.close(connection, ps, rs);
         }
         return equipamentos;
+
+    }
+
+    @Override
+    public Equipamento findById(int id){
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        Equipamento equipamento = new Equipamento();
+
+        try {
+
+            
+            final String sql = "SELECT * from equipamento where id = ?";
+            
+            connection = ConnectionFactory.getConnection();
+
+            ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, id);
+
+            
+
+            rs = ps.executeQuery();
+            
+            if (rs.next()) {
+                equipamento = loadValues(rs);
+            }
+
+            
+            System.out.println(sql + " " + id);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            ConnectionFactory.close(connection, ps, rs);
+        }
+        return equipamento;
 
     }
 

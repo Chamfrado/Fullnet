@@ -13,5 +13,7 @@ public interface EquipamentoService {
     boolean update(Equipamento equipamento);
 
     boolean delete(int id);
+
+    Equipamento findById(int id);
     
 }

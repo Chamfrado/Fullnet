@@ -29,8 +29,8 @@ const Login = ({handleLogin }) => {
 			// Call the handleLogin function to update authentication status
 			handleLogin();
 
-			// Redirect to the protected route (e.g., dashboard) after successful login
-			navigate("/protected");
+			// Redirect to the home route (e.g., dashboard) after successful login
+			navigate("/home");
 		} else {
 			setInvalidUser(true);
 		}
@@ -61,7 +61,6 @@ const Login = ({handleLogin }) => {
                     >
                        {invalidUser && <Alert style={{margin: 20}} id="incorrectAlert" isOpen={invalidUser} toggle={onDismissInvalid} color="danger">Usuario ou senha invalido!</Alert>}
                         <CardBody>
-
                                 <img style={{marginBottom: 15}} alt="Card cap" src={LogoPng} width="100%" />
 
                                 <Form>

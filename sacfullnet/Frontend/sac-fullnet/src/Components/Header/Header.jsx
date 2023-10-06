@@ -22,7 +22,7 @@ const Header = ({ handleLogout} ) => {
 		handleLogout();
 
 		// Redirect to the protected route (e.g., dashboard) after successful login
-		navigate("/protected");
+		navigate("/login");
 	};
 
 	const [isOpen, setIsOpen] = useState(false);

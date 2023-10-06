@@ -11,11 +11,10 @@ import br.com.sacfullnet.sacfullnet.model.FAQ;
 public interface FAQDao {
     List<FAQ> find();
 
-    int save(FAQ user);
+    int save(FAQ faq);
 
-    boolean update(FAQ user);
+    boolean update(FAQ faq);
 
     boolean delete(int id);
-
-    FAQ loadValues(ResultSet resultSet) throws SQLException;    
+   
 }

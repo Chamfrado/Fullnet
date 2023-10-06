@@ -41,11 +41,11 @@ public class Equipamento {
         this.id_tipo_equipamento = id_tipo_equipamento;
     }
 
-    public String getIpAddress() {
+    public String getIp_Address() {
         return ip_address;
     }
 
-    public void setIpAddress(String ip_address) {
+    public void setIp_Address(String ip_address) {
         this.ip_address = ip_address;
     }
 
