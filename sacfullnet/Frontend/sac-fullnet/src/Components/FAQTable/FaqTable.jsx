@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-key */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react"
-import { Badge, Button, Col, Container, Input, InputGroup, Row, Table } from "reactstrap"
+import { Badge, Button, Col, Container, Input, InputGroup, Label, Row, Spinner, Table } from "reactstrap"
 import { BsFillPatchPlusFill, BsPersonPlus, BsSearch } from "react-icons/bs";
 import SacfullnetAPI from "../../Services/SacfullnetApi";
 import FaqDetail from "../FaqDetail/FaqDetail";
@@ -11,12 +11,12 @@ const FaqTable = () => {
     const [tableData, setTableData] = useState([]);
     const [productNames, setProductNames] = useState({
         id: -1
-    }); 
+    });
     const [isLoading, setIsLoading] = useState(true);
     const [selectedFaq, setSelectedFaq] = useState({
-        
-            id: -1
-        
+
+        id: -1
+
     });
     const [toggleModal, setToggleModal] = useState(false);
 
@@ -26,7 +26,7 @@ const FaqTable = () => {
     }
     const dismiss = () => {
         setToggleModal(false);
-        setSelectedFaq({id: -1});
+        setSelectedFaq({ id: -1 });
     }
     // Function to fetch product names
     async function fetchEquipament(productId) {
@@ -79,10 +79,10 @@ const FaqTable = () => {
 
     useEffect(() => {
 
-       if(selectedFaq.id !== -1 && selectedFaq !== null ){
-        toggle();
-       }
-            
+        if (selectedFaq.id !== -1 && selectedFaq !== null) {
+            toggle();
+        }
+
     }, [selectedFaq])
 
     if (error) {
@@ -106,7 +106,7 @@ const FaqTable = () => {
                     </InputGroup>
                 </Col>
                 <Col>
-                    <Button color="primary" onClick={() => alert("Add Event")}><BsFillPatchPlusFill/> Adicionar FAQ</Button>
+                    <Button color="primary" onClick={() => alert("Add Event")}><BsFillPatchPlusFill /> Adicionar FAQ</Button>
                 </Col>
             </Row>
             <Row style={{ padding: 20 }}>
@@ -118,22 +118,27 @@ const FaqTable = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {tableData.map(item => (
-                            <tr style={{ cursor: "pointer" }} onClick={() => setSelectedFaq(item)} key={item.id}>
-                                <td>{item.titulo}</td>
-                                <td>
-                                    {item.equipamentosRelacionados.map((produtoId) => (
-                                        <Badge key={produtoId} style={{ margin: 2 }} color="primary">
-                                            {productNames[produtoId]} {/* Display product name from state */}
-                                        </Badge>
-                                    ))}
-                                </td>
-                            </tr>
-                        ))}
+                        {isLoading ? (
+                          <Label> Carregando Informações <Spinner color="primary" style={{ alignSelf: "center" }} /> </Label>
+                        ) : (
+                            tableData.map(item => (
+                                <tr style={{ cursor: "pointer" }} onClick={() => setSelectedFaq(item)} key={item.id}>
+                                    <td>{item.titulo}</td>
+                                    <td>
+                                        {item.equipamentosRelacionados.map((produtoId) => (
+                                            <Badge key={produtoId} style={{ margin: 2 }} color="primary">
+                                                {productNames[produtoId]} {/* Display product name from state */}
+                                            </Badge>
+                                        ))}
+                                    </td>
+                                </tr>
+                            ))
+                        )}
+                        
                     </tbody>
                 </Table>
             </Row>
-            { selectedFaq !== -1 ? <FaqDetail selectedFaq={selectedFaq} productNames={productNames} isOpen={toggleModal} onDismiss={dismiss} /> : <></>}
+            {selectedFaq !== -1 ? <FaqDetail selectedFaq={selectedFaq} productNames={productNames} isOpen={toggleModal} onDismiss={dismiss} /> : <></>}
         </Container>
     );
 }
