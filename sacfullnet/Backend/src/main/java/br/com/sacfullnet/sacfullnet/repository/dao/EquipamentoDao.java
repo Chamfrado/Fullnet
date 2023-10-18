@@ -9,6 +9,7 @@ import br.com.sacfullnet.sacfullnet.model.Equipamento;
 
 
 public interface EquipamentoDao {
+
     List<Equipamento> find();
 
     int save(Equipamento user);
@@ -19,5 +20,6 @@ public interface EquipamentoDao {
 
     Equipamento loadValues(ResultSet resultSet) throws SQLException;
 
-    Equipamento findById(int id); 
+    Equipamento findById(int id);
+
 }

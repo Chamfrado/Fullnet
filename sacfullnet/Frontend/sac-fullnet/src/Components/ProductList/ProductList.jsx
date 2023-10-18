@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from "react";
-import { Button, Col, Container, Input, InputGroup, Row, Spinner, Table } from "reactstrap";
+import { Button, Col, Container, Input, InputGroup, Label, Row, Spinner, Table } from "reactstrap";
 
 import SacfullnetAPI from "../../Services/SacfullnetApi";
 import ProductCard from "../ProductCard/ProductCard";
@@ -101,9 +101,9 @@ const ProductList = ({onSaveSucess, onDeleteSucess, onAddSucess}) => {
         <Button color="primary" onClick={fetchTableData}> Atualizar dados <BsArrowDownUp /></Button>
         </Col>
       </Row>
-      <Row style={{paddingTop: 10}}>
+      <Row style={{paddingTop: 10, flex: 1, justifyContent:"center", alignItems: "center"}}>
         {isLoading ? (
-          <Spinner color="primary" style={{ alignSelf: "center" }} />
+          <Label>Carregando Dados <Spinner color="primary" style={{ alignSelf: "center" }} /></Label>
         ) : (
           rows.map((row, index) => (
             <Table key={index} hover>

@@ -2,35 +2,59 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from "react"
 import Header from "../Components/Header/Header"
-import { Card, CardBody, CardTitle, Label, Row } from "reactstrap"
+import { Alert, Card, CardBody, CardTitle, Label, Row } from "reactstrap"
 import UserTable from "../Components/UserTable/UserTable"
-const UserView = ({handleExit}) =>{
+const UserView = ({ handleLogin }) => {
 
-  
-    
-    return(
+    const [saveAlert, setSaveAlert] = useState(false);
+    const [deleteAlert, setDeleteAlert] = useState(false);
+    const [addAlert, setAddAlert] = useState(false);
+
+
+    const handleExit = () => {
+        handleLogin();
+    };
+
+    const onSaveSucessfull = () => {
+        setSaveAlert(true);
+    }
+    const onDismissSave = () => setSaveAlert(false);
+
+    const onDeleteSucessfull = () => {
+        setDeleteAlert(true);
+    }
+    const onDismissDelete = () => setDeleteAlert(false);
+
+    const onAddSucessfull = () => {
+        setAddAlert(true);
+    }
+    const onDismissAdd = () => setAddAlert(false);
+
+
+    return (
         <div>
-            <div>
-            <Header  />
+                <Header handleLogout={handleLogin} />
 
-            <Row>
-                <Card>
-                    <CardBody>
-                        <CardTitle>
-                            <Label className='h1' style={{ display: 'flex', alignSelf: 'start', justifyContent: 'start' }}> Controle de Usuarios</Label>
-                        </CardTitle>
+                <Row>
+                    <Card>
+                        <CardBody>
+                            <CardTitle>
+                                {saveAlert && <Alert isOpen={saveAlert} toggle={onDismissSave}>Usuário Atualizado com Sucesso!</Alert>}
+                                {deleteAlert && <Alert isOpen={deleteAlert} toggle={onDismissDelete}>Usuário Deletado com Sucesso!</Alert>}
+                                {addAlert && <Alert isOpen={addAlert} toggle={onDismissAdd}>Usuário Adicionado com Sucesso!</Alert>}
+                                <Label className='h1' style={{ display: 'flex', alignSelf: 'start', justifyContent: 'start' }}> Controle de Usuarios</Label>
+                            </CardTitle>
 
-                        <Row>
-                            <UserTable/>
-                        </Row>
+                            <Row>
+                                <UserTable onSaveSucess={onSaveSucessfull} onDeleteSucess={onDeleteSucessfull} onAddSucess={onAddSucessfull} />
+                            </Row>
 
-                    </CardBody>
-                </Card>
-            </Row>
-        </div>
+                        </CardBody>
+                    </Card>
+                </Row>
 
 
-            
+
         </div>
     )
 }
