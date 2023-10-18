@@ -3,7 +3,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react"
 import { Badge, Button, Col, Container, Input, InputGroup, Label, Row, Spinner, Table } from "reactstrap"
-import { BsFillPatchPlusFill, BsPersonPlus, BsSearch } from "react-icons/bs";
+import { BsFillPatchPlusFill, BsFillTrashFill, BsPencilSquare, BsPersonPlus, BsSearch } from "react-icons/bs";
 import SacfullnetAPI from "../../Services/SacfullnetApi";
 import FaqDetail from "../FaqDetail/FaqDetail";
 import FaqAddCard from "../FAQCard/FaqAddCard";
@@ -21,6 +21,7 @@ const FaqTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
 
     });
     const [toggleModal, setToggleModal] = useState(false);
+    
 
 
 
@@ -113,6 +114,8 @@ const FaqTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
         return <p>Error: {error}</p>;
     }
 
+    //CONTROLE DE USUARIO
+    const user = 1;
     return (
         <Container fluid>
             <Row style={{ paddingTop: 30 }}>
@@ -139,6 +142,8 @@ const FaqTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
                         <tr>
                             <th>Título</th>
                             <th>Equipamentos</th>
+                            {user == 1? <th>Ações</th> : null}
+                            
                         </tr>
                     </thead>
                     <tbody>
@@ -146,15 +151,21 @@ const FaqTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
                           <Label> Carregando Informações <Spinner color="primary" style={{ alignSelf: "center" }} /> </Label>
                         ) : (
                             tableData.map(item => (
-                                <tr style={{ cursor: "pointer" }} onClick={() => setSelectedFaq(item)} key={item.id}>
-                                    <td>{item.titulo}</td>
-                                    <td>
+                                <tr style={{ cursor: "pointer" }}  key={item.id}>
+                                    <td onClick={() => setSelectedFaq(item)}>{item.titulo}</td>
+                                    <td onClick={() => setSelectedFaq(item)}>
                                         {item.equipamentosRelacionados.map((produtoId) => (
                                             <Badge key={produtoId} style={{ margin: 2 }} color="primary">
                                                 {productNames[produtoId]} {/* Display product name from state */}
                                             </Badge>
                                         ))}
                                     </td>
+                                    {user ==1?<td>
+                                    <Button onClick={() => alert("oi")} color="primary"> <BsPencilSquare /></Button>
+                                    {'   '}
+                                    <Button onClick={() => alert("oi")} color="primary" > <BsFillTrashFill /></Button>
+                                </td> : null }
+                                    
                                 </tr>
                             ))
                         )}
