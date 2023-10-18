@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react"
-import { Button, Col, Container, Label, Row, Table } from "reactstrap"
+import { Button, Col, Container, Input, Label, Row, Table, UncontrolledTooltip } from "reactstrap"
 import SacfullnetAPI from "../../Services/SacfullnetApi";
 import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from "react-icons/bs";
 
@@ -115,6 +115,11 @@ const SelectProductForFaq = () => {
                                 <tr>
                                     <th>Lista de Equipamentos</th>
                                 </tr>
+                                <tr>
+                                    <th>
+                                        <Input size="sm" placeholder="Pesquise o produto..."></Input>
+                                    </th>
+                                </tr>
 
                             </thead>
                             <tbody>
@@ -128,22 +133,28 @@ const SelectProductForFaq = () => {
                         </Table>
                     </div>
                 </Col>
-                <Col xs="1">
+                <Col xs="1" >
                     <Row>
 
-                        <Button color="primary" onClick={() => addProduct(selectedProductAdd)}><BsFillArrowRightCircleFill /> </Button>
+                        <Button color="primary" id="add" onClick={() => addProduct(selectedProductAdd)}><BsFillArrowRightCircleFill /> </Button>
                     </Row>
                     <Row style={{ paddingTop: 10 }}>
 
-                        <Button color="primary" onClick={() => removeProduct(selectedProductRemove)}><BsFillArrowLeftCircleFill /> </Button>
+                        <Button color="primary" id="remove" onClick={() => removeProduct(selectedProductRemove)}><BsFillArrowLeftCircleFill /> </Button>
                     </Row>
                 </Col>
+
                 <Col>
                     <div style={{ maxHeight: '50vh', overflowY: 'auto' }}>
                         <Table responsive bordered hover>
                             <thead>
                                 <tr>
                                     <th>Equipamentos Selecionados</th>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <Input size="sm" placeholder="Pesquise o produto..."></Input>
+                                    </th>
                                 </tr>
 
                             </thead>
@@ -160,8 +171,9 @@ const SelectProductForFaq = () => {
                 </Col>
 
             </Row>
-
-
+            <UncontrolledTooltip target="add">Adicionar Produto</UncontrolledTooltip>
+            <UncontrolledTooltip target="remove" placement="bottom" >Retirar Produto</UncontrolledTooltip>
+                                
         </Container >
     )
 }

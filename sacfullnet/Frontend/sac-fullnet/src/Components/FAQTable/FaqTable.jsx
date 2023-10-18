@@ -2,7 +2,7 @@
 /* eslint-disable react/jsx-key */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react"
-import { Badge, Button, Col, Container, Input, InputGroup, Label, Row, Spinner, Table } from "reactstrap"
+import { Badge, Button, Col, Container, Input, InputGroup, Label, Row, Spinner, Table, UncontrolledTooltip } from "reactstrap"
 import { BsFillPatchPlusFill, BsFillTrashFill, BsPencilSquare, BsPersonPlus, BsSearch } from "react-icons/bs";
 import SacfullnetAPI from "../../Services/SacfullnetApi";
 import FaqDetail from "../FaqDetail/FaqDetail";
@@ -161,9 +161,9 @@ const FaqTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
                                         ))}
                                     </td>
                                     {user ==1?<td>
-                                    <Button onClick={() => alert("oi")} color="primary"> <BsPencilSquare /></Button>
+                                    <Button id="updateButton" onClick={() => alert("oi")} color="primary"> <BsPencilSquare /></Button>
                                     {'   '}
-                                    <Button onClick={() => alert("oi")} color="primary" > <BsFillTrashFill /></Button>
+                                    <Button id="deleteButton" onClick={() => alert("oi")} color="primary" > <BsFillTrashFill /></Button>
                                 </td> : null }
                                     
                                 </tr>
@@ -175,6 +175,8 @@ const FaqTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
             </Row>
             {selectedFaq !== -1 ? <FaqDetail selectedFaq={selectedFaq} productNames={productNames} isOpen={toggleModal} onDismiss={dismiss} /> : <></>}
             {addModal && <FaqAddCard onAddSucess={addSucess} open={addModal} />}
+            <UncontrolledTooltip target="updateButton"> Atualizar</UncontrolledTooltip>
+            <UncontrolledTooltip target="deleteButton"> Deletar</UncontrolledTooltip>
         </Container>
     );
 }
