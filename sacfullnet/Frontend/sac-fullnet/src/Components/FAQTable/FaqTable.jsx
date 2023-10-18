@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-key */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react"
@@ -5,8 +6,9 @@ import { Badge, Button, Col, Container, Input, InputGroup, Label, Row, Spinner, 
 import { BsFillPatchPlusFill, BsPersonPlus, BsSearch } from "react-icons/bs";
 import SacfullnetAPI from "../../Services/SacfullnetApi";
 import FaqDetail from "../FaqDetail/FaqDetail";
+import FaqAddCard from "../FAQCard/FaqAddCard";
 
-const FaqTable = () => {
+const FaqTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
     const [error, setError] = useState();
     const [tableData, setTableData] = useState([]);
     const [productNames, setProductNames] = useState({
@@ -20,6 +22,12 @@ const FaqTable = () => {
     });
     const [toggleModal, setToggleModal] = useState(false);
 
+
+
+    const [addModal, setAddModal] = useState(false);
+    const toggleAddModal = () => setAddModal(!addModal);
+
+
     const toggle = () => {
         setToggleModal(!toggleModal);
 
@@ -28,6 +36,22 @@ const FaqTable = () => {
         setToggleModal(false);
         setSelectedFaq({ id: -1 });
     }
+    const addSucess = () => {
+        onAddSucess();
+        fetchTableData();
+        setAddModal(false);
+    }
+
+    const saveSucess = () => {
+        onSaveSucess();
+        fetchTableData();
+      }
+    
+      const deleteSucess = () => {
+        
+        onDeleteSucess();
+        fetchTableData();
+      }
     // Function to fetch product names
     async function fetchEquipament(productId) {
         try {
@@ -106,10 +130,10 @@ const FaqTable = () => {
                     </InputGroup>
                 </Col>
                 <Col>
-                    <Button color="primary" onClick={() => alert("Add Event")}><BsFillPatchPlusFill /> Adicionar FAQ</Button>
+                    <Button color="primary" onClick={toggleAddModal}><BsFillPatchPlusFill /> Adicionar FAQ</Button>
                 </Col>
             </Row>
-            <Row style={{ padding: 20 }}>
+            <Row style={{ paddingTop: 20 }}>
                 <Table responsive hover>
                     <thead>
                         <tr>
@@ -139,6 +163,7 @@ const FaqTable = () => {
                 </Table>
             </Row>
             {selectedFaq !== -1 ? <FaqDetail selectedFaq={selectedFaq} productNames={productNames} isOpen={toggleModal} onDismiss={dismiss} /> : <></>}
+            {addModal && <FaqAddCard onAddSucess={addSucess} open={addModal} />}
         </Container>
     );
 }

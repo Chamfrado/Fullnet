@@ -33,7 +33,7 @@ const UserView = ({ handleLogin }) => {
 
     return (
         <div>
-                <Header handleLogout={handleLogin} />
+                <Header handleLogout={handleExit} />
 
                 <Row>
                     <Card>

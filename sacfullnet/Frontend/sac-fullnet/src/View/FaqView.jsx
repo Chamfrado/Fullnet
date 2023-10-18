@@ -10,7 +10,7 @@ const FaqView = (handleLogin) => {
         handleLogin();
     };
 
-   
+
 
     return (
         <div>
