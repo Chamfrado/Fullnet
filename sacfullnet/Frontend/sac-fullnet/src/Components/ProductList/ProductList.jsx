@@ -4,21 +4,28 @@ import { Button, Col, Container, Input, InputGroup, Label, Row, Spinner, Table }
 
 import SacfullnetAPI from "../../Services/SacfullnetApi";
 import ProductCard from "../ProductCard/ProductCard";
-import {  BsArrowDownUp, BsRouter, BsSearch } from "react-icons/bs";
+import { BsArrowDownUp, BsRouter, BsSearch } from "react-icons/bs";
 import ProductAddCard from "../ProductCard/ProductAddCard";
 
-const ProductList = ({onSaveSucess, onDeleteSucess, onAddSucess}) => {
+const ProductList = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
   const [error, setError] = useState();
   const [tableData, setTableData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [addModal, setAddModal] = useState(false);
 
-
   const toggleAddModal = () => setAddModal(!addModal);
 
-  
+  //Cuidando da pesquisa 
+  const [searchQuery, setSearchQuery] = useState("");
+  const handleSearchChange = (event) => {
+    const { value } = event.target;
+    setSearchQuery(value);
+  };
+
+
   const fetchTableData = () => {
-    const url = "equipamento";
+
+    const url = "equipamento?search=" + searchQuery;
     SacfullnetAPI.get(url)
       .then(({ data }) => {
         setTableData(data);
@@ -36,7 +43,7 @@ const ProductList = ({onSaveSucess, onDeleteSucess, onAddSucess}) => {
   }
 
   const deleteSucess = () => {
-    
+
     onDeleteSucess();
     fetchTableData();
   }
@@ -48,7 +55,7 @@ const ProductList = ({onSaveSucess, onDeleteSucess, onAddSucess}) => {
 
   useEffect(() => {
     fetchTableData();
-  }, []);
+  }, [searchQuery]);
 
   if (error) {
     return <p>Error: {error}</p>;
@@ -79,18 +86,19 @@ const ProductList = ({onSaveSucess, onDeleteSucess, onAddSucess}) => {
 
   return (
     <Container id="TableProduct">
-      <Row style={{ paddingTop: 30, paddingLeft:50 }}>
+      <Row style={{ paddingTop: 30, paddingLeft: 50 }}>
         <Col xs="5">
           <InputGroup>
             <Input
               id="search"
-              name="search"
-              placeholder="Pesquise Aqui"
+              name="searchQuery"
+              placeholder="Digite o nome do equipamento para pesquisar"
+              onChange={handleSearchChange}
               type="search"
             />
-            
+
             <Button color="primary">
-              <BsSearch/>
+              <BsSearch />
             </Button>
           </InputGroup>
         </Col>
@@ -98,10 +106,10 @@ const ProductList = ({onSaveSucess, onDeleteSucess, onAddSucess}) => {
           <Button onClick={toggleAddModal} color="primary" ><BsRouter /> Adicionar Equipamento</Button>
         </Col>
         <Col>
-        <Button color="primary" onClick={fetchTableData}> Atualizar dados <BsArrowDownUp /></Button>
+          <Button color="primary" onClick={fetchTableData}> Atualizar dados <BsArrowDownUp /></Button>
         </Col>
       </Row>
-      <Row style={{paddingTop: 10, flex: 1, justifyContent:"center", alignItems: "center"}}>
+      <Row style={{ paddingTop: 10, flex: 1, justifyContent: "center", alignItems: "center" }}>
         {isLoading ? (
           <Label>Carregando Dados <Spinner color="primary" style={{ alignSelf: "center" }} /></Label>
         ) : (
@@ -113,7 +121,7 @@ const ProductList = ({onSaveSucess, onDeleteSucess, onAddSucess}) => {
         )}
 
       </Row>
-          {addModal && <ProductAddCard onAddSucess={addSucess} open={addModal}/>}
+      {addModal && <ProductAddCard onAddSucess={addSucess} open={addModal} />}
     </Container>
   );
 };

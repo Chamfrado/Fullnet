@@ -14,6 +14,15 @@ const SelectProductForFaq = ({ updateList, initialSelectedProducts, op }) => {
 
     const [isLoading, setIsLoading] = useState(true);
 
+    //Cuidando da pesquisa 
+    const [searchQuery, setSearchQuery] = useState("");
+    const handleSearchChange = (event) => {
+        const { value } = event.target;
+        setSearchQuery(value);
+    };
+
+
+
     const [selectedProductAdd, setSelectedProductAdd] = useState({
         "id": -1,
         "id_tipo_equipamento": -1,
@@ -35,7 +44,7 @@ const SelectProductForFaq = ({ updateList, initialSelectedProducts, op }) => {
     });
 
     const fetchProductData = () => {
-        const url = "equipamento";
+        const url = "equipamento?search=" + searchQuery;
         SacfullnetAPI.get(url)
             .then(async ({ data }) => {
                 if (op == "update") {
@@ -52,7 +61,7 @@ const SelectProductForFaq = ({ updateList, initialSelectedProducts, op }) => {
 
                     setProductData(newData);
                     setIsLoading(false);
-                }else if(op == "add"){
+                } else if (op == "add") {
                     setProductData(data);
                     setIsLoading(false);
                 }
@@ -67,7 +76,7 @@ const SelectProductForFaq = ({ updateList, initialSelectedProducts, op }) => {
 
     useEffect(() => {
         fetchProductData();
-    }, []);
+    }, [searchQuery]);
 
     useEffect(() => {
         updateList(productList);
@@ -157,7 +166,13 @@ const SelectProductForFaq = ({ updateList, initialSelectedProducts, op }) => {
                                 </tr>
                                 <tr>
                                     <th>
-                                        <Input size="sm" placeholder="Pesquise o produto..."></Input>
+                                        <Input
+                                            id="search"
+                                            name="searchQuery"
+                                            placeholder="Pesquise Aqui"
+                                            onChange={handleSearchChange}
+                                            type="search"
+                                        />
                                     </th>
                                 </tr>
 

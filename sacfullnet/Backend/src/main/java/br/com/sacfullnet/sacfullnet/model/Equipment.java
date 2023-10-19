@@ -1,8 +1,6 @@
 package br.com.sacfullnet.sacfullnet.model;
 
-import java.util.Arrays;
-
-public class Equipamento {
+public class Equipment {
     private int id;
     private int id_tipo_equipamento;
     private String ip_address;
@@ -11,11 +9,11 @@ public class Equipamento {
     private String descricao;
     private String imagem;
 
-    public Equipamento() {
+    public Equipment() {
     }
 
-    public Equipamento(int id, int id_tipo_equipamento, String ip_address, String nome, String configuracao, String descricao,
-            String imagem) {
+    public Equipment(int id, int id_tipo_equipamento, String ip_address, String nome, String configuracao, String descricao,
+                     String imagem) {
         this.id = id;
         this.id_tipo_equipamento = id_tipo_equipamento;
         this.ip_address = ip_address;

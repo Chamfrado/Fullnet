@@ -15,10 +15,11 @@ public class UserServiceImpl implements UserService{
     UserDao userDao;
 
     @Override
-    public List<User> find(){
-        return userDao.find();
+    public List<User> find(){ return userDao.find(); }
+    @Override
+    public List<User> search(String search){
+        return userDao.search(search);
     }
-
     @Override
     public int save(User user){
         return userDao.save(user);

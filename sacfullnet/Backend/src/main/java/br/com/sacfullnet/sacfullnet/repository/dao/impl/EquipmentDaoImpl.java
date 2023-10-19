@@ -1,7 +1,6 @@
 package br.com.sacfullnet.sacfullnet.repository.dao.impl;
 
 
-import java.io.Console;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,17 +11,17 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import br.com.sacfullnet.sacfullnet.model.Equipamento;
+import br.com.sacfullnet.sacfullnet.model.Equipment;
 import br.com.sacfullnet.sacfullnet.repository.connection.ConnectionFactory;
-import br.com.sacfullnet.sacfullnet.repository.dao.EquipamentoDao;
+import br.com.sacfullnet.sacfullnet.repository.dao.EquipmentDao;
 
 @Repository
-public class EquipamentoDaoImpl implements EquipamentoDao {
+public class EquipmentDaoImpl implements EquipmentDao {
 
     @Override
-    public List<Equipamento> find() {
+    public List<Equipment> find() {
 
-        List<Equipamento> equipamentos = new ArrayList<>();
+        List<Equipment> equipments = new ArrayList<>();
 
         final String sql = "SELECT * from equipamento order by nome";
 
@@ -38,14 +37,14 @@ public class EquipamentoDaoImpl implements EquipamentoDao {
 
             System.out.println(sql);
             while (rs.next()) {
-                Equipamento equipamento = loadValues(rs);
+                Equipment equipment = loadValues(rs);
                
 
                 
 
 
 
-                equipamentos.add(equipamento);
+                equipments.add(equipment);
             }
 
         } catch (Exception e) {
@@ -53,17 +52,49 @@ public class EquipamentoDaoImpl implements EquipamentoDao {
         } finally {
             ConnectionFactory.close(connection, ps, rs);
         }
-        return equipamentos;
+        return equipments;
 
     }
 
     @Override
-    public Equipamento findById(int id){
+    public List<Equipment> search(String name) {
+        List<Equipment> equipments = new ArrayList<>();
+        final String sql = "SELECT * FROM equipamento WHERE nome ILIKE ?";
+
         Connection connection = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
 
-        Equipamento equipamento = new Equipamento();
+        try {
+            connection = ConnectionFactory.getConnection();
+            ps = connection.prepareStatement(sql);
+            ps.setString(1, "%" + name + "%");  // Use the % wildcard for a partial match
+
+            rs = ps.executeQuery();
+
+            System.out.println(sql);
+            while (rs.next()) {
+                Equipment equipment = loadValues(rs);
+                equipments.add(equipment);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            ConnectionFactory.close(connection, ps, rs);
+        }
+        return equipments;
+    }
+
+
+
+
+    @Override
+    public Equipment findById(int id){
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        Equipment equipment = new Equipment();
 
         try {
 
@@ -80,7 +111,7 @@ public class EquipamentoDaoImpl implements EquipamentoDao {
             rs = ps.executeQuery();
             
             if (rs.next()) {
-                equipamento = loadValues(rs);
+                equipment = loadValues(rs);
             }
 
             
@@ -92,12 +123,14 @@ public class EquipamentoDaoImpl implements EquipamentoDao {
         }finally {
             ConnectionFactory.close(connection, ps, rs);
         }
-        return equipamento;
+        return equipment;
 
     }
 
+
+
     @Override
-    public int save(Equipamento equipamento) {
+    public int save(Equipment equipment) {
         Connection connection = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -111,10 +144,10 @@ public class EquipamentoDaoImpl implements EquipamentoDao {
             connection.setAutoCommit(false);
 
             ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, equipamento.getNome());
-            ps.setString(2, equipamento.getConfiguracao());
-            ps.setString(3, equipamento.getDescricao());
-            ps.setString(4, equipamento.getImagem());
+            ps.setString(1, equipment.getNome());
+            ps.setString(2, equipment.getConfiguracao());
+            ps.setString(3, equipment.getDescricao());
+            ps.setString(4, equipment.getImagem());
 
             ps.execute();
 
@@ -144,7 +177,7 @@ public class EquipamentoDaoImpl implements EquipamentoDao {
     }
 
     @Override
-    public boolean update(Equipamento equipamento) {
+    public boolean update(Equipment equipment) {
 
         Connection connection = null;
         PreparedStatement ps = null;
@@ -157,11 +190,11 @@ public class EquipamentoDaoImpl implements EquipamentoDao {
             connection.setAutoCommit(false);
 
             ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, equipamento.getNome());
-            ps.setString(2, equipamento.getConfiguracao());
-            ps.setString(3, equipamento.getDescricao());
-            ps.setString(4, equipamento.getImagem());
-            ps.setInt(5, equipamento.getId());
+            ps.setString(1, equipment.getNome());
+            ps.setString(2, equipment.getConfiguracao());
+            ps.setString(3, equipment.getDescricao());
+            ps.setString(4, equipment.getImagem());
+            ps.setInt(5, equipment.getId());
 
             ps.execute();
             connection.commit();
@@ -217,16 +250,16 @@ public class EquipamentoDaoImpl implements EquipamentoDao {
 
     
     @Override
-    public Equipamento loadValues(ResultSet rs) throws SQLException {
-        Equipamento equipamento = new Equipamento();
+    public Equipment loadValues(ResultSet rs) throws SQLException {
+        Equipment equipment = new Equipment();
         
-        equipamento.setId(rs.getInt("id"));
-        equipamento.setNome(rs.getString("nome"));
-        equipamento.setConfiguracao(rs.getString("configuracao"));
-        equipamento.setDescricao(rs.getString("descricao"));
-        equipamento.setImagem(rs.getString("imagem"));
+        equipment.setId(rs.getInt("id"));
+        equipment.setNome(rs.getString("nome"));
+        equipment.setConfiguracao(rs.getString("configuracao"));
+        equipment.setDescricao(rs.getString("descricao"));
+        equipment.setImagem(rs.getString("imagem"));
 
-        return equipamento;
+        return equipment;
     }
 
 }

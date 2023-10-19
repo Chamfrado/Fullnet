@@ -1,23 +1,16 @@
 package br.com.sacfullnet.sacfullnet.controller;
 
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
 
-import br.com.sacfullnet.sacfullnet.model.Equipamento;
-import br.com.sacfullnet.sacfullnet.service.EquipamentoService;
-
-import org.springframework.web.bind.annotation.RequestMapping;
+import br.com.sacfullnet.sacfullnet.model.Equipment;
+import br.com.sacfullnet.sacfullnet.service.EquipmentService;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 @RestController
@@ -26,37 +19,51 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class EquipamentoController {
     
     @Autowired
-    EquipamentoService equipamentoService;
+    EquipmentService equipmentService;
 
     @GetMapping("")
-    public ResponseEntity<List<Equipamento>> findAllEquipamentos(){
-        List<Equipamento> equipamentos = equipamentoService.find();
+    public ResponseEntity<List<Equipment>> findAllEquipamentos(@RequestParam(required = false) String search){
 
-        if (equipamentos == null) {
-            return ResponseEntity.notFound().build();
+        if(StringUtils.hasText(search)){
+            List<Equipment> equipments = equipmentService.search(search);
+
+            if (equipments == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            return ResponseEntity.ok(equipments);
+        }else{
+            List<Equipment> equipments = equipmentService.find();
+
+            if (equipments == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            return ResponseEntity.ok(equipments);
         }
 
-        return ResponseEntity.ok(equipamentos);
+
+
         
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Equipamento> findById(@PathVariable int id){
-        Equipamento equipamento = equipamentoService.findById(id);
+    public ResponseEntity<Equipment> findById(@PathVariable int id){
+        Equipment equipment = equipmentService.findById(id);
 
-        if(equipamento == null){
+        if(equipment == null){
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(equipamento);
+        return ResponseEntity.ok(equipment);
     }
 
     @PostMapping("")
-    public ResponseEntity<Integer> save(@RequestBody Equipamento equipamento){
+    public ResponseEntity<Integer> save(@RequestBody Equipment equipment){
 
         int id = -1;
 
-        id = equipamentoService.save(equipamento);
+        id = equipmentService.save(equipment);
 
         if( id == -1 ){
             return ResponseEntity.notFound().build();
@@ -68,10 +75,10 @@ public class EquipamentoController {
     }
 
     @PutMapping("")
-    public ResponseEntity<String> update(@RequestBody Equipamento equipamento){
+    public ResponseEntity<String> update(@RequestBody Equipment equipment){
         boolean ok = false;
 
-        ok = equipamentoService.update(equipamento);
+        ok = equipmentService.update(equipment);
 
         if(ok == true){
             return ResponseEntity.ok("Atualizado com sucesso!");
@@ -84,7 +91,7 @@ public class EquipamentoController {
     public ResponseEntity<String> delete(@PathVariable int id){
         boolean ok = false;
 
-        ok = equipamentoService.delete(id);
+        ok = equipmentService.delete(id);
 
         if(ok == true){
             return ResponseEntity.ok("Deletado com sucesso!");

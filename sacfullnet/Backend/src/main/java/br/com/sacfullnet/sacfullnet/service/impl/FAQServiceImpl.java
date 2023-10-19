@@ -20,6 +20,9 @@ public class FAQServiceImpl implements FAQService{
     }
 
     @Override
+    public List<FAQ> search(String search) { return  faqDao.search(search);}
+
+    @Override
     public int save(FAQ faq){
         return faqDao.save(faq);
     }

@@ -4,22 +4,24 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import br.com.sacfullnet.sacfullnet.model.Equipamento;
+import br.com.sacfullnet.sacfullnet.model.Equipment;
 
 
 
-public interface EquipamentoDao {
+public interface EquipmentDao {
 
-    List<Equipamento> find();
+    List<Equipment> find();
 
-    int save(Equipamento user);
+    List<Equipment> search(String name);
 
-    boolean update(Equipamento user);
+    int save(Equipment user);
+
+    boolean update(Equipment user);
 
     boolean delete(int id);
 
-    Equipamento loadValues(ResultSet resultSet) throws SQLException;
+    Equipment loadValues(ResultSet resultSet) throws SQLException;
 
-    Equipamento findById(int id);
+    Equipment findById(int id);
 
 }

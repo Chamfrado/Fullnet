@@ -54,15 +54,56 @@ public class FAQDaoImpl implements FAQDao {
                 } else {
                     faq.setEquipamentosRelacionados(Collections.emptyList());
                 }
-    
-                
-                
-                
-                
-                
-                
-                
 
+                faqs.add(faq);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            ConnectionFactory.close(connection, ps, rs);
+        }
+        return faqs;
+    }
+
+    @Override
+    public List<FAQ> search(String search) {
+        List<FAQ> faqs = new ArrayList<>();
+
+        final String sql = "SELECT f.id AS faq_id,f.titulo AS faq_titulo, f.solucao AS faq_solucao, array_agg(fe.id_equipamento) AS equipamentos_relacionados FROM faq f LEFT JOIN faq_has_equipamento fe ON f.id = fe.id_FAQ WHERE  f.titulo ILIKE ? GROUP BY f.id, f.titulo, f.solucao order by f.titulo";
+
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            connection = ConnectionFactory.getConnection();
+            ps = connection.prepareStatement(sql);
+            ps.setString(1, "%" + search + "%");  // Use the % wildcard for a partial match
+
+            rs = ps.executeQuery();
+
+            System.out.println(sql);
+
+            while (rs.next()) {
+                FAQ faq = new FAQ();
+                faq.setId(rs.getInt("faq_id"));
+                faq.setTitulo(rs.getString("faq_titulo"));
+                faq.setSolucao(rs.getString("faq_solucao"));
+
+                Array equipmentsAficionados = rs.getArray("equipamentos_relacionados");
+                if (equipmentsAficionados != null) {
+                    Object[] equipments = (Object[]) equipmentsAficionados.getArray();
+                    List<Integer> equipamentosRelacionadosList = new ArrayList<>();
+                    for (Object equipment : equipments) {
+                        if (equipment instanceof Integer) {
+                            equipamentosRelacionadosList.add((Integer) equipment);
+                        }
+                    }
+                    faq.setEquipamentosRelacionados(equipamentosRelacionadosList);
+                } else {
+                    faq.setEquipamentosRelacionados(Collections.emptyList());
+                }
                 faqs.add(faq);
             }
 

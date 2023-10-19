@@ -9,6 +9,8 @@ import java.util.List;
 public interface UserDao{
     List<User> find();
 
+    List<User> search(String search);
+
     int save(User user);
 
     boolean update(User user);

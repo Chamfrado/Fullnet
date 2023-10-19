@@ -2,18 +2,20 @@ package br.com.sacfullnet.sacfullnet.service;
 
 import java.util.List;
 
-import br.com.sacfullnet.sacfullnet.model.Equipamento;
+import br.com.sacfullnet.sacfullnet.model.Equipment;
 
-public interface EquipamentoService {
+public interface EquipmentService {
     
-    List<Equipamento> find();
+    List<Equipment> find();
 
-    int save(Equipamento equipamento);
+    List<Equipment> search(String name);
 
-    boolean update(Equipamento equipamento);
+    int save(Equipment equipment);
+
+    boolean update(Equipment equipment);
 
     boolean delete(int id);
 
-    Equipamento findById(int id);
+    Equipment findById(int id);
     
 }

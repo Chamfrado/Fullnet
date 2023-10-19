@@ -23,6 +23,13 @@ const FaqTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
 
     });
 
+    //Cuidando da pesquisa 
+    const [searchQuery, setSearchQuery] = useState("");
+    const handleSearchChange = (event) => {
+        const { value } = event.target;
+        setSearchQuery(value);
+    };
+
     const [updateFaq, setUpdateFaq] = useState(false);
     const [deleteFaq, setDeleteFaq] = useState(false);
 
@@ -88,7 +95,8 @@ const FaqTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
 
 
     const fetchTableData = () => {
-        const url = "faq";
+        const url = "faq?search=" + searchQuery;
+        setIsLoading(true);
         SacfullnetAPI.get(url)
             .then(({ data }) => {
                 // Fetch product names for all products and store them in productNames state
@@ -119,7 +127,7 @@ const FaqTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
 
     useEffect(() => {
         fetchTableData();
-    }, [addModal, updateModal, deleteModal]);
+    }, [addModal, updateModal, deleteModal, searchQuery]);
 
     useEffect(() => {
 
@@ -140,10 +148,11 @@ const FaqTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
             <Row style={{ paddingTop: 30 }}>
                 <Col xs="5">
                     <InputGroup>
-                        <Input
+                    <Input
                             id="search"
-                            name="search"
-                            placeholder="Pesquise Aqui"
+                            name="searchQuery"
+                            placeholder="Digite sua duvida aqui."
+                            onChange={handleSearchChange}
                             type="search"
                         />
                         <Button color="primary">

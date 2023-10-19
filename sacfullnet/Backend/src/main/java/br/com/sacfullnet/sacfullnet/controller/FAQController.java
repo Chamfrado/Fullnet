@@ -1,24 +1,17 @@
 package br.com.sacfullnet.sacfullnet.controller;
 
-import org.springframework.web.bind.annotation.RestController;
+import br.com.sacfullnet.sacfullnet.model.User;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
 
 import br.com.sacfullnet.sacfullnet.model.FAQ;
 import br.com.sacfullnet.sacfullnet.service.FAQService;
 import br.com.sacfullnet.sacfullnet.service.FAQEquipamentoService;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/faq")
@@ -32,14 +25,25 @@ public class FAQController {
     FAQEquipamentoService faqEquipamentoService;
 
     @GetMapping("")
-    public ResponseEntity<List<FAQ>> findAllFAQs() {
-        List<FAQ> faqs = faqService.find();
+    public ResponseEntity<List<FAQ>> findAllFAQs(@RequestParam(required = false) String search) {
 
-        if (faqs == null) {
-            return ResponseEntity.notFound().build();
+        if(StringUtils.hasText(search)){
+            List<FAQ> faqs = faqService.search(search);
+
+            if (faqs == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            return ResponseEntity.ok(faqs);
+        }else{
+            List<FAQ> faqs = faqService.find();
+
+            if (faqs == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            return ResponseEntity.ok(faqs);
         }
-        return ResponseEntity.ok(faqs);
-
     }
 
     @PostMapping("")

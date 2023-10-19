@@ -15,8 +15,15 @@ const UserTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
     const [addModal, setAddModal] = useState(false);
     const [updateModal, setUpdateModal] = useState(false);
     const [deleteModal, setDeleteModal] = useState(false);
-    
+
     const [selectedUser, setSelectedUser] = useState();
+
+    //Cuidando da pesquisa 
+    const [searchQuery, setSearchQuery] = useState("");
+    const handleSearchChange = (event) => {
+        const { value } = event.target;
+        setSearchQuery(value);
+    };
 
 
     const toggleAddModal = () => setAddModal(!addModal);
@@ -40,19 +47,19 @@ const UserTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
         onSaveSucess();
         fetchTableData();
         setUpdateModal(false);
-      }
-    
-      const deleteSucess = () => {
-        
+    }
+
+    const deleteSucess = () => {
+
         onDeleteSucess();
         fetchTableData();
         setDeleteModal(false);
-      }
+    }
 
 
     const [tableData, setTableData] = useState([]);
     const fetchTableData = () => {
-        SacfullnetAPI.get("user")
+        SacfullnetAPI.get("user?search=" + searchQuery)
             .then(({ data }) => {
                 setTableData(data);
             }).catch((error) => {
@@ -70,7 +77,8 @@ const UserTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
 
     useEffect(() => {
         fetchTableData();
-    }, []);
+    }, [searchQuery]);
+
 
 
     return (
@@ -80,8 +88,9 @@ const UserTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
                     <InputGroup>
                         <Input
                             id="search"
-                            name="search"
-                            placeholder="Pesquise Aqui"
+                            name="searchQuery"
+                            placeholder="Digite o email desejado!"
+                            onChange={handleSearchChange}
                             type="search"
                         />
                         <Button color="primary">
@@ -118,7 +127,7 @@ const UserTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
                 </Table>
                 {addModal && <UserAddCard onAddSucess={addSucess} open={addModal} />}
                 {updateModal && <UserUpdateCard onSaveSucess={saveSucess} open={updateModal} User={selectedUser} />}
-                {deleteModal && <UserDeleteCard onDeleteSucess={deleteSucess} open={deleteModal} user={selectedUser}/>}
+                {deleteModal && <UserDeleteCard onDeleteSucess={deleteSucess} open={deleteModal} user={selectedUser} />}
             </Row>
         </Container>
 

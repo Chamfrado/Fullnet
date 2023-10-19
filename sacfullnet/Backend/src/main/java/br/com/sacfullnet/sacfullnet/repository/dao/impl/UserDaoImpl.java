@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.sacfullnet.sacfullnet.model.Equipment;
 import org.springframework.stereotype.Repository;
 
 import br.com.sacfullnet.sacfullnet.model.User;
@@ -47,6 +48,36 @@ public class UserDaoImpl implements UserDao {
         return users;
 
     }
+
+    @Override
+    public List<User> search(String search) {
+        List<User> users = new ArrayList<>();
+        final String sql = "SELECT * FROM usuario WHERE email ILIKE ? ORDER BY email";
+
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            connection = ConnectionFactory.getConnection();
+            ps = connection.prepareStatement(sql);
+            ps.setString(1, "%" + search + "%");  // Use the % wildcard for a partial match
+
+            rs = ps.executeQuery();
+
+            System.out.println(sql);
+            while (rs.next()) {
+                User user = loadValues(rs);
+                users.add(user);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            ConnectionFactory.close(connection, ps, rs);
+        }
+        return users;
+    }
+
 
     @Override
     public int save(User user) {

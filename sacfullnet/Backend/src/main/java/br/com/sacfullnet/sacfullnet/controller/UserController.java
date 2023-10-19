@@ -1,23 +1,16 @@
 package br.com.sacfullnet.sacfullnet.controller;
 
-import org.springframework.web.bind.annotation.RestController;
+import br.com.sacfullnet.sacfullnet.model.Equipment;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
 
 import br.com.sacfullnet.sacfullnet.model.User;
 import br.com.sacfullnet.sacfullnet.service.UserService;
-
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
@@ -29,15 +22,25 @@ public class UserController {
     UserService userService;
 
     @GetMapping("")
-    public ResponseEntity<List<User>> findAllUsers(){
-        List<User> users = userService.find();
+    public ResponseEntity<List<User>> findAllUsers(@RequestParam(required = false) String search){
 
-        if (users == null) {
-            return ResponseEntity.notFound().build();
+        if(StringUtils.hasText(search)){
+            List<User> users = userService.search(search);
+
+            if (users == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            return ResponseEntity.ok(users);
+        }else{
+            List<User> users = userService.find();
+
+            if (users == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            return ResponseEntity.ok(users);
         }
-
-        return ResponseEntity.ok(users);
-        
     }
 
     @PostMapping("/auth")
