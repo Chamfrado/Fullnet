@@ -7,6 +7,8 @@ import { BsFillPatchPlusFill, BsFillTrashFill, BsPencilSquare, BsPersonPlus, BsS
 import SacfullnetAPI from "../../Services/SacfullnetApi";
 import FaqDetail from "../FaqDetail/FaqDetail";
 import FaqAddCard from "../FAQCard/FaqAddCard";
+import FaqUpdateCard from "../FAQCard/FaqUpdateCard";
+import FaqDeleteCard from "../FAQCard/FaqDeleteCard";
 
 const FaqTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
     const [error, setError] = useState();
@@ -20,6 +22,10 @@ const FaqTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
         id: -1
 
     });
+
+    const [updateFaq, setUpdateFaq] = useState(false);
+    const [deleteFaq, setDeleteFaq] = useState(false);
+
     const [toggleModal, setToggleModal] = useState(false);
     
 
@@ -27,6 +33,19 @@ const FaqTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
 
     const [addModal, setAddModal] = useState(false);
     const toggleAddModal = () => setAddModal(!addModal);
+
+    const [updateModal, setUpdateModal] = useState(false);
+    const toggleUpdateModal = (faq) => {
+        setUpdateFaq(faq)
+        setUpdateModal(!updateModal);
+    
+    }
+
+    const [deleteModal, setDeleteModal] = useState(false);
+    const toggleDeleteModal = (faq) => {
+        setDeleteFaq(faq)
+        setDeleteModal(!deleteModal)
+    }
 
 
     const toggle = () => {
@@ -53,6 +72,7 @@ const FaqTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
         onDeleteSucess();
         fetchTableData();
       }
+
     // Function to fetch product names
     async function fetchEquipament(productId) {
         try {
@@ -67,7 +87,6 @@ const FaqTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
     }
 
 
-    useEffect
     const fetchTableData = () => {
         const url = "faq";
         SacfullnetAPI.get(url)
@@ -100,7 +119,7 @@ const FaqTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
 
     useEffect(() => {
         fetchTableData();
-    }, []);
+    }, [addModal, updateModal, deleteModal]);
 
     useEffect(() => {
 
@@ -161,11 +180,10 @@ const FaqTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
                                         ))}
                                     </td>
                                     {user ==1?<td>
-                                    <Button id="updateButton" onClick={() => alert("oi")} color="primary"> <BsPencilSquare /></Button>
+                                    <Button id="updateButton" onClick={() => toggleUpdateModal(item)} color="primary"> <BsPencilSquare /></Button>
                                     {'   '}
-                                    <Button id="deleteButton" onClick={() => alert("oi")} color="primary" > <BsFillTrashFill /></Button>
+                                    <Button id="deleteButton" onClick={() => toggleDeleteModal(item)} color="primary"> <BsFillTrashFill /></Button>
                                 </td> : null }
-                                    
                                 </tr>
                             ))
                         )}
@@ -175,8 +193,9 @@ const FaqTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
             </Row>
             {selectedFaq !== -1 ? <FaqDetail selectedFaq={selectedFaq} productNames={productNames} isOpen={toggleModal} onDismiss={dismiss} /> : <></>}
             {addModal && <FaqAddCard onAddSucess={addSucess} open={addModal} />}
-            <UncontrolledTooltip target="updateButton"> Atualizar</UncontrolledTooltip>
-            <UncontrolledTooltip target="deleteButton"> Deletar</UncontrolledTooltip>
+            {updateModal && <FaqUpdateCard onUpdateSucess={saveSucess} open={updateModal} faq={updateFaq} />}
+            {deleteModal && <FaqDeleteCard onDeleteSucess={deleteSucess} open={deleteModal} faq={deleteFaq} />}
+            
         </Container>
     );
 }

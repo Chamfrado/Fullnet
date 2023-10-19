@@ -1,19 +1,13 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react"
 import { Button, Col, Container, Input, Label, Row, Table, UncontrolledTooltip } from "reactstrap"
 import SacfullnetAPI from "../../Services/SacfullnetApi";
 import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from "react-icons/bs";
 
-const SelectProductForFaq = () => {
+const SelectProductForFaq = ({ updateList, initialSelectedProducts, op }) => {
 
     const [productData, setProductData] = useState([{
-        "id": -1,
-        "id_tipo_equipamento": -1,
-        "nome": "",
-        "configuracao": "",
-        "descricao": "",
-        "imagem": "",
-        "ip_Address": null
     }]);
 
     const [productList, setProductList] = useState([])
@@ -43,19 +37,41 @@ const SelectProductForFaq = () => {
     const fetchProductData = () => {
         const url = "equipamento";
         SacfullnetAPI.get(url)
-            .then(({ data }) => {
-                setProductData(data);
-                setIsLoading(false);
+            .then(async ({ data }) => {
+                if (op == "update") {
+                    let newData = [...data]; // Create a new copy of the data array
+
+                    await initialSelectedProducts.map((productId) => {
+                        const productIndex = newData.findIndex((p) => p.id === productId);
+                        if (productIndex !== -1) {
+                            const updatedProductData = [...newData]; // Create a new copy of newData
+                            updatedProductData.splice(productIndex, 1);
+                            newData = updatedProductData; // Update newData with the modified array
+                        }
+                    });
+
+                    setProductData(newData);
+                    setIsLoading(false);
+                }else if(op == "add"){
+                    setProductData(data);
+                    setIsLoading(false);
+                }
+
             })
             .catch((error) => {
                 setIsLoading(false);
             });
     }
 
+
+
     useEffect(() => {
         fetchProductData();
     }, []);
 
+    useEffect(() => {
+        updateList(productList);
+    }, [productList])
 
     const addProduct = (product) => {
         // Check if the product is not already in the productList
@@ -104,6 +120,30 @@ const SelectProductForFaq = () => {
         }
     };
 
+    useEffect(() => {
+        const fetchAndMoveProducts = async () => {
+            if (initialSelectedProducts && initialSelectedProducts.length > 0) {
+                const selectedProductsData = await Promise.all(
+                    initialSelectedProducts.map(async (productId) => {
+                        const response = await SacfullnetAPI.get(`equipamento/${productId}`);
+                        return response.data;
+                    })
+                );
+
+                // Add selected products to the productList
+                setProductList([...productList, ...selectedProductsData]);
+
+            }
+        };
+
+        // Call fetchAndMoveProducts directly
+        fetchAndMoveProducts();
+    }, [initialSelectedProducts]);
+
+
+
+
+
 
     return (
         <Container>
@@ -151,11 +191,6 @@ const SelectProductForFaq = () => {
                                 <tr>
                                     <th>Equipamentos Selecionados</th>
                                 </tr>
-                                <tr>
-                                    <th>
-                                        <Input size="sm" placeholder="Pesquise o produto..."></Input>
-                                    </th>
-                                </tr>
 
                             </thead>
                             <tbody>
@@ -173,7 +208,6 @@ const SelectProductForFaq = () => {
             </Row>
             <UncontrolledTooltip target="add">Adicionar Produto</UncontrolledTooltip>
             <UncontrolledTooltip target="remove" placement="bottom" >Retirar Produto</UncontrolledTooltip>
-                                
         </Container >
     )
 }

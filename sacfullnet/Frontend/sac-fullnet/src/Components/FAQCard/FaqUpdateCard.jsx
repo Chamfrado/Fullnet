@@ -7,13 +7,13 @@ import SelectProductForFaq from "../SelectProductForFaq/SelectProductForFaq";
 
 
 
-const FaqAddCard = ({ open, onAddSucess }) => {
+const FaqUpdateCard = ({ open, onUpdateSucess, faq }) => {
     const [modal, setModal] = useState(false);
     const [listProduct, setListProduct] = useState([]);
 
     const [faqForm, setProductForm] = useState({
-        titulo: "",
-        solucao: ""
+        titulo: faq.titulo,
+        solucao: faq.solucao
     });
 
 
@@ -44,13 +44,14 @@ const FaqAddCard = ({ open, onAddSucess }) => {
 
     const add = () => {
         try {
-            SacfullnetAPI.post("faq", {
+            SacfullnetAPI.put("faq", {
 
+                id: faq.id,
                 titulo: faqForm.titulo,
                 solucao: faqForm.solucao,
                 equipamentosRelacionados: listProduct
             });
-            onAddSucess();
+            onUpdateSucess();
             toggle();
 
         } catch (error) {
@@ -105,7 +106,7 @@ const FaqAddCard = ({ open, onAddSucess }) => {
 
                 </Row>
                 <Row>
-                    <SelectProductForFaq updateList={updateProduct} op={"add"} />
+                    <SelectProductForFaq updateList={updateProduct} initialSelectedProducts={faq.equipamentosRelacionados} op={"update"}  />
                 </Row>
 
 
@@ -122,4 +123,4 @@ const FaqAddCard = ({ open, onAddSucess }) => {
     );
 }
 
-export default FaqAddCard
+export default FaqUpdateCard

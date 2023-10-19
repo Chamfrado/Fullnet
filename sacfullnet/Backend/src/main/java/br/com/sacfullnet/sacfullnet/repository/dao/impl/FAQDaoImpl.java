@@ -24,14 +24,7 @@ public class FAQDaoImpl implements FAQDao {
     public List<FAQ> find() {
         List<FAQ> faqs = new ArrayList<>();
 
-        final String sql = "SELECT " +
-                "f.id AS faq_id, " +
-                "f.titulo AS faq_titulo, " +
-                "f.solucao AS faq_solucao, " +
-                "array_agg(fe.id_equipamento) AS equipamentos_relacionados " +
-                "FROM faq f " +
-                "LEFT JOIN faq_has_equipamento fe ON f.id = fe.id_FAQ " +
-                "GROUP BY f.id, f.titulo, f.solucao order by f.titulo";
+        final String sql = "SELECT f.id AS faq_id,f.titulo AS faq_titulo, f.solucao AS faq_solucao, array_agg(fe.id_equipamento) AS equipamentos_relacionados FROM faq f LEFT JOIN faq_has_equipamento fe ON f.id = fe.id_FAQ GROUP BY f.id, f.titulo, f.solucao order by f.titulo";
 
         Connection connection = null;
         PreparedStatement ps = null;
@@ -48,13 +41,13 @@ public class FAQDaoImpl implements FAQDao {
                 faq.setTitulo(rs.getString("faq_titulo"));
                 faq.setSolucao(rs.getString("faq_solucao"));
 
-                Array equipamentosRelacionados = rs.getArray("equipamentos_relacionados");
-                if (equipamentosRelacionados != null) {
-                    Object[] equipamentos = (Object[]) equipamentosRelacionados.getArray();
+                Array equipmentsAficionados = rs.getArray("equipamentos_relacionados");
+                if (equipmentsAficionados != null) {
+                    Object[] equipments = (Object[]) equipmentsAficionados.getArray();
                     List<Integer> equipamentosRelacionadosList = new ArrayList<>();
-                    for (Object equipamento : equipamentos) {
-                        if (equipamento instanceof Integer) {
-                            equipamentosRelacionadosList.add((Integer) equipamento);
+                    for (Object equipment : equipments) {
+                        if (equipment instanceof Integer) {
+                            equipamentosRelacionadosList.add((Integer) equipment);
                         }
                     }
                     faq.setEquipamentosRelacionados(equipamentosRelacionadosList);
@@ -83,7 +76,45 @@ public class FAQDaoImpl implements FAQDao {
 
     @Override
     public int save(FAQ faq) {
-        return 0;
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        int id = -1;
+
+        try {
+            final String sql = "INSERT INTO faq (id, titulo, solucao) VALUES (DEFAULT, ?, ?)";
+
+            connection = ConnectionFactory.getConnection();
+            connection.setAutoCommit(false);
+
+            ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, faq.getTitulo());
+            ps.setString(2, faq.getSolucao());
+
+            ps.execute();
+
+            rs = ps.getGeneratedKeys();
+
+            if (rs.next()) {
+                id = rs.getInt(1);
+            }
+            connection.commit();
+            System.out.println(sql);
+            return id;
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                e.printStackTrace();
+            }
+
+            return id;
+        } finally {
+            ConnectionFactory.close(connection, ps, rs);
+        }
     }
 
     @Override
