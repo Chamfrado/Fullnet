@@ -96,7 +96,6 @@ const FaqTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
 
     const fetchTableData = () => {
         const url = "faq?search=" + searchQuery;
-        setIsLoading(true);
         SacfullnetAPI.get(url)
             .then(({ data }) => {
                 setTableData(data);
