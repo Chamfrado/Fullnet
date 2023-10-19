@@ -99,25 +99,8 @@ const FaqTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
         setIsLoading(true);
         SacfullnetAPI.get(url)
             .then(({ data }) => {
-                // Fetch product names for all products and store them in productNames state
-                const promises = data.map(async (item) => {
-                    const name = await fetchEquipament(item.id);
-                    return { id: item.id, titulo: item.titulo, solucao: item.solucao, equipamentosRelacionados: item.equipamentosRelacionados, productName: name };
-                });
-                Promise.all(promises)
-                    .then((faqData) => {
-                        const productNamesObj = {};
-                        faqData.forEach((item) => {
-                            productNamesObj[item.id] = item.productName;
-                        });
-                        setProductNames(productNamesObj);
-                        setTableData(faqData);
-                        setIsLoading(false);
-                    })
-                    .catch((error) => {
-                        setError(error.message);
-                        setIsLoading(false);
-                    });
+                setTableData(data);
+                setIsLoading(false);
             })
             .catch((error) => {
                 setError(error.message);
@@ -182,9 +165,9 @@ const FaqTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
                                 <tr style={{ cursor: "pointer" }}  key={item.id}>
                                     <td onClick={() => setSelectedFaq(item)}>{item.titulo}</td>
                                     <td onClick={() => setSelectedFaq(item)}>
-                                        {item.equipamentosRelacionados.map((produtoId) => (
-                                            <Badge key={produtoId} style={{ margin: 2 }} color="primary">
-                                                {productNames[produtoId]} {/* Display product name from state */}
+                                        {item.equipamentosRelacionados.map((produto) => (
+                                            <Badge key={produto.id_equipamento} style={{ margin: 2 }} color="primary">
+                                                {produto.nome} {/* Display product name from state */}
                                             </Badge>
                                         ))}
                                     </td>

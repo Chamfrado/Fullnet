@@ -12,7 +12,6 @@ const FaqDetail = ({selectedFaq, isOpen, onDismiss}) => {
         
           
           setModal(isOpen);
-          fetchEquipamentos(selectedFaq);
         
         
     },[isOpen])
@@ -24,30 +23,6 @@ const FaqDetail = ({selectedFaq, isOpen, onDismiss}) => {
       id: ""
     }]);
 
-    const fetchEquipamentos = (Faq) => {
-      try {
-        Promise.all(
-          Faq.equipamentosRelacionados.map((equipamentoId) =>
-            SacfullnetAPI.get("equipamento/" + equipamentoId).then((response) => {
-              return {
-                descricao: response.data.descricao,
-                nome: response.data.nome,
-                id: equipamentoId,
-              };
-            })
-          )
-        )
-          .then((equipamentosData) => {
-            // Once all equipment data is fetched, update the state
-            setEquipamentos(equipamentosData);
-          })
-          .catch((error) => {
-            console.log(error)
-          });
-      } catch (error) {
-        console.log(error)
-      }
-    };
     
 
 
@@ -91,11 +66,11 @@ const FaqDetail = ({selectedFaq, isOpen, onDismiss}) => {
                 </thead>
                 
                 <tbody>
-                 {equipamentos.map((equipamento) => (
-                  <tr key={equipamento.id}>
+                 {selectedFaq.equipamentosRelacionados != null && selectedFaq.equipamentosRelacionados.map((equipamento) => (
+                  <tr key={equipamento.id_equipamento}>
                     
                       <td>
-                      {equipamento.id}
+                      {equipamento.id_equipamento}
                       </td>
                       <td>
                       {equipamento.nome}

@@ -1,6 +1,8 @@
 package br.com.sacfullnet.sacfullnet.controller;
 
+
 import br.com.sacfullnet.sacfullnet.model.User;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,12 +60,12 @@ public class FAQController {
             return ResponseEntity.notFound().build();
         }
 
-        List<Integer> listEquipment = faq.getEquipamentosRelacionados();
+        List<JsonNode> listEquipment = faq.getEquipamentosRelacionados();
 
         int isEquipamentoAdd = -1;
-        for (Integer equipamento : listEquipment) {
+        for (JsonNode equipamento : listEquipment) {
 
-            isEquipamentoAdd = faqEquipamentoService.addEquipamento(id, equipamento);
+            isEquipamentoAdd = faqEquipamentoService.addEquipamento(id, equipamento.get("id_equipamento").asInt());
             if(isEquipamentoAdd == -1){
                 return ResponseEntity.notFound().build();
             }
@@ -93,12 +95,12 @@ public class FAQController {
         }
 
 
-        List<Integer> listEquipment = faq.getEquipamentosRelacionados();
+        List<JsonNode> listEquipment = faq.getEquipamentosRelacionados();
 
         int isEquipamentoAdd = -1;
-        for (Integer equipamento : listEquipment) {
+        for (JsonNode equipamento : listEquipment) {
 
-            isEquipamentoAdd = faqEquipamentoService.addEquipamento(faq.getId(), equipamento);
+            isEquipamentoAdd = faqEquipamentoService.addEquipamento(faq.getId(), equipamento.get("id_equipamento").asInt());
             if(isEquipamentoAdd == -1){
                 return ResponseEntity.notFound().build();
             }

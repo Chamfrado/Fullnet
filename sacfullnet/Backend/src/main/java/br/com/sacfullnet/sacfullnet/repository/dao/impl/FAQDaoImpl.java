@@ -10,7 +10,12 @@ import java.util.List;
 import java.util.Arrays;
 import java.util.Collections;
 import java.sql.Array;
+import java.util.Map;
 
+import br.com.sacfullnet.sacfullnet.model.RelacionamentoEquipamento;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.springframework.stereotype.Repository;
 
 import br.com.sacfullnet.sacfullnet.model.FAQ;
@@ -24,7 +29,22 @@ public class FAQDaoImpl implements FAQDao {
     public List<FAQ> find() {
         List<FAQ> faqs = new ArrayList<>();
 
-        final String sql = "SELECT f.id AS faq_id,f.titulo AS faq_titulo, f.solucao AS faq_solucao, array_agg(fe.id_equipamento) AS equipamentos_relacionados FROM faq f LEFT JOIN faq_has_equipamento fe ON f.id = fe.id_FAQ GROUP BY f.id, f.titulo, f.solucao order by f.titulo";
+        final String sql = "SELECT\n" +
+                "    f.id AS faq_id,\n" +
+                "    f.titulo AS faq_titulo,\n" +
+                "    f.solucao AS faq_solucao,\n" +
+                "    COALESCE(\n" +
+                "        json_agg(jsonb_build_object('id_equipamento', fe.id_equipamento, 'nome', equipamento.nome) ORDER BY fe.id_equipamento),\n" +
+                "        '[]'::json\n" +
+                "    ) AS equipamentos_relacionados\n" +
+                "FROM\n" +
+                "    faq f\n" +
+                "LEFT JOIN faq_has_equipamento fe ON f.id = fe.id_FAQ\n" +
+                "LEFT JOIN equipamento ON equipamento.id = fe.id_equipamento\n" +
+                "GROUP BY\n" +
+                "    f.id, f.titulo, f.solucao\n" +
+                "ORDER BY\n" +
+                "    f.titulo;\n";
 
         Connection connection = null;
         PreparedStatement ps = null;
@@ -41,18 +61,20 @@ public class FAQDaoImpl implements FAQDao {
                 faq.setTitulo(rs.getString("faq_titulo"));
                 faq.setSolucao(rs.getString("faq_solucao"));
 
-                Array equipmentsAficionados = rs.getArray("equipamentos_relacionados");
-                if (equipmentsAficionados != null) {
-                    Object[] equipments = (Object[]) equipmentsAficionados.getArray();
-                    List<Integer> equipamentosRelacionadosList = new ArrayList<>();
-                    for (Object equipment : equipments) {
-                        if (equipment instanceof Integer) {
-                            equipamentosRelacionadosList.add((Integer) equipment);
-                        }
+                String jsonArrayString = rs.getString("equipamentos_relacionados");
+
+                try {
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    ArrayNode jsonArray = objectMapper.readValue(jsonArrayString, ArrayNode.class);
+
+                    List<JsonNode> equipamentosRelacionadosList = new ArrayList<>();
+                    for (JsonNode equipment : jsonArray) {
+                        equipamentosRelacionadosList.add(equipment);
                     }
+
                     faq.setEquipamentosRelacionados(equipamentosRelacionadosList);
-                } else {
-                    faq.setEquipamentosRelacionados(Collections.emptyList());
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
 
                 faqs.add(faq);
@@ -70,7 +92,23 @@ public class FAQDaoImpl implements FAQDao {
     public List<FAQ> search(String search) {
         List<FAQ> faqs = new ArrayList<>();
 
-        final String sql = "SELECT f.id AS faq_id,f.titulo AS faq_titulo, f.solucao AS faq_solucao, array_agg(fe.id_equipamento) AS equipamentos_relacionados FROM faq f LEFT JOIN faq_has_equipamento fe ON f.id = fe.id_FAQ WHERE  f.titulo ILIKE ? GROUP BY f.id, f.titulo, f.solucao order by f.titulo";
+        final String sql = "SELECT\n" +
+                "    f.id AS faq_id,\n" +
+                "    f.titulo AS faq_titulo,\n" +
+                "    f.solucao AS faq_solucao,\n" +
+                "    COALESCE(\n" +
+                "        json_agg(jsonb_build_object('id_equipamento', fe.id_equipamento, 'nome', equipamento.nome) ORDER BY fe.id_equipamento),\n" +
+                "        '[]'::json\n" +
+                "    ) AS equipamentos_relacionados\n" +
+                "FROM\n" +
+                "    faq f\n" +
+                "LEFT JOIN faq_has_equipamento fe ON f.id = fe.id_FAQ\n" +
+                "LEFT JOIN equipamento ON equipamento.id = fe.id_equipamento\n" +
+                "WHERE  f.titulo ILIKE ?\n" +
+                "GROUP BY\n" +
+                "    f.id, f.titulo, f.solucao\n" +
+                "ORDER BY\n" +
+                "    f.titulo;";
 
         Connection connection = null;
         PreparedStatement ps = null;
@@ -91,21 +129,25 @@ public class FAQDaoImpl implements FAQDao {
                 faq.setTitulo(rs.getString("faq_titulo"));
                 faq.setSolucao(rs.getString("faq_solucao"));
 
-                Array equipmentsAficionados = rs.getArray("equipamentos_relacionados");
-                if (equipmentsAficionados != null) {
-                    Object[] equipments = (Object[]) equipmentsAficionados.getArray();
-                    List<Integer> equipamentosRelacionadosList = new ArrayList<>();
-                    for (Object equipment : equipments) {
-                        if (equipment instanceof Integer) {
-                            equipamentosRelacionadosList.add((Integer) equipment);
-                        }
+                String jsonArrayString = rs.getString("equipamentos_relacionados");
+
+                try {
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    ArrayNode jsonArray = objectMapper.readValue(jsonArrayString, ArrayNode.class);
+
+                    List<JsonNode> equipamentosRelacionadosList = new ArrayList<>();
+                    for (JsonNode equipment : jsonArray) {
+                        equipamentosRelacionadosList.add(equipment);
                     }
+
                     faq.setEquipamentosRelacionados(equipamentosRelacionadosList);
-                } else {
-                    faq.setEquipamentosRelacionados(Collections.emptyList());
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
+
                 faqs.add(faq);
             }
+
 
         } catch (Exception e) {
             e.printStackTrace();

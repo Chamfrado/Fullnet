@@ -1,17 +1,19 @@
 package br.com.sacfullnet.sacfullnet.model;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 import java.util.List;
 
 public class FAQ {
     private Integer id;
     private String titulo;
     private String solucao;
-    private List<Integer> equipamentosRelacionados;
+    private List<JsonNode> equipamentosRelacionados;
 
     public FAQ() {
     }
 
-    public FAQ(String titulo, String solucao, List<Integer> equipamentosRelacionados) {
+    public FAQ(String titulo, String solucao, List<JsonNode> equipamentosRelacionados) {
         this.titulo = titulo;
         this.solucao = solucao;
         this.equipamentosRelacionados = equipamentosRelacionados;
@@ -41,11 +43,11 @@ public class FAQ {
         this.solucao = solucao;
     }
 
-    public List<Integer> getEquipamentosRelacionados() {
+    public List<JsonNode> getEquipamentosRelacionados() {
         return equipamentosRelacionados;
     }
 
-    public void setEquipamentosRelacionados(List<Integer> equipamentosRelacionados) {
+    public void setEquipamentosRelacionados(List<JsonNode> equipamentosRelacionados) {
         this.equipamentosRelacionados = equipamentosRelacionados;
     }
 }
