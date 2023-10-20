@@ -1,8 +1,8 @@
 CREATE TABLE usuario (
     id SERIAL PRIMARY KEY,
-    email VARCHAR(255) NOT NULL,
-    senha VARCHAR(255) NOT NULL,
-    tipo INT CHECK (tipo IN (1, 2))
+    login VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(5) CHECK (role IN ('USER', 'ADMIN'))
     
 );
 

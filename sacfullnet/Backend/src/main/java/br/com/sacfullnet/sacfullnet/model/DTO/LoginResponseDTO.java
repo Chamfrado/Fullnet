@@ -1,2 +1,4 @@
-package br.com.sacfullnet.sacfullnet.model.DTO;public record LoginResponseDTO() {
+package br.com.sacfullnet.sacfullnet.model.DTO;
+
+public record LoginResponseDTO(String token) {
 }

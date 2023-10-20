@@ -1,4 +1,4 @@
-package br.com.sacfullnet.sacfullnet.Security;
+package br.com.sacfullnet.sacfullnet.service;
 
 import br.com.sacfullnet.sacfullnet.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +11,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthorizationService implements UserDetailsService {
 
-    @Autowired
+    final
     UserService userService;
+
+    public AuthorizationService(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

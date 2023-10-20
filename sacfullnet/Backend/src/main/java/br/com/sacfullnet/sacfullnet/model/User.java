@@ -1,32 +1,55 @@
 package br.com.sacfullnet.sacfullnet.model;
 
-public class User{
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
+
+public class User implements UserDetails {
     private Integer id;
+
+    private String login;
     
-    private String email;
+    private String password;
     
-    private String senha;
-    
-    private Integer tipo;
+    private UserRole role;
+
+    public User() {
+    }
+
+    public User(Integer id, String login, String password, UserRole role) {
+        this.id = id;
+        this.login = login;
+        this.password = password;
+        this.role = role;
+    }
+
+    public User(String login, String password, UserRole role){
+        this.login = login;
+        this.password = password;
+        this.role = role;
+    }
 
 
-    public Integer getTipo() {
-        return tipo;
+    public UserRole getRole() {
+        return role;
     }
-    public void setTipo(Integer tipo) {
-        this.tipo = tipo;
+    public void setRole(UserRole role) {
+        this.role = role;
     }
-    public String getSenha() {
-        return senha;
+    public String getPassword() {
+        return password;
     }
-    public void setSenha(String senha) {
-        this.senha = senha;
+    public void setPassword(String password) {
+        this.password = password;
     }
-    public String getEmail() {
-        return email;
+    public String getLogin() {
+        return login;
     }
-    public void setEmail(String email) {
-        this.email = email;
+    public void setLogin(String login) {
+        this.login = login;
     }
     public Integer getId() {
         return id;
@@ -34,6 +57,37 @@ public class User{
     public void setId(Integer id) {
         this.id = id;
     }
-    
+
+
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if(this.role == UserRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+    }
+    @Override
+    public String getUsername() {
+        return login;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
 

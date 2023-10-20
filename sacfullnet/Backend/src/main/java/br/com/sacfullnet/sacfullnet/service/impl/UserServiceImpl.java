@@ -1,6 +1,7 @@
 package br.com.sacfullnet.sacfullnet.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import br.com.sacfullnet.sacfullnet.repository.dao.UserDao;
@@ -20,6 +21,12 @@ public class UserServiceImpl implements UserService{
     public List<User> search(String search){
         return userDao.search(search);
     }
+
+    @Override
+    public UserDetails findByLogin(String login) {
+        return userDao.findByLogin(login);
+    }
+
     @Override
     public int save(User user){
         return userDao.save(user);

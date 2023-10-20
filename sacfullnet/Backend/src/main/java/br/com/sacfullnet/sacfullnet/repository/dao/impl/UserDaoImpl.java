@@ -8,7 +8,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.sacfullnet.sacfullnet.model.Equipment;
+import br.com.sacfullnet.sacfullnet.model.UserRole;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 
 import br.com.sacfullnet.sacfullnet.model.User;
@@ -22,7 +23,7 @@ public class UserDaoImpl implements UserDao {
     public List<User> find() {
         List<User> users = new ArrayList<>();
 
-        final String sql = "SELECT * from usuario order by email";
+        final String sql = "SELECT * from usuario order by login";
 
         Connection connection = null;
         PreparedStatement ps = null;
@@ -52,7 +53,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public List<User> search(String search) {
         List<User> users = new ArrayList<>();
-        final String sql = "SELECT * FROM usuario WHERE email ILIKE ? ORDER BY email";
+        final String sql = "SELECT * FROM usuario WHERE login ILIKE ? ORDER BY login";
 
         Connection connection = null;
         PreparedStatement ps = null;
@@ -78,6 +79,34 @@ public class UserDaoImpl implements UserDao {
         return users;
     }
 
+    @Override
+    public UserDetails findByLogin(String login) {
+        User user = null;
+        final String sql = "SELECT * FROM usuario WHERE login = ?";
+
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            connection = ConnectionFactory.getConnection();
+            ps = connection.prepareStatement(sql);
+            ps.setString(1, login );  // Use the % wildcard for a partial match
+
+            rs = ps.executeQuery();
+
+            System.out.println(sql);
+            if (rs.next()) {
+                user = loadValues(rs);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            ConnectionFactory.close(connection, ps, rs);
+        }
+        return user;
+    }
+
 
     @Override
     public int save(User user) {
@@ -89,15 +118,15 @@ public class UserDaoImpl implements UserDao {
         int id = -1;
 
         try {
-            final String sql = "INSERT INTO usuario (id, email, senha, tipo) VALUES (DEFAULT, ?, ?, ?)";
+            final String sql = "INSERT INTO usuario (id, login, password, role) VALUES (DEFAULT, ?, ?, ?)";
 
             connection = ConnectionFactory.getConnection();
             connection.setAutoCommit(false);
 
             ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, user.getEmail());
-            ps.setString(2, user.getSenha());
-            ps.setInt(3, user.getTipo());
+            ps.setString(1, user.getLogin());
+            ps.setString(2, user.getPassword());
+            ps.setString(3, String.valueOf(user.getRole()));
 
             ps.execute();
 
@@ -131,15 +160,15 @@ public class UserDaoImpl implements UserDao {
         ResultSet rs = null;
 
         try {
-            final String sql = "UPDATE usuario set email=? ,senha=? ,tipo=?  WHERE id =?";
+            final String sql = "UPDATE usuario set login=? ,password=? ,role=?  WHERE id =?";
 
             connection = ConnectionFactory.getConnection();
             connection.setAutoCommit(false);
 
             ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, user.getEmail());
-            ps.setString(2, user.getSenha());
-            ps.setInt(3, user.getTipo());
+            ps.setString(1, user.getLogin());
+            ps.setString(2, user.getPassword());
+            ps.setString(3, String.valueOf(user.getRole()));
             ps.setInt(4, user.getId());
 
             ps.executeUpdate();
@@ -208,7 +237,7 @@ public User authenticate(String username, String password) {
     User user = new User();
 
     try {
-        final String sql = "SELECT * from usuario WHERE email=? AND senha=?";
+        final String sql = "SELECT * from usuario WHERE login=? AND password=?";
 
         connection = ConnectionFactory.getConnection();
         connection.setAutoCommit(false);
@@ -255,9 +284,9 @@ public User authenticate(String username, String password) {
         User user = new User();
 
         user.setId(rs.getInt("id"));
-        user.setEmail(rs.getString("email"));
-        user.setSenha(rs.getString("senha"));
-        user.setTipo(rs.getInt("tipo"));
+        user.setLogin(rs.getString("login"));
+        user.setPassword(rs.getString("password"));
+        user.setRole(UserRole.valueOf(rs.getString("role")));
         return user;
     }
 }
