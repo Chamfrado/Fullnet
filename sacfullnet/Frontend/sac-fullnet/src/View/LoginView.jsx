@@ -29,25 +29,7 @@ const Login = ({ handleLogin }) => {
 
     const handleSubmit = () => {
 
-        const options = {
-            method: 'POST',
-            url: 'http://localhost:8080/auth/login',
-            headers: {
-                cookie: 'JSESSIONID=41539AE62AC869DB8213883D6ED08FBC',
-                'Content-Type': 'application/json',
-                'User-Agent': 'insomnia/2023.5.8'
-            },
-            data: { login: 'user', password: '1524' }
-        };
-
-        axios.request(options)
-            .then(function (response) {
-                alert(response.data);
-            })
-            .catch(function (error) {
-                alert("Axios Error:", error);
-                alert("Network Error: " + error.message);
-            });
+        SacfullnetAPI.get("auth/teste").then((response)=>{ alert(response)}).catch((error) => alert(error));
 
     };
 
