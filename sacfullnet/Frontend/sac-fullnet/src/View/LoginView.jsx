@@ -5,6 +5,7 @@ import LogoPng from "../Resources/logo.jpeg";
 import { Alert, Button, Card, CardBody, Col, Form, FormGroup, Input, Label, Row } from "reactstrap";
 import { useNavigate } from "react-router-dom";
 import SacfullnetAPI from "../Services/SacfullnetApi";
+
 import axios from "axios";
 
 
@@ -29,8 +30,14 @@ const Login = ({ handleLogin }) => {
 
     const handleSubmit = () => {
 
-        SacfullnetAPI.get("auth/teste").then((response)=>{ alert(response)}).catch((error) => alert(error));
-
+        SacfullnetAPI.post("auth/login", user)
+            .then(({data}) => {
+                alert(JSON.stringify(data))
+            }).catch(error => {
+                console.log(error);
+                setInvalidUser(true);
+            })
+        
     };
 
     return (
@@ -51,7 +58,7 @@ const Login = ({ handleLogin }) => {
 
                     <Card
                         style={{
-                            width: "18rem",
+                            width: "20rem",
                             borderRadius: "8px",
                             boxShadow: "0 2px 10px rgba(0, 0, 0, 0.15)"
                         }}
@@ -84,7 +91,7 @@ const Login = ({ handleLogin }) => {
                                                 name="password"
                                                 onChange={handleChange}
                                                 placeholder="Password"
-                                                type="password"
+                                                type="text"
                                                 value={user.password}
                                             />
                                             <Label for="password">Password</Label>

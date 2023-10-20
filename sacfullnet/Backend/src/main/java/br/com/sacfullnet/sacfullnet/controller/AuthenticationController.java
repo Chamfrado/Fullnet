@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("auth")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class AuthenticationController {
     @Autowired
     private TokenService tokenService;
@@ -44,9 +45,9 @@ public class AuthenticationController {
 
         return ResponseEntity.ok().build();
     }
-    @GetMapping("/teste")
-    public ResponseEntity teste(){
+    @PostMapping("/teste")
+    public ResponseEntity teste(@RequestBody String teste){
 
-        return ResponseEntity.ok("oi");
+        return ResponseEntity.ok(teste);
     }
 }
