@@ -8,12 +8,16 @@ import UserView from './View/UserView';
 
 function App() {
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
+	const [token, setToken] = useState(null);
+	const [user, setUser] = useState(null);
 
-	const handleLogin = () => {
-		// Perform authentication logic here (e.g., check credentials)
-		// Set isAuthenticated state accordingly
+	const handleLogin = (user, token) => {
+		setToken(token);
+		setUser(user);
 		setIsAuthenticated(!isAuthenticated);
 	};
+
+	
 
 	const ProtectedRoute = ({ element: Element }) => {
 		if (!isAuthenticated) {
@@ -22,7 +26,7 @@ function App() {
 		}
 
 		// Render the protected component
-		return <Element handleLogin={handleLogin} />;
+		return <Element handleLogin={handleLogin} props={token} user={user} />;
 	};
 
 	return (
