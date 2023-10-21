@@ -44,11 +44,11 @@ const ProductCard = ({ item , Saved, Deleted }) => {
     return (
         <Container style={{ display: "flex", justifyContent: "center", alignItems: "center" }} >
             
-            <Card onClick={toggleModal} className="bg-primary" style={{ cursor: "pointer" }}>
+            <Card onClick={toggleModal} className="bg-primary" style={{ cursor: "pointer", width: "100%" }}>
                 {image && (
                     <img
                         id="equip1"
-                        style={{ width: "50vh", height: "35vh", cursor: "pointer", padding: 10 }}
+                        style={{ width: "100%", height: "35vh", cursor: "pointer", padding: 10 }}
                         src={image}
                         alt="logo"
                     />

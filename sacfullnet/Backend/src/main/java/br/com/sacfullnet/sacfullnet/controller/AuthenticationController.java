@@ -22,11 +22,13 @@ public class AuthenticationController {
 
     @Autowired
     private UserService userService;
+    
     @Autowired
     private AuthenticationManager authenticationManager;
+
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody AuthenticationDTO data){
-        System.out.println(data);
+        System.out.println("dados: " + data);
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
 

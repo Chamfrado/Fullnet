@@ -22,17 +22,26 @@ const Login = ({ handleLogin }) => {
     const handleChange = (event) => {
         const { name, value } = event.target;
 
+        
         setUser((prevUser) => ({
             ...prevUser,
             [name]: value
         }));
+
+        
     };
 
     const handleSubmit = () => {
-
-        SacfullnetAPI.post("auth/login", user)
+        console.log(JSON.stringify(user))
+        SacfullnetAPI.post("auth/login", {
+            login: user.login,
+            password: user.password
+        })
             .then(({data}) => {
-                alert(JSON.stringify(data))
+
+                handleLogin(user,data.token)
+
+                navigate("/home")
             }).catch(error => {
                 console.log(error);
                 setInvalidUser(true);

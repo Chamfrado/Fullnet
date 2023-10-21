@@ -5,7 +5,7 @@ import { Alert, Card, CardBody, CardTitle,  Label, Row } from 'reactstrap';
 import ProductList from '../Components/ProductList/ProductList';
 
 
-const HomeView = ({ handleLogin }) => {
+const HomeView = ({ handleLogin, user, props }) => {
 
     const [saveAlert, setSaveAlert] = useState(false);
     const [deleteAlert, setDeleteAlert] = useState(false);
@@ -33,7 +33,7 @@ const HomeView = ({ handleLogin }) => {
 
     return (
         <div>
-            <Header handleLogout={handleExit} />
+            <Header  handleLogout={handleExit} user={user}/>
             
             
             <Card>
@@ -45,7 +45,7 @@ const HomeView = ({ handleLogin }) => {
                     <Label className='h1' style={{ display: 'flex', alignSelf: 'center', justifyContent: 'center' }}> Equipamentos</Label>
                     </CardTitle>
                     <Row >
-                      <ProductList onAddSucess={onAddSucessfull} onDeleteSucess={onDeleteSucessfull} onSaveSucess={onSaveSucessfull}/>
+                      <ProductList props={props} onAddSucess={onAddSucessfull} onDeleteSucess={onDeleteSucessfull} onSaveSucess={onSaveSucessfull}/>
                     </Row>
                     
                 </CardBody>

@@ -7,7 +7,7 @@ import ProductCard from "../ProductCard/ProductCard";
 import { BsArrowDownUp, BsRouter, BsSearch } from "react-icons/bs";
 import ProductAddCard from "../ProductCard/ProductAddCard";
 
-const ProductList = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
+const ProductList = ({ onSaveSucess, onDeleteSucess, onAddSucess, props }) => {
   const [error, setError] = useState();
   const [tableData, setTableData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -26,7 +26,7 @@ const ProductList = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
   const fetchTableData = () => {
 
     const url = "equipamento?search=" + searchQuery;
-    SacfullnetAPI.get(url)
+    SacfullnetAPI.get(url,"Authorization", 'Bearer '+ props)
       .then(({ data }) => {
         setTableData(data);
         setIsLoading(false);

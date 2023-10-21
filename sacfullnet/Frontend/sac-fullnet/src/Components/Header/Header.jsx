@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from "react";
 import {
 	Row, Col, 
@@ -13,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 import HeaderNavBar from "../HeaderNavBar/HeaderNavBar";
 
 // eslint-disable-next-line react/prop-types
-const Header = ({ handleLogout} ) => {
+const Header = ({ handleLogout, user} ) => {
 	const navigate = useNavigate();
 
 
@@ -56,7 +57,7 @@ const Header = ({ handleLogout} ) => {
 				</Col>
 				<Col className="d-flex justify-content-end align-content-end">
 					<Button id="exit" color="primary" style={{height: "75%", marginTop: 10}} onClick={handleExit}>
-						<BiExit color="white" size={40}   />
+						{user.login}<BiExit color="white" size={40}   />
 					</Button>
 				</Col>
 					

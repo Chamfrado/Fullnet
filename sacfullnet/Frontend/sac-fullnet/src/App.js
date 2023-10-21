@@ -5,14 +5,16 @@ import Login from './View/LoginView';
 import HomeView from './View/HomeView';
 import FaqView from './View/FaqView';
 import UserView from './View/UserView';
+import { login } from './Services/TokenService';
 
 function App() {
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
-	const [token, setToken] = useState(null);
 	const [user, setUser] = useState(null);
 
-	const handleLogin = (user, token) => {
-		setToken(token);
+
+	const handleLogin = (user, token) => {		 
+		login(token);
+		console.log(token);
 		setUser(user);
 		setIsAuthenticated(!isAuthenticated);
 	};
@@ -26,7 +28,7 @@ function App() {
 		}
 
 		// Render the protected component
-		return <Element handleLogin={handleLogin} props={token} user={user} />;
+		return <Element handleLogin={handleLogin} user={user} />;
 	};
 
 	return (
