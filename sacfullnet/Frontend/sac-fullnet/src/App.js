@@ -5,7 +5,7 @@ import Login from './View/LoginView';
 import HomeView from './View/HomeView';
 import FaqView from './View/FaqView';
 import UserView from './View/UserView';
-import { login } from './Services/TokenService';
+import { login, logout } from './Services/TokenService';
 
 function App() {
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -19,6 +19,11 @@ function App() {
 		setIsAuthenticated(!isAuthenticated);
 	};
 
+
+	const handleLogout = () => {
+		logout();
+		setIsAuthenticated(!isAuthenticated);
+	}
 	
 
 	const ProtectedRoute = ({ element: Element }) => {
@@ -28,14 +33,14 @@ function App() {
 		}
 
 		// Render the protected component
-		return <Element handleLogin={handleLogin} user={user} />;
+		return <Element handleLogin={handleLogin} handleLogout={handleLogout} user={user} />;
 	};
 
 	return (
 		<div>
       <Router>
 			<Routes>
-				<Route path="/login" element={<Login handleLogin={handleLogin} />} />
+				<Route path="/login" element={<Login handleLogin={handleLogin} handleLogout={handleLogout} />} />
 				<Route
 					path="/"
 					element={

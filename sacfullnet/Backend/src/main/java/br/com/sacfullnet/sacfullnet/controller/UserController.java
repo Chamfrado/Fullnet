@@ -1,6 +1,7 @@
 package br.com.sacfullnet.sacfullnet.controller;
 
 import br.com.sacfullnet.sacfullnet.model.Equipment;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -76,6 +77,9 @@ public class UserController {
         boolean ok = false;
 
         System.out.println(user.getUsername());
+
+        String encryptedPassword = new BCryptPasswordEncoder().encode(user.getPassword());
+        user.setPassword(encryptedPassword);
         ok = userService.update(user);
 
         if(ok == true){

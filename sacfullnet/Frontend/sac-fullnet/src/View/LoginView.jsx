@@ -7,9 +7,10 @@ import { useNavigate } from "react-router-dom";
 import SacfullnetAPI from "../Services/SacfullnetApi";
 
 import axios from "axios";
+import { logout, reset } from "../Services/TokenService";
 
 
-const Login = ({ handleLogin }) => {
+const Login = ({ handleLogin, handleLougout }) => {
     const navigate = useNavigate();
     const [user, setUser] = useState({
         login: "",
@@ -30,6 +31,7 @@ const Login = ({ handleLogin }) => {
 
         
     };
+
 
     const handleSubmit = () => {
         console.log(JSON.stringify(user))
@@ -99,7 +101,7 @@ const Login = ({ handleLogin }) => {
                                                 name="password"
                                                 onChange={handleChange}
                                                 placeholder="Password"
-                                                type="text"
+                                                type="password"
                                                 value={user.password}
                                             />
                                             <Label for="password">Password</Label>
@@ -112,10 +114,12 @@ const Login = ({ handleLogin }) => {
                                             Accessar
                                         </Button>
                                     </Col>
+                                    <Button onClick={reset}>teste</Button>
 
                                 </Row>
 
                             </Form>
+
 
                         </CardBody>
                     </Card>

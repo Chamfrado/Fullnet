@@ -14,3 +14,7 @@ export const login = token => {
 export const logout = () => {
   localStorage.removeItem(TOKEN_KEY);
 };
+
+export const reset = () => {
+  localStorage.setItem(TOKEN_KEY, '@demo-Token');
+}

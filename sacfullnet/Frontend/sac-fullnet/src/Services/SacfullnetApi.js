@@ -10,10 +10,10 @@ SacfullnetAPI.interceptors.request.use(async config => {
     const token = getToken();
     console.log(`Bearer ${token}`);
     console.log("AAAAAAAAAH:"+ token);
-    if (token.length >0) {
+    if (token != null) {
       config.headers.Authorization = "Bearer " + token;
     }
-    return config;
+    return config
 });
 
 

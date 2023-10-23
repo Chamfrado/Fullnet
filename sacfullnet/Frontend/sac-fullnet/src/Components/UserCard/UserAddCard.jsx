@@ -36,7 +36,7 @@ const UserAddCard = ({ open, onAddSucess }) => {
 
     const add = () => {
         try {
-            SacfullnetAPI.post("user", {
+            SacfullnetAPI.post("auth/register", {
                 
                 login: userForm.login,
                 password: userForm.password,
