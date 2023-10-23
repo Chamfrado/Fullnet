@@ -106,7 +106,7 @@ const UserTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
                 <Table hover responsive>
                     <thead>
                         <tr>
-                            <th>Email</th>
+                            <th>Login</th>
                             <th>Tipo</th>
                             <th>Ações</th>
                         </tr>
@@ -114,8 +114,8 @@ const UserTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
                     <tbody>
                         {tableData.map(user => (
                             <tr key={user.id}>
-                                <td>{user.email}</td>
-                                <td>{dict_type(user.tipo)}</td>
+                                <td>{user.login}</td>
+                                <td>{user.role}</td>
                                 <td>
                                     <Button onClick={() => toggleUpdateModal(user)} color="primary"> <BsPencilSquare /></Button>
                                     {'   '}

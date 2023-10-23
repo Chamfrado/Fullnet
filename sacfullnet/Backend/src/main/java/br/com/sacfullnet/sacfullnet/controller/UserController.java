@@ -15,7 +15,7 @@ import org.springframework.http.ResponseEntity;
 
 @RestController
 @RequestMapping("/user")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UserController {
     
     @Autowired
@@ -54,16 +54,6 @@ public class UserController {
         return ResponseEntity.ok(user);
         
     }
-    //public ResponseEntity<User> authenticate(@RequestBody String username,@RequestBody String password){
-    //   User user = userService.authenticate(username, password);
-    //    System.out.println(user);
-    //    if (user == null) {
-    //        return ResponseEntity.notFound().build();
-    //    }
-//
-    //    return ResponseEntity.ok(user);
-    //    
-    //}
 
     @PostMapping("")
     public ResponseEntity<Integer> save(@RequestBody User user){
@@ -85,6 +75,7 @@ public class UserController {
     public ResponseEntity<String> update(@RequestBody User user){
         boolean ok = false;
 
+        System.out.println(user.getUsername());
         ok = userService.update(user);
 
         if(ok == true){

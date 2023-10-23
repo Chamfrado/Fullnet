@@ -80,7 +80,7 @@ public class EquipamentoController {
 
         ok = equipmentService.update(equipment);
 
-        if(ok == true){
+        if(ok){
             return ResponseEntity.ok("Atualizado com sucesso!");
         }
 
@@ -93,7 +93,7 @@ public class EquipamentoController {
 
         ok = equipmentService.delete(id);
 
-        if(ok == true){
+        if(ok){
             return ResponseEntity.ok("Deletado com sucesso!");
         }
 

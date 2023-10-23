@@ -36,7 +36,7 @@ const UserDeleteCard = ({user, open, onDeleteSucess}) => {
                 <ModalHeader className="bg-danger" toggle={toggle}>Deletar Usuário</ModalHeader>
                 <ModalBody>
                     
-                <Label>Você está prestes a deletar o usuario com o email: {user.email}</Label>
+                <Label>Você está prestes a deletar o usuario com o email: {user.login}</Label>
                 <Label> Confirma essa Operação?</Label>
             
     

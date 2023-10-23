@@ -8,9 +8,11 @@ import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from "react-ico
 const SelectProductForFaq = ({ updateList, initialSelectedProducts, op }) => {
 
     const [productData, setProductData] = useState([{
+        id: "",
+        name: "",
     }]);
 
-    const [productList, setProductList] = useState([])
+    const [productList, setProductList] = useState([]);
 
     const [isLoading, setIsLoading] = useState(true);
 
@@ -47,20 +49,26 @@ const SelectProductForFaq = ({ updateList, initialSelectedProducts, op }) => {
         const url = "equipamento?search=" + searchQuery;
         SacfullnetAPI.get(url)
             .then(async ({ data }) => {
-                if (op == "update") {
-                    let newData = [...data]; // Create a new copy of the data array
+                if (op === "update") {
+                    let newData = [...data];
+                    let updatedProductList = [...productList]; // Create a new array to hold the products to be added
 
-                    await initialSelectedProducts.map((productId) => {
-                        const productIndex = newData.findIndex((p) => p.id === productId);
+                    await initialSelectedProducts.map(product => {
+                        const productIndex = newData.findIndex((p) => p.id === product.id_equipamento);
                         if (productIndex !== -1) {
-                            const updatedProductData = [...newData]; // Create a new copy of newData
-                            updatedProductData.splice(productIndex, 1);
-                            newData = updatedProductData; // Update newData with the modified array
+                            const productToAdd = newData[productIndex];
+
+                            // Add the product to the updatedProductList
+                            updatedProductList.push(productToAdd);
+
+                            // Remove the product from newData
+                            newData.splice(productIndex, 1);
                         }
                     });
 
+                    // Update both productData and productList
                     setProductData(newData);
-                    setIsLoading(false);
+                    setProductList(updatedProductList);
                 } else if (op == "add") {
                     setProductData(data);
                     setIsLoading(false);
@@ -69,6 +77,7 @@ const SelectProductForFaq = ({ updateList, initialSelectedProducts, op }) => {
             })
             .catch((error) => {
                 setIsLoading(false);
+                alert(error);
             });
     }
 
@@ -128,26 +137,6 @@ const SelectProductForFaq = ({ updateList, initialSelectedProducts, op }) => {
             }
         }
     };
-
-    useEffect(() => {
-        const fetchAndMoveProducts = async () => {
-            if (initialSelectedProducts && initialSelectedProducts.length > 0) {
-                const selectedProductsData = await Promise.all(
-                    initialSelectedProducts.map(async (productId) => {
-                        const response = await SacfullnetAPI.get(`equipamento/${productId}`);
-                        return response.data;
-                    })
-                );
-
-                // Add selected products to the productList
-                setProductList([...productList, ...selectedProductsData]);
-
-            }
-        };
-
-        // Call fetchAndMoveProducts directly
-        fetchAndMoveProducts();
-    }, [initialSelectedProducts]);
 
 
 
@@ -221,6 +210,7 @@ const SelectProductForFaq = ({ updateList, initialSelectedProducts, op }) => {
                 </Col>
 
             </Row>
+            <Button onClick={() => alert(JSON.stringify(productList))}>teste</Button>
             <UncontrolledTooltip target="add">Adicionar Produto</UncontrolledTooltip>
             <UncontrolledTooltip target="remove" placement="bottom" >Retirar Produto</UncontrolledTooltip>
         </Container >

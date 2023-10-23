@@ -11,9 +11,9 @@ const UserAddCard = ({ open, onAddSucess }) => {
 
     
     const [userForm, setProductForm] = useState({
-        email: "",
-        senha: "",
-        tipo: ""
+        login: "",
+        password: "",
+        role: "ADMIN"
     });
 
 
@@ -38,9 +38,9 @@ const UserAddCard = ({ open, onAddSucess }) => {
         try {
             SacfullnetAPI.post("user", {
                 
-                email: userForm.email,
-                senha: userForm.senha,
-                tipo: userForm.tipo == "Administrador" ? 1 : 2,
+                login: userForm.login,
+                password: userForm.password,
+                role: userForm.role
             });
             onAddSucess();
             toggle();
@@ -66,48 +66,48 @@ const UserAddCard = ({ open, onAddSucess }) => {
 
                     <Col>
                         <FormGroup>
-                            <Label for="email">
-                                Email
+                            <Label for="login">
+                                Login
                             </Label>
                             <Input
-                                id="email"
-                                name="email"
-                                placeholder="Insira o email do usuario"
-                                value={userForm.email}
-                                type="email"
+                                id="login"
+                                name="login"
+                                placeholder="Insira o login do usuario"
+                                value={userForm.login}
+                                type="login"
                                 onChange={handleChange}
                             />
                         </FormGroup>
                         <FormGroup>
-                            <Label for="senha">
-                                Senha
+                            <Label for="password">
+                                Password
                             </Label>
                             <Input
-                                id="senha"
-                                name="senha"
-                                placeholder="Digite a senha do usuario"
+                                id="password"
+                                name="password"
+                                placeholder="Digite a password do usuario"
                                 type="password"
-                                value={userForm.senha}
+                                value={userForm.password}
                                 onChange={handleChange}
                             />
                         </FormGroup>
                         <FormGroup>
-                            <Label for="tipo">
-                                tipo
+                            <Label for="role">
+                                role
                             </Label>
                             <Input
-                                id="tipo"
-                                name="tipo"
-                                value={userForm.tipo}
-                                placeholder="Selecione o Tipo"
+                                id="role"
+                                name="role"
+                                value={userForm.role}
+                                placeholder="Selecione o Tipo de Usuario"
                                 type="select"
                                 onChange={handleChange}
                             >
                                 <option>
-                                    Administrador
+                                    ADMIN
                                 </option>
                                 <option>
-                                    Usuário
+                                    USER
                                 </option>
                             </Input>
                         </FormGroup>

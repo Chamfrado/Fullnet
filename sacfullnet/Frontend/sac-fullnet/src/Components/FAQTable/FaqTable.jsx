@@ -171,7 +171,7 @@ const FaqTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
                                         ))}
                                     </td>
                                     {user ==1?<td>
-                                    <Button id="updateButton" onClick={() => toggleUpdateModal(item)} color="primary"> <BsPencilSquare /></Button>
+                                    <Button id="updateButton"  onClick={() => toggleUpdateModal(item)} color="primary"> <BsPencilSquare /></Button>
                                     {'   '}
                                     <Button id="deleteButton" onClick={() => toggleDeleteModal(item)} color="primary"> <BsFillTrashFill /></Button>
                                 </td> : null }

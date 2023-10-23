@@ -33,8 +33,9 @@ const FaqAddCard = ({ open, onAddSucess }) => {
         if (list != null) {
             let listArray = [];
             await list.map(equipamento => {
-                listArray.push(equipamento.id);
+                listArray.push({id: equipamento.id, nome: equipamento.nome});
             })
+
             setListProduct(listArray);
         }
 

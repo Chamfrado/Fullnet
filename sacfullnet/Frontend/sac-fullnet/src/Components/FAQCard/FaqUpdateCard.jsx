@@ -33,8 +33,9 @@ const FaqUpdateCard = ({ open, onUpdateSucess, faq }) => {
         if (list != null) {
             let listArray = [];
             await list.map(equipamento => {
-                listArray.push(equipamento.id);
+                listArray.push({ id: equipamento.id, nome: equipamento.nome });
             })
+
             setListProduct(listArray);
         }
 
@@ -106,7 +107,7 @@ const FaqUpdateCard = ({ open, onUpdateSucess, faq }) => {
 
                 </Row>
                 <Row>
-                    <SelectProductForFaq updateList={updateProduct} initialSelectedProducts={faq.equipamentosRelacionados} op={"update"}  />
+                    <SelectProductForFaq updateList={updateProduct} initialSelectedProducts={faq.equipamentosRelacionados} op={"update"} />
                 </Row>
 
 

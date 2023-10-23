@@ -4,7 +4,7 @@ import React, { useState } from "react"
 import Header from "../Components/Header/Header"
 import { Alert, Card, CardBody, CardTitle, Label, Row } from "reactstrap"
 import UserTable from "../Components/UserTable/UserTable"
-const UserView = ({ handleLogin }) => {
+const UserView = ({ handleLogin, user }) => {
 
     const [saveAlert, setSaveAlert] = useState(false);
     const [deleteAlert, setDeleteAlert] = useState(false);
@@ -33,7 +33,7 @@ const UserView = ({ handleLogin }) => {
 
     return (
         <div>
-                <Header handleLogout={handleExit} />
+                <Header handleLogout={handleExit} user={user} />
 
                 <Row>
                     <Card>

@@ -38,7 +38,6 @@ const Login = ({ handleLogin }) => {
             password: user.password
         })
             .then(({data}) => {
-
                 handleLogin(user,data.token)
 
                 navigate("/home")

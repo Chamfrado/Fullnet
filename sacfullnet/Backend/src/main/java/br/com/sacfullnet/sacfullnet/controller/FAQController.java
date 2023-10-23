@@ -17,7 +17,7 @@ import org.springframework.http.ResponseEntity;
 
 @RestController
 @RequestMapping("/faq")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class FAQController {
 
     @Autowired
@@ -51,6 +51,7 @@ public class FAQController {
     @PostMapping("")
     public ResponseEntity<Integer> save(@RequestBody FAQ faq) {
 
+        System.out.println(faq.getEquipamentosRelacionados());
         int id = -1;
 
         id = faqService.save(faq);
@@ -65,7 +66,7 @@ public class FAQController {
         int isEquipamentoAdd = -1;
         for (JsonNode equipamento : listEquipment) {
 
-            isEquipamentoAdd = faqEquipamentoService.addEquipamento(id, equipamento.get("id_equipamento").asInt());
+            isEquipamentoAdd = faqEquipamentoService.addEquipamento(id, equipamento.get("id").asInt());
             if(isEquipamentoAdd == -1){
                 return ResponseEntity.notFound().build();
             }
@@ -100,7 +101,7 @@ public class FAQController {
         int isEquipamentoAdd = -1;
         for (JsonNode equipamento : listEquipment) {
 
-            isEquipamentoAdd = faqEquipamentoService.addEquipamento(faq.getId(), equipamento.get("id_equipamento").asInt());
+            isEquipamentoAdd = faqEquipamentoService.addEquipamento(faq.getId(), equipamento.get("id").asInt());
             if(isEquipamentoAdd == -1){
                 return ResponseEntity.notFound().build();
             }

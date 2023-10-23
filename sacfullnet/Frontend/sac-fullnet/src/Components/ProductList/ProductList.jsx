@@ -86,7 +86,7 @@ const ProductList = ({ onSaveSucess, onDeleteSucess, onAddSucess, props }) => {
 
   return (
     <Container id="TableProduct">
-      <Row style={{ paddingTop: 30, paddingLeft: 50 }}>
+      <Row  style={{ paddingTop: 30, paddingLeft: 50 }}>
         <Col xs="5">
           <InputGroup>
             <Input

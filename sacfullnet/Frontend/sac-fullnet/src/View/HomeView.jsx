@@ -41,7 +41,7 @@ const HomeView = ({ handleLogin, user, props }) => {
                     <CardTitle>
                     {saveAlert && <Alert  isOpen={saveAlert} toggle={onDismissSave}>Produto Atualizado com Sucesso!</Alert>}
                     {deleteAlert && <Alert  isOpen={deleteAlert} toggle={onDismissDelete}>Produto Deletado com Sucesso!</Alert>}
-                    {addAlert && <Alert  isOpen={addAlert} toggle={onDismissAdd}>Produto Deletado com Sucesso!</Alert>}
+                    {addAlert && <Alert  isOpen={addAlert} toggle={onDismissAdd}>Produto Adicionado com Sucesso!</Alert>}
                     <Label className='h1' style={{ display: 'flex', alignSelf: 'center', justifyContent: 'center' }}> Equipamentos</Label>
                     </CardTitle>
                     <Row >

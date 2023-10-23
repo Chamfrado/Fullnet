@@ -1,10 +1,11 @@
+/* eslint-disable react/prop-types */
 import React, { useState } from "react";
 import Header from "../Components/Header/Header";
 import { Alert, Card, CardBody, CardTitle, Label, Row } from "reactstrap";
 import FaqTable from "../Components/FAQTable/FaqTable";
 
 
-const FaqView = (handleLogin) => {
+const FaqView = ({handleLogin, user}) => {
 
     const handleExit = () => {
         handleLogin();
@@ -34,15 +35,15 @@ const FaqView = (handleLogin) => {
 
     return (
         <div>
-            <Header handleLogout={handleExit} />
+            <Header handleLogout={handleExit} user={user} />
 
             <Row>
                 <Card>
                     <CardBody>
                         <CardTitle>
-                            {saveAlert && <Alert isOpen={saveAlert} toggle={onDismissSave}>Usuário Atualizado com Sucesso!</Alert>}
-                            {deleteAlert && <Alert isOpen={deleteAlert} toggle={onDismissDelete}>Usuário Deletado com Sucesso!</Alert>}
-                            {addAlert && <Alert isOpen={addAlert} toggle={onDismissAdd}>Usuário Adicionado com Sucesso!</Alert>}
+                            {saveAlert && <Alert isOpen={saveAlert} toggle={onDismissSave}>FAQ Atualizada com Sucesso!</Alert>}
+                            {deleteAlert && <Alert isOpen={deleteAlert} toggle={onDismissDelete}>FAQ Deletada com Sucesso!</Alert>}
+                            {addAlert && <Alert isOpen={addAlert} toggle={onDismissAdd}>FAQ Adicionada com Sucesso!</Alert>}
                             <Label className='h1' style={{ display: 'flex', alignSelf: 'start', justifyContent: 'start' }}> Central de Perguntas e Respostas</Label>
                         </CardTitle>
 

@@ -3,13 +3,14 @@ import { getToken } from "./TokenService";
 
 
 const SacfullnetAPI = axios.create({
-	baseURL: "http://localhost:8080/",
+  headers: {'Access-Control-Allow-Origin': '*'}
 });
 
 SacfullnetAPI.interceptors.request.use(async config => {
     const token = getToken();
     console.log(`Bearer ${token}`);
-    if (token) {
+    console.log("AAAAAAAAAH:"+ token);
+    if (token.length >0) {
       config.headers.Authorization = "Bearer " + token;
     }
     return config;

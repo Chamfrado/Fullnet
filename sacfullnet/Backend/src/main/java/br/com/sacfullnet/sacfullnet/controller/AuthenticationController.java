@@ -1,5 +1,6 @@
 package br.com.sacfullnet.sacfullnet.controller;
 
+
 import br.com.sacfullnet.sacfullnet.Security.TokenService;
 import br.com.sacfullnet.sacfullnet.model.DTO.AuthenticationDTO;
 import br.com.sacfullnet.sacfullnet.model.DTO.LoginResponseDTO;
@@ -11,45 +12,41 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("auth")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class AuthenticationController {
+    @Autowired
+    private AuthenticationManager authenticationManager;
+    @Autowired
+    private UserService repository;
     @Autowired
     private TokenService tokenService;
 
-    @Autowired
-    private UserService userService;
-    
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody AuthenticationDTO data){
-        System.out.println("dados: " + data);
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
+
         var auth = this.authenticationManager.authenticate(usernamePassword);
 
-        var token = tokenService.generateToken((User)  auth.getPrincipal());
+        var token = tokenService.generateToken((User) auth.getPrincipal());
 
         return ResponseEntity.ok(new LoginResponseDTO(token));
     }
 
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody RegisterDTO data){
-        if(this.userService.findByLogin(data.login()) != null) return ResponseEntity.badRequest().build();
+        if(this.repository.findByLogin(data.login()) != null) return ResponseEntity.badRequest().build();
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
         User newUser = new User(data.login(), encryptedPassword, data.role());
-        this.userService.save(newUser);
+
+        this.repository.save(newUser);
 
         return ResponseEntity.ok().build();
-    }
-    @PostMapping("/teste")
-    public ResponseEntity teste(@RequestBody String teste){
-
-        return ResponseEntity.ok(teste);
     }
 }

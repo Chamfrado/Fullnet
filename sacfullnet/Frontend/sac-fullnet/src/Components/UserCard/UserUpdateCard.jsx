@@ -12,9 +12,9 @@ const UserUpdateCard = ({ open, onSaveSucess, User }) => {
     
     const [userForm, setProductForm] = useState({
         id: User.id,
-        email: User.email,
-        senha: User.senha,
-        tipo: User.tipo == 1? "Administrador" : "Usuário"
+        login: User.login,
+        password: User.password,
+        role: User.role
     });
 
 
@@ -39,9 +39,9 @@ const UserUpdateCard = ({ open, onSaveSucess, User }) => {
         try {
             SacfullnetAPI.put("user", {
                 id: userForm.id,
-                email: userForm.email,
-                senha: userForm.senha,
-                tipo: userForm.tipo == "Administrador" ? 1 : 2,
+                login: userForm.login,
+                password: userForm.password,
+                role: userForm.role
             });
             onSaveSucess();
             toggle();
@@ -67,48 +67,48 @@ const UserUpdateCard = ({ open, onSaveSucess, User }) => {
 
                     <Col>
                         <FormGroup>
-                            <Label for="email">
-                                Email
+                            <Label for="login">
+                                Login
                             </Label>
                             <Input
-                                id="email"
-                                name="email"
-                                placeholder="Insira o email do usuario"
-                                value={userForm.email}
-                                type="email"
+                                id="login"
+                                name="login"
+                                placeholder="Insira o login do usuario"
+                                value={userForm.login}
+                                type="login"
                                 onChange={handleChange}
                             />
                         </FormGroup>
                         <FormGroup>
-                            <Label for="senha">
+                            <Label for="password">
                                 Senha
                             </Label>
                             <Input
-                                id="senha"
-                                name="senha"
-                                placeholder="Digite a senha do usuario"
+                                id="password"
+                                name="password"
+                                placeholder="Digite a password do usuario"
                                 type="password"
-                                value={userForm.senha}
+                                value={userForm.password}
                                 onChange={handleChange}
                             />
                         </FormGroup>
                         <FormGroup>
-                            <Label for="tipo">
-                                tipo
+                            <Label for="role">
+                                role
                             </Label>
                             <Input
-                                id="tipo"
-                                name="tipo"
-                                value={userForm.tipo}
+                                id="role"
+                                name="role"
+                                value={userForm.role}
                                 placeholder="Selecione o Tipo"
                                 type="select"
                                 onChange={handleChange}
                             >
                                 <option>
-                                    Administrador
+                                    ADMIN
                                 </option>
                                 <option>
-                                    Usuário
+                                    USER
                                 </option>
                             </Input>
                         </FormGroup>
@@ -124,7 +124,7 @@ const UserUpdateCard = ({ open, onSaveSucess, User }) => {
                 <Button color="primary" onClick={save}>
                     Salvar
                 </Button>{' '}
-                <Button color="secondary" onClick={toggle}>
+                <Button color="secondary" onClick={() => alert(JSON.stringify(userForm))}>
                     Cancelar
                 </Button>
             </ModalFooter>
