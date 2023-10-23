@@ -2,12 +2,11 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from "react";
 import LogoPng from "../Resources/logo.jpeg";
-import { Alert, Button, Card, CardBody, Col, Form, FormGroup, Input, Label, Row } from "reactstrap";
+import { Alert, Button, Card, CardBody, Col, Form, FormGroup, Input, Label, Row, Spinner } from "reactstrap";
 import { useNavigate } from "react-router-dom";
 import SacfullnetAPI from "../Services/SacfullnetApi";
 
-import axios from "axios";
-import { logout, reset } from "../Services/TokenService";
+import { getToken, isAuthenticated, logout, reset, setUserRole } from "../Services/TokenService";
 
 
 const Login = ({ handleLogin, handleLougout }) => {
@@ -18,36 +17,47 @@ const Login = ({ handleLogin, handleLougout }) => {
     });
     const [invalidUser, setInvalidUser] = useState(false);
 
+    const [loading, setLoading] = useState(false)
+
     const onDismissInvalid = () => { setInvalidUser(!invalidUser); };
 
     const handleChange = (event) => {
         const { name, value } = event.target;
 
-        
+
         setUser((prevUser) => ({
             ...prevUser,
             [name]: value
         }));
 
-        
+
     };
 
 
     const handleSubmit = () => {
         console.log(JSON.stringify(user))
+        setLoading(true)
         SacfullnetAPI.post("auth/login", {
             login: user.login,
             password: user.password
         })
-            .then(({data}) => {
-                handleLogin(user,data.token)
+            .then(({ data }) => {
+                SacfullnetAPI.post("auth/user", {
+                    login: user.login
+                }).then((role) => {
+                    handleLogin(user, data.token, role.data.role)
+                    setLoading(false);
+                    navigate("/home");
+                    
 
-                navigate("/home")
+                }).catch(error => alert(error))
+
             }).catch(error => {
                 console.log(error);
                 setInvalidUser(true);
+                setLoading(false);
             })
-        
+
     };
 
     return (
@@ -111,10 +121,9 @@ const Login = ({ handleLogin, handleLougout }) => {
                                 <Row>
                                     <Col className="d-flex align-items-center justify-content-center">
                                         <Button id="btnLogin" color="primary" onClick={handleSubmit}>
-                                            Accessar
+                                            {loading ? <Spinner color="primary" /> : "Acessar"}
                                         </Button>
                                     </Col>
-                                    <Button onClick={reset}>teste</Button>
 
                                 </Row>
 

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { AccordionBody, AccordionHeader, AccordionItem, Nav, NavItem, Offcanvas, OffcanvasBody, OffcanvasHeader, Row, UncontrolledAccordion } from "reactstrap";
-
+import { getUserRole } from "../../Services/TokenService";
 
 const HeaderNavBar = ({ open, handleClose }) => {
 
@@ -33,18 +33,19 @@ const HeaderNavBar = ({ open, handleClose }) => {
                                         <Link
                                             className="nav-link nav-link-active bg-primary" style={{ color: "white" }} to="/home">Lista de Equipamentos</Link>
                                     </NavItem>
-                                    <NavItem >
-                                        <Link  className="nav-link nav-link-active bg-primary" style={{ color: "white" }} >
+                                    {getUserRole() == "ADMIN" ? <NavItem >
+                                        <Link className="nav-link nav-link-active bg-primary" style={{ color: "white" }} >
                                             Cadastrar Equipamento
                                         </Link>
-                                    </NavItem>
+                                    </NavItem> : null}
+
                                 </Nav>
                             </AccordionBody>
                         </AccordionItem>
                     </UncontrolledAccordion>
                 </Row>
                 <Row style={{ marginBottom: 30 }}>
-                    <UncontrolledAccordion stayOpen>
+                    {getUserRole() == "ADMIN" ? <UncontrolledAccordion stayOpen>
                         <AccordionItem>
                             <AccordionHeader targetId="2">Gestão de Usuarios</AccordionHeader>
                             <AccordionBody accordionId="2">
@@ -60,7 +61,8 @@ const HeaderNavBar = ({ open, handleClose }) => {
                                 </Nav>
                             </AccordionBody>
                         </AccordionItem>
-                    </UncontrolledAccordion>
+                    </UncontrolledAccordion> : null}
+
                 </Row>
                 <Row style={{ marginBottom: 30 }}>
                     <UncontrolledAccordion stayOpen>
@@ -71,15 +73,16 @@ const HeaderNavBar = ({ open, handleClose }) => {
                                     <NavItem style={{ marginBottom: 30 }}>
                                         <Link className="nav-link nav-link-active bg-primary" style={{ color: "white" }} to="/faqs">Lista de FAQs</Link>
                                     </NavItem>
-                                    <NavItem>
+                                    {getUserRole() == "ADMIN" ? <NavItem>
                                         <Link className="nav-link nav-link-active bg-primary" style={{ color: "white" }} >Cadastrar FAQs</Link>
-                                    </NavItem>
+                                    </NavItem> : null}
+                                    
                                 </Nav>
                             </AccordionBody>
                         </AccordionItem>
                     </UncontrolledAccordion>
                 </Row>
-                </OffcanvasBody>
+            </OffcanvasBody>
         </Offcanvas>
     )
 }

@@ -6,6 +6,7 @@ import SacfullnetAPI from "../../Services/SacfullnetApi";
 import ProductCard from "../ProductCard/ProductCard";
 import { BsArrowDownUp, BsRouter, BsSearch } from "react-icons/bs";
 import ProductAddCard from "../ProductCard/ProductAddCard";
+import { getUserRole } from "../../Services/TokenService";
 
 const ProductList = ({ onSaveSucess, onDeleteSucess, onAddSucess, props }) => {
   const [error, setError] = useState();
@@ -26,7 +27,7 @@ const ProductList = ({ onSaveSucess, onDeleteSucess, onAddSucess, props }) => {
   const fetchTableData = () => {
 
     const url = "equipamento?search=" + searchQuery;
-    SacfullnetAPI.get(url,"Authorization", 'Bearer '+ props)
+    SacfullnetAPI.get(url, "Authorization", 'Bearer ' + props)
       .then(({ data }) => {
         setTableData(data);
         setIsLoading(false);
@@ -86,7 +87,7 @@ const ProductList = ({ onSaveSucess, onDeleteSucess, onAddSucess, props }) => {
 
   return (
     <Container id="TableProduct">
-      <Row  style={{ paddingTop: 30, paddingLeft: 50 }}>
+      <Row style={{ paddingTop: 30, paddingLeft: 50 }}>
         <Col xs="5">
           <InputGroup>
             <Input
@@ -102,9 +103,11 @@ const ProductList = ({ onSaveSucess, onDeleteSucess, onAddSucess, props }) => {
             </Button>
           </InputGroup>
         </Col>
-        <Col xs="2">
-          <Button onClick={toggleAddModal} color="primary" ><BsRouter /> Adicionar Equipamento</Button>
-        </Col>
+        {getUserRole() == "ADMIN" ?
+          <Col xs="2">
+            <Button onClick={toggleAddModal} color="primary" ><BsRouter /> Adicionar Equipamento</Button>
+          </Col> : null}
+
         <Col>
           <Button color="primary" onClick={fetchTableData}> Atualizar dados <BsArrowDownUp /></Button>
         </Col>

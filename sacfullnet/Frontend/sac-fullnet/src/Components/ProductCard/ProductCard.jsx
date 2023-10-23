@@ -3,8 +3,9 @@ import React, { useState, useEffect } from "react";
 import { Button, Card, CardBody, CardTitle, Container, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Label, Modal, ModalBody, ModalFooter, ModalHeader, Row } from "reactstrap";
 import ProductUpdateCard from "./ProductUpdateCard";
 import ProductDeleteCard from "./ProductDeleteCard";
+import { getUserRole } from "../../Services/TokenService";
 
-const ProductCard = ({ item , Saved, Deleted }) => {
+const ProductCard = ({ item, Saved, Deleted }) => {
     const [modal, setModal] = useState(false);
 
     const [deleteModal, setDeleteModal] = useState(false);
@@ -20,7 +21,7 @@ const ProductCard = ({ item , Saved, Deleted }) => {
 
 
     const onSaveSucessfull = () => {
-        
+
         Saved();
         toggleModal();
     }
@@ -43,7 +44,7 @@ const ProductCard = ({ item , Saved, Deleted }) => {
 
     return (
         <Container style={{ display: "flex", justifyContent: "center", alignItems: "center" }} >
-            
+
             <Card onClick={toggleModal} className="bg-primary" style={{ cursor: "pointer", width: "100%" }}>
                 {image && (
                     <img
@@ -81,15 +82,17 @@ const ProductCard = ({ item , Saved, Deleted }) => {
                     </Row>
                 </ModalBody>
                 <ModalFooter>
-                    <Dropdown isOpen={dropdownOpen} toggle={toggleDropdown}>
-                        <DropdownToggle caret >
-                            Opções
-                        </DropdownToggle>
-                        <DropdownMenu>
-                            <DropdownItem onClick={() => setUpdateModal(!updateModal)}>Atualizar</DropdownItem>
-                            <DropdownItem onClick={() => setDeleteModal(!deleteModal)}>Deletar</DropdownItem>
-                        </DropdownMenu>
-                    </Dropdown>
+                    {getUserRole() == "ADMIN" ?
+                        <Dropdown isOpen={dropdownOpen} toggle={toggleDropdown}>
+                            <DropdownToggle caret >
+                                Opções
+                            </DropdownToggle>
+                            <DropdownMenu>
+                                <DropdownItem onClick={() => setUpdateModal(!updateModal)}>Atualizar</DropdownItem>
+                                <DropdownItem onClick={() => setDeleteModal(!deleteModal)}>Deletar</DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown> : null}
+
                     <Button color="primary" onClick={toggleModal}>
                         Voltar
                     </Button>
@@ -101,7 +104,7 @@ const ProductCard = ({ item , Saved, Deleted }) => {
             {deleteModal && <ProductDeleteCard item={item} onDeleteSucess={onDeleteSucessfull} open={deleteModal} />}
         </Container>
 
-        
+
 
     );
 };

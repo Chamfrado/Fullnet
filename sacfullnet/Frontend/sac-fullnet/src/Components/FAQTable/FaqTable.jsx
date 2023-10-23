@@ -9,6 +9,7 @@ import FaqDetail from "../FaqDetail/FaqDetail";
 import FaqAddCard from "../FAQCard/FaqAddCard";
 import FaqUpdateCard from "../FAQCard/FaqUpdateCard";
 import FaqDeleteCard from "../FAQCard/FaqDeleteCard";
+import { getUserRole } from "../../Services/TokenService";
 
 const FaqTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
     const [error, setError] = useState();
@@ -34,7 +35,7 @@ const FaqTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
     const [deleteFaq, setDeleteFaq] = useState(false);
 
     const [toggleModal, setToggleModal] = useState(false);
-    
+
 
 
 
@@ -45,7 +46,7 @@ const FaqTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
     const toggleUpdateModal = (faq) => {
         setUpdateFaq(faq)
         setUpdateModal(!updateModal);
-    
+
     }
 
     const [deleteModal, setDeleteModal] = useState(false);
@@ -72,13 +73,13 @@ const FaqTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
     const saveSucess = () => {
         onSaveSucess();
         fetchTableData();
-      }
-    
-      const deleteSucess = () => {
-        
+    }
+
+    const deleteSucess = () => {
+
         onDeleteSucess();
         fetchTableData();
-      }
+    }
 
     // Function to fetch product names
     async function fetchEquipament(productId) {
@@ -123,14 +124,12 @@ const FaqTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
         return <p>Error: {error}</p>;
     }
 
-    //CONTROLE DE USUARIO
-    const user = 1;
     return (
         <Container fluid>
             <Row style={{ paddingTop: 30 }}>
                 <Col xs="5">
                     <InputGroup>
-                    <Input
+                        <Input
                             id="search"
                             name="searchQuery"
                             placeholder="Digite sua duvida aqui."
@@ -142,9 +141,11 @@ const FaqTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
                         </Button>
                     </InputGroup>
                 </Col>
-                <Col>
-                    <Button color="primary" onClick={toggleAddModal}><BsFillPatchPlusFill /> Adicionar FAQ</Button>
-                </Col>
+                {getUserRole() === "ADMIN" ?
+                    <Col>
+                        <Button color="primary" onClick={toggleAddModal}><BsFillPatchPlusFill /> Adicionar FAQ</Button>
+                    </Col> : null}
+
             </Row>
             <Row style={{ paddingTop: 20 }}>
                 <Table responsive hover>
@@ -152,16 +153,16 @@ const FaqTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
                         <tr>
                             <th>Título</th>
                             <th>Equipamentos</th>
-                            {user == 1? <th>Ações</th> : null}
-                            
+                            {getUserRole() == "ADMIN" ? <th>Ações</th> : null}
+
                         </tr>
                     </thead>
                     <tbody>
                         {isLoading ? (
-                          <Label> Carregando Informações <Spinner color="primary" style={{ alignSelf: "center" }} /> </Label>
+                            <Label> Carregando Informações <Spinner color="primary" style={{ alignSelf: "center" }} /> </Label>
                         ) : (
                             tableData.map(item => (
-                                <tr style={{ cursor: "pointer" }}  key={item.id}>
+                                <tr style={{ cursor: "pointer" }} key={item.id}>
                                     <td onClick={() => setSelectedFaq(item)}>{item.titulo}</td>
                                     <td onClick={() => setSelectedFaq(item)}>
                                         {item.equipamentosRelacionados.map((produto) => (
@@ -170,15 +171,15 @@ const FaqTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
                                             </Badge>
                                         ))}
                                     </td>
-                                    {user ==1?<td>
-                                    <Button id="updateButton"  onClick={() => toggleUpdateModal(item)} color="primary"> <BsPencilSquare /></Button>
-                                    {'   '}
-                                    <Button id="deleteButton" onClick={() => toggleDeleteModal(item)} color="primary"> <BsFillTrashFill /></Button>
-                                </td> : null }
+                                    {getUserRole() == "ADMIN" ? <td>
+                                        <Button id="updateButton" onClick={() => toggleUpdateModal(item)} color="primary"> <BsPencilSquare /></Button>
+                                        {'   '}
+                                        <Button id="deleteButton" onClick={() => toggleDeleteModal(item)} color="primary"> <BsFillTrashFill /></Button>
+                                    </td> : null}
                                 </tr>
                             ))
                         )}
-                        
+
                     </tbody>
                 </Table>
             </Row>
@@ -186,7 +187,7 @@ const FaqTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
             {addModal && <FaqAddCard onAddSucess={addSucess} open={addModal} />}
             {updateModal && <FaqUpdateCard onUpdateSucess={saveSucess} open={updateModal} faq={updateFaq} />}
             {deleteModal && <FaqDeleteCard onDeleteSucess={deleteSucess} open={deleteModal} faq={deleteFaq} />}
-            
+
         </Container>
     );
 }

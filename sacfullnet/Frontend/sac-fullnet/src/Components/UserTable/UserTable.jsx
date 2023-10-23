@@ -7,6 +7,7 @@ import SacfullnetAPI from "../../Services/SacfullnetApi";
 import UserAddCard from "../UserCard/UserAddCard";
 import UserUpdateCard from "../UserCard/UserUpdateCard";
 import UserDeleteCard from "../UserCard/UserDeleteCard";
+import { getUser } from "../../Services/TokenService";
 
 
 
@@ -58,21 +59,22 @@ const UserTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
 
 
     const [tableData, setTableData] = useState([]);
-    const fetchTableData = () => {
+
+    const fetchTableData = async () => {
         SacfullnetAPI.get("user?search=" + searchQuery)
             .then(({ data }) => {
-                setTableData(data);
+                let newData = [...data];
+                const productIndex = newData.findIndex((p) => p.login === getUser());
+                if (productIndex !== -1) {
+                    // Remove the product from newData
+                    newData.splice(productIndex, 1);
+                }
+                setTableData(newData);
+
             }).catch((error) => {
                 alert(error)
-            })
-    }
 
-    function dict_type(typeId) {
-        if (typeId === 1) {
-            return "Administrador"
-        } else if (typeId === 2) {
-            return "Usuario"
-        }
+            })
     }
 
     useEffect(() => {

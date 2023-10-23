@@ -5,11 +5,9 @@ import { Alert, Card, CardBody, CardTitle, Label, Row } from "reactstrap";
 import FaqTable from "../Components/FAQTable/FaqTable";
 
 
-const FaqView = ({handleLogin, user}) => {
+const FaqView = () => {
 
-    const handleExit = () => {
-        handleLogin();
-    };
+  
 
     const [saveAlert, setSaveAlert] = useState(false);
     const [deleteAlert, setDeleteAlert] = useState(false);
@@ -35,7 +33,7 @@ const FaqView = ({handleLogin, user}) => {
 
     return (
         <div>
-            <Header handleLogout={handleExit} user={user} />
+            <Header />
 
             <Row>
                 <Card>

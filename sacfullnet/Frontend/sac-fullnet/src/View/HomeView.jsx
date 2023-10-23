@@ -1,20 +1,16 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 import Header from '../Components/Header/Header';
-import { Alert, Card, CardBody, CardTitle,  Label, Row } from 'reactstrap';
+import { Alert,  Card, CardBody, CardTitle,  Label, Row } from 'reactstrap';
 import ProductList from '../Components/ProductList/ProductList';
 
 
-const HomeView = ({ handleLogin, user, props }) => {
+const HomeView = ({ props }) => {
 
     const [saveAlert, setSaveAlert] = useState(false);
     const [deleteAlert, setDeleteAlert] = useState(false);
     const [addAlert, setAddAlert] = useState(false);
 
-
-    const handleExit = () => {
-        handleLogin();
-    };
 
     const onSaveSucessfull = () => {
         setSaveAlert(true);
@@ -33,7 +29,7 @@ const HomeView = ({ handleLogin, user, props }) => {
 
     return (
         <div>
-            <Header  handleLogout={handleExit} user={user}/>
+            <Header />
             
             
             <Card>

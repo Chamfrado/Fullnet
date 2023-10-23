@@ -8,8 +8,6 @@ const SacfullnetAPI = axios.create({
 
 SacfullnetAPI.interceptors.request.use(async config => {
     const token = getToken();
-    console.log(`Bearer ${token}`);
-    console.log("AAAAAAAAAH:"+ token);
     if (token != null) {
       config.headers.Authorization = "Bearer " + token;
     }
