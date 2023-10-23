@@ -12,10 +12,10 @@ function App() {
 
 
 
-	const handleLogin = async (user, token, role) => {		 
-		await login(token);
-		await setUser(user.login);
-		await setUserRole(role);
+	const handleLogin =  (user, token, role) => {		 
+		login(token);
+		setUser(user.login);
+		setUserRole(role);
 		console.log(user);
 		
 	};

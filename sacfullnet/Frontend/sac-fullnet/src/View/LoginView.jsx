@@ -15,6 +15,10 @@ const Login = ({ handleLogin, handleLougout }) => {
         login: "",
         password: ""
     });
+
+    const [token, setToken] = useState(null);
+
+
     const [invalidUser, setInvalidUser] = useState(false);
 
     const [loading, setLoading] = useState(false)
@@ -34,7 +38,7 @@ const Login = ({ handleLogin, handleLougout }) => {
     };
 
 
-    const handleSubmit = () => {
+    const handleSubmit =  async () =>  {
         console.log(JSON.stringify(user))
         setLoading(true)
         SacfullnetAPI.post("auth/login", {
@@ -42,6 +46,7 @@ const Login = ({ handleLogin, handleLougout }) => {
             password: user.password
         })
             .then(({ data }) => {
+                setToken(data.token);
                 SacfullnetAPI.post("auth/user", {
                     login: user.login
                 }).then((role) => {

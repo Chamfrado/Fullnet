@@ -20,7 +20,6 @@ import { useNavigate } from "react-router-dom";
 import HeaderNavBar from "../HeaderNavBar/HeaderNavBar";
 import {  getUser, getUserRole, logout } from "../../Services/TokenService";
 import { BsBoxArrowRight, BsGear } from "react-icons/bs";
-import SacfullnetAPI from "../../Services/SacfullnetApi";
 
 // eslint-disable-next-line react/prop-types
 const Header = () => {
@@ -41,24 +40,6 @@ const Header = () => {
 		// Redirect to the protected route (e.g., dashboard) after successful login
 		navigate("/login");
 	};
-
-	const fetchUser = () => {
-		SacfullnetAPI.post("auth/user", {
-			login: getUser()
-		}).then((data) => {
-			setUser(data.data);
-
-		}).catch(error => alert(error))
-
-	}
-
-
-	useEffect(() => {
-		fetchUser();
-	}, [user])
-
-
-
 	const [isOpen, setIsOpen] = useState(false);
 
 	const toggleOffcanvas = () => {
@@ -91,11 +72,11 @@ const Header = () => {
 					<Dropdown style={{ alignSelf: "center" }} isOpen={dropdownOpen} toggle={toggle} direction="down">
 						<DropdownToggle color="primary">
 
-							<Label tag="h5"><BiUser /> {user.login} {dropdownOpen ? <BiUpArrowAlt /> : <BiDownArrowAlt />}</Label>
+							<Label tag="h5"><BiUser /> {getUser()} {dropdownOpen ? <BiUpArrowAlt /> : <BiDownArrowAlt />}</Label>
 
 						</DropdownToggle>
 						<DropdownMenu>
-							<DropdownItem header>Conta {user.role} </DropdownItem>
+							<DropdownItem header>Conta {getUserRole()} </DropdownItem>
 							<DropdownItem divider />
 							<DropdownItem header>Opções</DropdownItem>
 							<DropdownItem ><BsGear /> Configurações De Usuario</DropdownItem>
