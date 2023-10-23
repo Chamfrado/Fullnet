@@ -1,8 +1,8 @@
 -- Inserção de um usuário administrador de exemplo
 INSERT INTO usuario(login, password, role)
 VALUES
-    ('admin', '1524', 'ADMIN'),
-    ('usuario', '1524', 'USER');
+    ('admin', '$2a$10$ssurqCxJDYsjBNiB8ZAjxeRNhEfSKd5gpACwZ4Gzybq3Npyy5eqya', 'ADMIN'),
+    ('usuario', '$2a$10$lZOIs1rJ7b4w59WRULhG/uK5yeL7mNVqJd0Zo72kRJcnh8rMIvIMu', 'USER');
 
 
 --Inserção de um tipo de equipamento
