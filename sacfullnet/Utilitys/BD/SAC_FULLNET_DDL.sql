@@ -22,6 +22,24 @@ CREATE TABLE equipamento (
     FOREIGN KEY (id_tipo_equipamento) REFERENCES Tipo_Equipamento(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+CREATE TABLE public.imagem(
+    id serial NOT NULL,
+    id_equipamento integer NOT NULL,
+    filename text NOT NULL,
+    data bytea[] NOT NULL,
+    type text,
+    PRIMARY KEY (id)
+    FOREIGN KEY (id_equipamento) REFERENCES equipamento(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE usuario (
+    id SERIAL PRIMARY KEY,
+    login VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(5) CHECK (role IN ('USER', 'ADMIN'))
+    
+);
+
 CREATE TABLE faq (
     id SERIAL PRIMARY KEY,
     titulo VARCHAR(255) NOT NULL,

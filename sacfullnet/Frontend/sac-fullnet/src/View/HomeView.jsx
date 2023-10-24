@@ -1,11 +1,14 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 import Header from '../Components/Header/Header';
-import { Alert,  Card, CardBody, CardTitle,  Label, Row } from 'reactstrap';
+import { Alert,    Button,    Card, CardBody, CardTitle,  Label, Row, UncontrolledTooltip } from 'reactstrap';
 import ProductList from '../Components/ProductList/ProductList';
+import { BsArrowRepeat } from 'react-icons/bs';
+import { useNavigate } from 'react-router-dom';
 
 
-const HomeView = ({ props }) => {
+const HomeView = () => {
+    const navigate = useNavigate();
 
     const [saveAlert, setSaveAlert] = useState(false);
     const [deleteAlert, setDeleteAlert] = useState(false);
@@ -23,28 +26,32 @@ const HomeView = ({ props }) => {
     const onDismissDelete = () => setDeleteAlert(false);
 
     const onAddSucessfull = () => {
-        setDeleteAlert(true);
+        setAddAlert(true);
     }
     const onDismissAdd = () => setAddAlert(false);
+
+    const [refresh, setRefresh] = useState(false);
+    const toggleRefresh = () => setRefresh(!refresh)
 
     return (
         <div>
             <Header />
             
-            
+            <Button onClick={() => navigate("/test")}>to test</Button>
             <Card>
                 <CardBody>
-                    <CardTitle>
+                    <CardTitle style={{paddingLeft: 30}}>
                     {saveAlert && <Alert  isOpen={saveAlert} toggle={onDismissSave}>Produto Atualizado com Sucesso!</Alert>}
                     {deleteAlert && <Alert  isOpen={deleteAlert} toggle={onDismissDelete}>Produto Deletado com Sucesso!</Alert>}
                     {addAlert && <Alert  isOpen={addAlert} toggle={onDismissAdd}>Produto Adicionado com Sucesso!</Alert>}
-                    <Label className='h1' style={{ display: 'flex', alignSelf: 'center', justifyContent: 'center' }}> Equipamentos</Label>
+                    <Label className='h1' > Equipamentos <BsArrowRepeat size=".50em" id='refresh' onClick={toggleRefresh} style={{color: "#0d6efd", cursor: "pointer"}} /></Label>
                     </CardTitle>
                     <Row >
-                      <ProductList props={props} onAddSucess={onAddSucessfull} onDeleteSucess={onDeleteSucessfull} onSaveSucess={onSaveSucessfull}/>
+                      <ProductList onRefresh={refresh}  onAddSucess={onAddSucessfull} onDeleteSucess={onDeleteSucessfull} onSaveSucess={onSaveSucessfull}/>
                     </Row>
                     
                 </CardBody>
+                <UncontrolledTooltip target="refresh" placement='bottom'  >Atualizar Dados</UncontrolledTooltip>
             </Card>
         </div>
     )

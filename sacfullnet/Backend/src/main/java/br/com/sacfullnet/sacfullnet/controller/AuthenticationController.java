@@ -58,4 +58,24 @@ public class AuthenticationController {
 
         return ResponseEntity.ok(user);
     }
+
+    @PutMapping("/update")
+    public ResponseEntity update(@RequestBody User updatedUser) {
+
+
+        if(updatedUser.getPassword().length() == 60){
+            User newUser = new User(updatedUser.getId() ,updatedUser.getLogin(), updatedUser.getPassword(), updatedUser.getRole());
+
+            this.repository.update(newUser);
+        }else{
+            String encryptedPassword = new BCryptPasswordEncoder().encode(updatedUser.getPassword());
+            User newUser = new User(updatedUser.getId() ,updatedUser.getLogin(), encryptedPassword, updatedUser.getRole());
+
+            this.repository.update(newUser);
+        }
+
+
+
+        return ResponseEntity.ok().build();
+    }
 }

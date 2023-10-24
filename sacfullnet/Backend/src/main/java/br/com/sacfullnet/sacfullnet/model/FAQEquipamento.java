@@ -3,8 +3,6 @@ package br.com.sacfullnet.sacfullnet.model;
 public class FAQEquipamento {
     int id_faq;
     int id_equipamento;
-    
-    
 
     public FAQEquipamento() {
     }

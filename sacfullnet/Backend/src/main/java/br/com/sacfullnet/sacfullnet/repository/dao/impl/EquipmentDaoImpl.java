@@ -86,8 +86,6 @@ public class EquipmentDaoImpl implements EquipmentDao {
     }
 
 
-
-
     @Override
     public Equipment findById(int id){
         Connection connection = null;
@@ -127,6 +125,45 @@ public class EquipmentDaoImpl implements EquipmentDao {
 
     }
 
+    @Override
+    public Equipment findByName(String name){
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        Equipment equipment = new Equipment();
+
+        try {
+
+
+            final String sql = "SELECT * from equipamento where nome = ?";
+
+            connection = ConnectionFactory.getConnection();
+
+            ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, name);
+
+
+
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                equipment = loadValues(rs);
+            }
+
+
+            System.out.println(sql + " " + name);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            ConnectionFactory.close(connection, ps, rs);
+        }
+        return equipment;
+
+    }
+
 
 
     @Override
@@ -138,16 +175,17 @@ public class EquipmentDaoImpl implements EquipmentDao {
         int id = -1;
 
         try {
-            final String sql = "INSERT INTO equipamento (id, nome, configuracao, descricao, imagem) VALUES (DEFAULT, ?, ?, ?, ?)";
+            final String sql = "INSERT INTO equipamento (id, nome, ip_address , configuracao, descricao, imagem) VALUES (DEFAULT, ?,? , ?, ?, ?)";
 
             connection = ConnectionFactory.getConnection();
             connection.setAutoCommit(false);
 
             ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, equipment.getNome());
-            ps.setString(2, equipment.getConfiguracao());
-            ps.setString(3, equipment.getDescricao());
-            ps.setString(4, equipment.getImagem());
+            ps.setString(2, equipment.getIp_address());
+            ps.setString(3, equipment.getConfiguracao());
+            ps.setString(4, equipment.getDescricao());
+            ps.setString(5, equipment.getImagem());
 
             ps.execute();
 
@@ -184,17 +222,18 @@ public class EquipmentDaoImpl implements EquipmentDao {
         ResultSet rs = null;
 
         try {
-            final String sql = "UPDATE equipamento set nome=? ,configuracao=? ,descricao=?, imagem=?  WHERE id =?";
+            final String sql = "UPDATE equipamento set nome=?, ip_address=? ,configuracao=? ,descricao=?, imagem=?  WHERE id =?";
 
             connection = ConnectionFactory.getConnection();
             connection.setAutoCommit(false);
 
             ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, equipment.getNome());
-            ps.setString(2, equipment.getConfiguracao());
-            ps.setString(3, equipment.getDescricao());
-            ps.setString(4, equipment.getImagem());
-            ps.setInt(5, equipment.getId());
+            ps.setString(2, equipment.getIp_address());
+            ps.setString(3, equipment.getConfiguracao());
+            ps.setString(4, equipment.getDescricao());
+            ps.setString(5, equipment.getImagem());
+            ps.setInt(6, equipment.getId());
 
             ps.execute();
             connection.commit();
@@ -258,6 +297,7 @@ public class EquipmentDaoImpl implements EquipmentDao {
         equipment.setConfiguracao(rs.getString("configuracao"));
         equipment.setDescricao(rs.getString("descricao"));
         equipment.setImagem(rs.getString("imagem"));
+        equipment.setIp_address(rs.getString("ip_address"));
 
         return equipment;
     }

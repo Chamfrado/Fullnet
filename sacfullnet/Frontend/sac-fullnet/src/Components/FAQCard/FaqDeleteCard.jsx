@@ -7,7 +7,7 @@ import SelectProductForFaq from "../SelectProductForFaq/SelectProductForFaq";
 
 
 
-const FaqDeleteCard = ({ open, onDeleteSucess, faq }) => {
+const FaqDeleteCard = ({ open, onDeleteSucess, faq, onCancel }) => {
     const [modal, setModal] = useState(false);
 
 
@@ -36,7 +36,7 @@ const FaqDeleteCard = ({ open, onDeleteSucess, faq }) => {
     }, [open])
 
     return (
-        <Modal isOpen={modal} size="l" toggle={toggle}>
+        <Modal isOpen={modal} onClosed={onCancel} size="l" toggle={toggle}>
             <ModalHeader className="bg-danger" toggle={toggle}>Deletar FAQ</ModalHeader>
             <ModalBody>
                 <Row>

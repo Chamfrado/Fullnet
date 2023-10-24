@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect } from "react";
-import { Button, Card, CardBody, Col, FormFeedback, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Row, Spinner } from "reactstrap";
-import SacfullnetAPI from "../../Services/SacfullnetApi";
-import image from "../../Resources/image.jpeg"
+import { Button, Card, CardBody, Col, Container, FormFeedback, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Row, Spinner } from "reactstrap";
+import SacfullnetAPI from "../Services/SacfullnetApi";
+import image from "../Resources/image.jpeg"
 
-const ProductAddCard = ({ open, onAddSucess, onCancel }) => {
+const ImageTest = ({ open, onAddSucess, onCancel }) => {
     const [modal, setModal] = useState(false);
 
 
@@ -27,80 +27,6 @@ const ProductAddCard = ({ open, onAddSucess, onCancel }) => {
     });
 
 
-    //Validator do formulario
-    const [isFormValid, setIsFormValid] = useState(false);
-    useEffect(() => {
-        let isNomeValid = false;
-        let isIpValid = false;
-        let isConfigValid = false;
-        let isDescValid = false;
-
-        if (productForm.nome === "") {
-            setErrorForm((prevErrorForm) => ({
-                ...prevErrorForm,
-                nome: "Preencher o nome é obrigatório!"
-            }));
-            isNomeValid = false;
-        } else {
-            setErrorForm((prevErrorForm) => ({
-                ...prevErrorForm,
-                nome: ""
-            }));
-            isNomeValid = true;
-        }
-
-        if (productForm.ip === "") {
-            setErrorForm((prevErrorForm) => ({
-                ...prevErrorForm,
-                ip: "Preencher o IP é obrigatório!"
-            }));
-            isIpValid = false;
-        } else if (!isValidIP(productForm.ip)) {
-            setErrorForm((prevErrorForm) => ({
-                ...prevErrorForm,
-                ip: "Coloque um IP válido!"
-            }));
-            isIpValid = false;
-        } else {
-            setErrorForm((prevErrorForm) => ({
-                ...prevErrorForm,
-                ip: ""
-            }));
-            isIpValid = true;
-        }
-
-        if (productForm.config === "") {
-            setErrorForm((prevErrorForm) => ({
-                ...prevErrorForm,
-                config: "Preencher a configuração é obrigatório!"
-            }));
-            isConfigValid = false;
-        } else {
-            setErrorForm((prevErrorForm) => ({
-                ...prevErrorForm,
-                config: ""
-            }));
-            isConfigValid = true;
-        }
-
-        if (productForm.desc === "") {
-            setErrorForm((prevErrorForm) => ({
-                ...prevErrorForm,
-                desc: "Preencher a descrição é obrigatório!"
-            }));
-            isConfigValid = false;
-        } else {
-            setErrorForm((prevErrorForm) => ({
-                ...prevErrorForm,
-                desc: ""
-            }));
-            isDescValid = true;
-        }
-        setIsFormValid(isConfigValid && isDescValid && isIpValid && isNomeValid);
-    }, [productForm])
-
-
-
     const handleChange = (event) => {
         const { name, value } = event.target;
 
@@ -113,36 +39,22 @@ const ProductAddCard = ({ open, onAddSucess, onCancel }) => {
 
     };
 
-    const [saveLoading, setSaveLoading] = useState(false);
-    const handleSubmit = async (event) => {
-        setSaveLoading(true);
-        event.preventDefault();
-        if (!isFormValid) {
-            setSaveLoading(false)
-            return;
-        }
+    const fetchImagem = () => {
+        const formData = new FormData();
+        formData.append('imagem', selectedImage);
 
-        try {
-            SacfullnetAPI.get("equipamento/name/name?name=" + productForm.nome).then(({ data }) => {
-                if (data.id == 0) {
-                    
-                    add();
-                } else {
-                    setErrorForm((prevErrorForm) => ({
-                        ...prevErrorForm,
-                        nome: "Equipamento ja cadastrado!"
-                    }));
-                    setSaveLoading(false)
-                }
-            }).catch(error => alert(error));
-
-
-        } catch (error) {
-            alert(error);
-        }
-
+        SacfullnetAPI.post("equipamento/imagem", formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        })
+            .then(() => {
+                alert("Adicionado com sucesso");
+            })
+            .catch(error => alert(error));
     };
 
+    const [saveLoading, setSaveLoading] = useState(false);
 
     const add = () => {
         try {
@@ -207,12 +119,19 @@ const ProductAddCard = ({ open, onAddSucess, onCancel }) => {
         return false;
     }
 
+    const [imageData, setImageData] = useState(null);
 
+    const fetchTeste = () => {
+        SacfullnetAPI.get("auth/to/take", {imageName: "teste"}).then((image) => {
+            alert(image);
+        }).catch(error => alert(error))
+        
+    }
 
 
 
     return (
-        <Modal fullscreen isOpen={modal} onClosed={onCancel} toggle={toggle} >
+        <Container fullscreen isOpen={modal} onClosed={onCancel} toggle={toggle} >
             <ModalHeader className="bg-primary" toggle={toggle}>Adicionar Equipamento</ModalHeader>
             <ModalBody>
                 <Row >
@@ -233,6 +152,12 @@ const ProductAddCard = ({ open, onAddSucess, onCancel }) => {
                                         src={image}
                                         alt="logo"
                                     />}
+
+
+
+                                {imageData && (
+                                    <img src={imageData} alt="Your Image"  />
+                                )}
 
 
 
@@ -328,16 +253,16 @@ const ProductAddCard = ({ open, onAddSucess, onCancel }) => {
 
             </ModalBody>
             <ModalFooter>
-                <Button color="primary" className={isFormValid? "": "disabled"} onClick={handleSubmit}>
-                   {saveLoading? <Spinner color="light"/> : "Salvar"}  
+                <Button color="primary" onClick={fetchTeste}>
+                    {saveLoading ? <Spinner color="light" /> : "Salvar"}
                 </Button>{' '}
                 <Button color="secondary" onClick={toggle}>
                     Cancelar
                 </Button>
             </ModalFooter>
-        </Modal>
+        </Container>
 
     );
 };
 
-export default ProductAddCard;
+export default ImageTest;

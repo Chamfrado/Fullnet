@@ -1,4 +1,4 @@
-package br.com.sacfullnet.sacfullnet.service;
+package br.com.sacfullnet.sacfullnet.service.impl;
 
 import br.com.sacfullnet.sacfullnet.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

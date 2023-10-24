@@ -18,17 +18,16 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import HeaderNavBar from "../HeaderNavBar/HeaderNavBar";
-import {  getUser, getUserRole, logout } from "../../Services/TokenService";
+import { getUser, getUserRole, logout } from "../../Services/TokenService";
 import { BsBoxArrowRight, BsGear } from "react-icons/bs";
+import SacfullnetAPI from "../../Services/SacfullnetApi";
+import SelfUserCard from "../UserCard/SelfUserCard";
 
 // eslint-disable-next-line react/prop-types
 const Header = () => {
 
 	const [dropdownOpen, setDropdownOpen] = useState(false);
-	const [user, setUser] = useState({
-		login: "",
-		role: ""
-	});
+	
 	const toggle = () => setDropdownOpen((prevState) => !prevState);
 
 	const navigate = useNavigate();
@@ -53,6 +52,9 @@ const Header = () => {
 	const onDismissSaveVenda = () => { setSucessVenda(!setSucessVenda); };
 
 
+	const [configModal, setConfigModal] = useState(false);
+	const toggleConfigModal = () => setConfigModal(true);
+	const onCancel = () => setConfigModal(false);
 
 
 	return (
@@ -79,7 +81,7 @@ const Header = () => {
 							<DropdownItem header>Conta {getUserRole()} </DropdownItem>
 							<DropdownItem divider />
 							<DropdownItem header>Opções</DropdownItem>
-							<DropdownItem ><BsGear /> Configurações De Usuario</DropdownItem>
+							<DropdownItem onClick={toggleConfigModal} ><BsGear /> Configurações De Usuario</DropdownItem>
 							<DropdownItem divider />
 							<DropdownItem style={{ color: "red" }} onClick={handleExit} ><BsBoxArrowRight /> Sair</DropdownItem>
 
@@ -101,6 +103,9 @@ const Header = () => {
 			{sucessVenda && <Alert id="sucessVenda" isOpen={sucessVenda} style={{ margin: 10 }} toggle={onDismissSaveVenda}>
 				Venda cadastrada com sucesso!
 			</Alert>}
+
+			{configModal && <SelfUserCard onCancel={onCancel} open={configModal} />}
+
 		</Container>
 	);
 };

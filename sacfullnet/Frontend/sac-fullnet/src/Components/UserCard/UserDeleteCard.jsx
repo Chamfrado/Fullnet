@@ -3,7 +3,7 @@
 import { Button, Col, Label, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap"
 import React, { useEffect, useState } from "react"
 import SacfullnetAPI from "../../Services/SacfullnetApi";
-const UserDeleteCard = ({user, open, onDeleteSucess}) => {
+const UserDeleteCard = ({user, open, onDeleteSucess, onCancel}) => {
 
     
         const [modal, setModal] = useState(false)
@@ -32,7 +32,7 @@ const UserDeleteCard = ({user, open, onDeleteSucess}) => {
     
     
         return (
-            <Modal  isOpen={modal} toggle={toggle} >
+            <Modal onClosed={onCancel} isOpen={modal} toggle={toggle} >
                 <ModalHeader className="bg-danger" toggle={toggle}>Deletar Usuário</ModalHeader>
                 <ModalBody>
                     

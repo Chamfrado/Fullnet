@@ -12,8 +12,7 @@ public class Equipment {
     public Equipment() {
     }
 
-    public Equipment(int id, int id_tipo_equipamento, String ip_address, String nome, String configuracao, String descricao,
-                     String imagem) {
+    public Equipment(int id, int id_tipo_equipamento, String ip_address, String nome, String configuracao, String descricao, String imagem) {
         this.id = id;
         this.id_tipo_equipamento = id_tipo_equipamento;
         this.ip_address = ip_address;
@@ -31,19 +30,11 @@ public class Equipment {
         this.id = id;
     }
 
-    public int getId_tipo_equipamento() {
-        return id_tipo_equipamento;
-    }
-
-    public void setId_tipo_equipamento(int id_tipo_equipamento) {
-        this.id_tipo_equipamento = id_tipo_equipamento;
-    }
-
-    public String getIp_Address() {
+    public String getIp_address() {
         return ip_address;
     }
 
-    public void setIp_Address(String ip_address) {
+    public void setIp_address(String ip_address) {
         this.ip_address = ip_address;
     }
 
@@ -78,5 +69,4 @@ public class Equipment {
     public void setImagem(String imagem) {
         this.imagem = imagem;
     }
-
 }

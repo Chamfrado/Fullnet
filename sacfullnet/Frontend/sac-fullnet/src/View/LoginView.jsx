@@ -126,7 +126,7 @@ const Login = ({ handleLogin, handleLougout }) => {
                                 <Row>
                                     <Col className="d-flex align-items-center justify-content-center">
                                         <Button id="btnLogin" color="primary" onClick={handleSubmit}>
-                                            {loading ? <Spinner color="primary" /> : "Acessar"}
+                                            {loading ? <Spinner color="light" /> : "Acessar"}
                                         </Button>
                                     </Col>
 

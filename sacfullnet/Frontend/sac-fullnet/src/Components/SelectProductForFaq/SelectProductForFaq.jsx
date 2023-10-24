@@ -1,11 +1,11 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react"
-import { Button, Col, Container, Input, Label, Row, Table, UncontrolledTooltip } from "reactstrap"
+import { Button, Card, Col, Container, Input, Label, Row, Table, UncontrolledTooltip } from "reactstrap"
 import SacfullnetAPI from "../../Services/SacfullnetApi";
 import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from "react-icons/bs";
 
-const SelectProductForFaq = ({ updateList, initialSelectedProducts, op }) => {
+const SelectProductForFaq = ({ updateList, initialSelectedProducts, op, isEmpty }) => {
 
     const [productData, setProductData] = useState([{
         id: "",
@@ -144,7 +144,7 @@ const SelectProductForFaq = ({ updateList, initialSelectedProducts, op }) => {
 
 
     return (
-        <Container>
+        <Container >
             <Row>
                 <Col >
                     <div style={{ maxHeight: '50vh', overflowY: 'auto' }}>
@@ -186,6 +186,7 @@ const SelectProductForFaq = ({ updateList, initialSelectedProducts, op }) => {
 
                         <Button color="primary" id="remove" onClick={() => removeProduct(selectedProductRemove)}><BsFillArrowLeftCircleFill /> </Button>
                     </Row>
+                    
                 </Col>
 
                 <Col>
@@ -195,6 +196,11 @@ const SelectProductForFaq = ({ updateList, initialSelectedProducts, op }) => {
                                 <tr>
                                     <th>Equipamentos Selecionados</th>
                                 </tr>
+                                {isEmpty && 
+                                <tr>
+                                    <th style={{color: "red"}}>lista não pode ser vazia</th>
+                                </tr> }
+                                
 
                             </thead>
                             <tbody>
@@ -210,7 +216,6 @@ const SelectProductForFaq = ({ updateList, initialSelectedProducts, op }) => {
                 </Col>
 
             </Row>
-            <Button onClick={() => alert(JSON.stringify(productList))}>teste</Button>
             <UncontrolledTooltip target="add">Adicionar Produto</UncontrolledTooltip>
             <UncontrolledTooltip target="remove" placement="bottom" >Retirar Produto</UncontrolledTooltip>
         </Container >

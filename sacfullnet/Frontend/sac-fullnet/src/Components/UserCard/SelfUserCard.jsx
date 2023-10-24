@@ -3,32 +3,56 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, FormFeedback, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Row } from "reactstrap";
 import SacfullnetAPI from "../../Services/SacfullnetApi";
+import { getUser, getUserRole, logout } from "../../Services/TokenService";
+import { useNavigate } from "react-router-dom";
 
 
 
-const UserUpdateCard = ({ open, onSaveSucess, User, onCancel }) => {
+const SelfUserCard = ({ open, onCancel }) => {
+    const navigate = useNavigate();
     const [modal, setModal] = useState(false);
 
-    
-    const [userForm, setProductForm] = useState({
-        id: User.id,
-        login: User.login,
-        password: User.password,
-        role: User.role
+
+    const [userForm, setUserForm] = useState({
+        id: "",
+        login: "",
+        role: "",
+        password: ""
     });
 
+    const [user, setUser] = useState();
+
+    
+
+    const [confirmModal, setConfirmModal] = useState(false);
+    const toggleConfirmModal = () => setConfirmModal(!confirmModal);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
 
 
-        setProductForm((prevFormData) => ({
+        setUserForm((prevFormData) => ({
             ...prevFormData,
             [name]: value
         }));
 
 
     };
+
+    const [confirmed, setConfirmed] = useState(false);
+
+    useEffect(() => {
+        if (confirmed) {
+            handleSubmit();
+        }
+    })
+    
+
+
+
+    const handleConfirm = () => {
+        setConfirmed(true);
+    }
 
 
     //Configuração do Form de Erro
@@ -92,26 +116,6 @@ const UserUpdateCard = ({ open, onSaveSucess, User, onCancel }) => {
 
 
 
-    
-    const save = () => {
-        try {
-            SacfullnetAPI.put("auth/update", {
-                id: userForm.id,
-                login: userForm.login,
-                password: userForm.password,
-                role: userForm.role
-            }).then(() => {
-                onSaveSucess();
-            toggle();
-            })
-
-
-        } catch (error) {
-            alert(error);
-        }
-
-    }
-
     const [saveLoading, setSaveLoading] = useState(false);
     const handleSubmit = () => {
         setSaveLoading(true);
@@ -122,21 +126,42 @@ const UserUpdateCard = ({ open, onSaveSucess, User, onCancel }) => {
 
         save();
     };
+    
+    const save = () => {
+        try {
+            SacfullnetAPI.put("auth/update", {
+                id: userForm.id,
+                login: userForm.login,
+                password: userForm.password,
+                role: userForm.role
+            }).then(() => {
+                logout();
+                navigate("/login");
+            })
+
+
+        } catch (error) {
+            alert(error);
+        }
+
+    }
 
     const toggle = () => setModal(!modal);
 
 
     useEffect(() => {
+        SacfullnetAPI.post("auth/user", { login: getUser() }).then(({ data }) => setUserForm(data)).catch(error => console.log(error));
         setModal(open);
+
     }, [open])
 
-    return(
-        <Modal  isOpen={modal} onClosed={onCancel} toggle={toggle}>
-            <ModalHeader className="bg-primary" toggle={toggle}>Adicionar Usuário</ModalHeader>
+    return (
+        <Modal onClosed={onCancel} isOpen={modal} toggle={toggle}>
+            <ModalHeader className="bg-primary" toggle={toggle}>Gerenciar Usuário</ModalHeader>
             <ModalBody>
                 <Row >
 
-                <Col>
+                    <Col>
                         <FormGroup>
                             <Label for="login">
                                 Login
@@ -171,7 +196,7 @@ const UserUpdateCard = ({ open, onSaveSucess, User, onCancel }) => {
                                     <FormFeedback>{errorForm.password}</FormFeedback>
                                 )}
                         </FormGroup>
-                        <FormGroup>
+                        {getUserRole() == "ADMIN" ? <FormGroup>
                             <Label for="role">
                                 role
                             </Label>
@@ -197,7 +222,8 @@ const UserUpdateCard = ({ open, onSaveSucess, User, onCancel }) => {
                             {errorForm.role && (
                                     <FormFeedback>{errorForm.role}</FormFeedback>
                                 )}
-                        </FormGroup>
+                        </FormGroup> : null}
+                        
 
                     </Col>
 
@@ -207,15 +233,27 @@ const UserUpdateCard = ({ open, onSaveSucess, User, onCancel }) => {
 
             </ModalBody>
             <ModalFooter>
-                <Button color="primary" className={isFormValid? "": "disabled"} onClick={handleSubmit}>
+                <Button color="primary" className={isFormValid? "": "disabled"} onClick={toggleConfirmModal}>
                     Salvar
                 </Button>{' '}
                 <Button color="secondary" onClick={toggle}>
                     Cancelar
                 </Button>
             </ModalFooter>
+            <Modal isOpen={confirmModal} toggle={toggleConfirmModal}>
+                <ModalHeader className="bg-danger">Atenção!</ModalHeader>
+                <ModalBody>Depois da alteração dos dados , você precisará fazer login novamente!</ModalBody>
+                <ModalFooter>
+                    <Button color="danger" onClick={handleConfirm}>
+                        Confirmar
+                    </Button>{' '}
+                    <Button color="secondary" onClick={toggleConfirmModal}>
+                        Cancelar
+                    </Button>
+                </ModalFooter>
+            </Modal>
         </Modal>
     );
 }
 
-export default UserUpdateCard
+export default SelfUserCard

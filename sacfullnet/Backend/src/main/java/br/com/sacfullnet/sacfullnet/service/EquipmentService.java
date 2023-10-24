@@ -17,5 +17,7 @@ public interface EquipmentService {
     boolean delete(int id);
 
     Equipment findById(int id);
+
+    Equipment findByName(String name);
     
 }

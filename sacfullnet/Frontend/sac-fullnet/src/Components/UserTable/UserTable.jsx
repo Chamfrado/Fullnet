@@ -11,7 +11,7 @@ import { getUser } from "../../Services/TokenService";
 
 
 
-const UserTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
+const UserTable = ({ onSaveSucess, onDeleteSucess, onAddSucess, onRefresh }) => {
 
     const [addModal, setAddModal] = useState(false);
     const [updateModal, setUpdateModal] = useState(false);
@@ -79,9 +79,13 @@ const UserTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
 
     useEffect(() => {
         fetchTableData();
-    }, [searchQuery]);
+    }, [searchQuery, onRefresh, addModal, deleteModal, updateModal]);
 
-
+    const onCancel = () => {
+        setAddModal(false);
+        setDeleteModal(false);
+        setUpdateModal(false);
+    }
 
     return (
         <Container>
@@ -127,9 +131,9 @@ const UserTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
                         ))}
                     </tbody>
                 </Table>
-                {addModal && <UserAddCard onAddSucess={addSucess} open={addModal} />}
-                {updateModal && <UserUpdateCard onSaveSucess={saveSucess} open={updateModal} User={selectedUser} />}
-                {deleteModal && <UserDeleteCard onDeleteSucess={deleteSucess} open={deleteModal} user={selectedUser} />}
+                {addModal && <UserAddCard onAddSucess={addSucess} open={addModal} onCancel={onCancel} />}
+                {updateModal && <UserUpdateCard onSaveSucess={saveSucess} open={updateModal} onCancel={onCancel} User={selectedUser} />}
+                {deleteModal && <UserDeleteCard onDeleteSucess={deleteSucess} onCancel={onCancel} open={deleteModal} user={selectedUser} />}
             </Row>
         </Container>
 

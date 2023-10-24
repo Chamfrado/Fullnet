@@ -29,6 +29,11 @@ public class EquipmentServiceImpl implements EquipmentService {
     }
 
     @Override
+    public Equipment findByName(String name){
+        return equipmentDao.findByName(name);
+    }
+
+    @Override
     public int save(Equipment user){
         return equipmentDao.save(user);
     }

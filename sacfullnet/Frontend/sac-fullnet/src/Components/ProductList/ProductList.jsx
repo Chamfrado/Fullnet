@@ -4,11 +4,11 @@ import { Button, Col, Container, Input, InputGroup, Label, Row, Spinner, Table }
 
 import SacfullnetAPI from "../../Services/SacfullnetApi";
 import ProductCard from "../ProductCard/ProductCard";
-import { BsArrowDownUp, BsRouter, BsSearch } from "react-icons/bs";
+import { BsRouter, BsSearch } from "react-icons/bs";
 import ProductAddCard from "../ProductCard/ProductAddCard";
 import { getUserRole } from "../../Services/TokenService";
 
-const ProductList = ({ onSaveSucess, onDeleteSucess, onAddSucess, props }) => {
+const ProductList = ({ onSaveSucess, onDeleteSucess, onAddSucess , onRefresh }) => {
   const [error, setError] = useState();
   const [tableData, setTableData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -27,7 +27,7 @@ const ProductList = ({ onSaveSucess, onDeleteSucess, onAddSucess, props }) => {
   const fetchTableData = () => {
 
     const url = "equipamento?search=" + searchQuery;
-    SacfullnetAPI.get(url, "Authorization", 'Bearer ' + props)
+    SacfullnetAPI.get(url)
       .then(({ data }) => {
         setTableData(data);
         setIsLoading(false);
@@ -56,7 +56,7 @@ const ProductList = ({ onSaveSucess, onDeleteSucess, onAddSucess, props }) => {
 
   useEffect(() => {
     fetchTableData();
-  }, [searchQuery]);
+  }, [searchQuery, onRefresh]);
 
   if (error) {
     return <p>Error: {error}</p>;
@@ -107,10 +107,6 @@ const ProductList = ({ onSaveSucess, onDeleteSucess, onAddSucess, props }) => {
           <Col xs="2">
             <Button onClick={toggleAddModal} color="primary" ><BsRouter /> Adicionar Equipamento</Button>
           </Col> : null}
-
-        <Col>
-          <Button color="primary" onClick={fetchTableData}> Atualizar dados <BsArrowDownUp /></Button>
-        </Col>
       </Row>
       <Row style={{ paddingTop: 10, flex: 1, justifyContent: "center", alignItems: "center" }}>
         {isLoading ? (
@@ -125,6 +121,8 @@ const ProductList = ({ onSaveSucess, onDeleteSucess, onAddSucess, props }) => {
 
       </Row>
       {addModal && <ProductAddCard onAddSucess={addSucess} open={addModal} />}
+
+      
     </Container>
   );
 };

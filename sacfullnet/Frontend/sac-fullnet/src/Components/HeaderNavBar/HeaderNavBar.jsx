@@ -3,6 +3,9 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { AccordionBody, AccordionHeader, AccordionItem, Nav, NavItem, Offcanvas, OffcanvasBody, OffcanvasHeader, Row, UncontrolledAccordion } from "reactstrap";
 import { getUserRole } from "../../Services/TokenService";
+import ProductAddCard from "../ProductCard/ProductAddCard"
+import FaqAddCard from "../FAQCard/FaqAddCard";
+import SelfUserCard from "../UserCard/SelfUserCard";
 
 const HeaderNavBar = ({ open, handleClose }) => {
 
@@ -17,6 +20,37 @@ const HeaderNavBar = ({ open, handleClose }) => {
         setOffcanvas(!OffCanvas);
         handleClose(OffCanvas);
     };
+
+
+    const [addProductModal, setAddProductModal] = useState(false);
+    const toggleAddProductModal = () => setAddProductModal(true);
+
+
+    const onAddSucess = () => {
+        setAddProductModal(false);
+        alert("Produto Adicionado com Sucesso!")
+        
+    }
+
+    const [addFaqModal, setAddFaqModal] = useState(false);
+    const toggleAddFaqModal = () => setAddFaqModal(true);
+
+
+    const onAddFaqSucess = () => {
+        setAddFaqModal(false);
+        alert("FAQ Adicionada com Sucesso!")
+        
+    }
+
+    const [configModal, setConfigModal] = useState(false);
+    const toggleConfigModal = () => setConfigModal(true);
+
+
+    const onCancel = () => {
+        setAddProductModal(false);
+        setAddFaqModal(false);
+        setConfigModal(false);
+    }
 
 
     return (
@@ -34,7 +68,7 @@ const HeaderNavBar = ({ open, handleClose }) => {
                                             className="nav-link nav-link-active bg-primary" style={{ color: "white" }} to="/home">Lista de Equipamentos</Link>
                                     </NavItem>
                                     {getUserRole() == "ADMIN" ? <NavItem >
-                                        <Link className="nav-link nav-link-active bg-primary" style={{ color: "white" }} >
+                                        <Link className="nav-link nav-link-active bg-primary" style={{ color: "white" }} onClick={toggleAddProductModal} >
                                             Cadastrar Equipamento
                                         </Link>
                                     </NavItem> : null}
@@ -54,7 +88,7 @@ const HeaderNavBar = ({ open, handleClose }) => {
                                         <Link className="nav-link nav-link-active bg-primary" style={{ color: "white" }} to="/users">Lista de Usuários</Link>
                                     </NavItem>
                                     <NavItem>
-                                        <Link className="nav-link nav-link-active bg-primary" style={{ color: "white" }} >
+                                        <Link className="nav-link nav-link-active bg-primary" style={{ color: "white" }} onClick={toggleConfigModal}  >
                                             Gerenciar Usuário Atual
                                         </Link>
                                     </NavItem>
@@ -74,7 +108,7 @@ const HeaderNavBar = ({ open, handleClose }) => {
                                         <Link className="nav-link nav-link-active bg-primary" style={{ color: "white" }} to="/faqs">Lista de FAQs</Link>
                                     </NavItem>
                                     {getUserRole() == "ADMIN" ? <NavItem>
-                                        <Link className="nav-link nav-link-active bg-primary" style={{ color: "white" }} >Cadastrar FAQs</Link>
+                                        <Link className="nav-link nav-link-active bg-primary" style={{ color: "white" }} onClick={toggleAddFaqModal} >Cadastrar FAQs</Link>
                                     </NavItem> : null}
                                     
                                 </Nav>
@@ -83,6 +117,9 @@ const HeaderNavBar = ({ open, handleClose }) => {
                     </UncontrolledAccordion>
                 </Row>
             </OffcanvasBody>
+            {addProductModal && <ProductAddCard onAddSucess={onAddSucess} open={addProductModal} onCancel={onCancel} />}
+            {addFaqModal && <FaqAddCard onAddSucess={onAddFaqSucess} open={addFaqModal} onCancel={onCancel} /> }
+            {configModal && <SelfUserCard open={configModal} onCancel={onCancel}/>}
         </Offcanvas>
     )
 }

@@ -11,7 +11,7 @@ import FaqUpdateCard from "../FAQCard/FaqUpdateCard";
 import FaqDeleteCard from "../FAQCard/FaqDeleteCard";
 import { getUserRole } from "../../Services/TokenService";
 
-const FaqTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
+const FaqTable = ({ onSaveSucess, onDeleteSucess, onAddSucess, onRefresh }) => {
     const [error, setError] = useState();
     const [tableData, setTableData] = useState([]);
     const [productNames, setProductNames] = useState({
@@ -81,6 +81,12 @@ const FaqTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
         fetchTableData();
     }
 
+    const onCancel = () => {
+        setAddModal(false);
+        setDeleteModal(false);
+        setUpdateModal(false);
+    }
+
     // Function to fetch product names
     async function fetchEquipament(productId) {
         try {
@@ -108,9 +114,11 @@ const FaqTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
             });
     };
 
+
+
     useEffect(() => {
         fetchTableData();
-    }, [addModal, updateModal, deleteModal, searchQuery]);
+    }, [addModal, updateModal, deleteModal, searchQuery, onRefresh]);
 
     useEffect(() => {
 
@@ -184,9 +192,9 @@ const FaqTable = ({ onSaveSucess, onDeleteSucess, onAddSucess }) => {
                 </Table>
             </Row>
             {selectedFaq !== -1 ? <FaqDetail selectedFaq={selectedFaq} productNames={productNames} isOpen={toggleModal} onDismiss={dismiss} /> : <></>}
-            {addModal && <FaqAddCard onAddSucess={addSucess} open={addModal} />}
-            {updateModal && <FaqUpdateCard onUpdateSucess={saveSucess} open={updateModal} faq={updateFaq} />}
-            {deleteModal && <FaqDeleteCard onDeleteSucess={deleteSucess} open={deleteModal} faq={deleteFaq} />}
+            {addModal && <FaqAddCard onAddSucess={addSucess} open={addModal} onCancel={onCancel} />}
+            {updateModal && <FaqUpdateCard onUpdateSucess={saveSucess} open={updateModal} faq={updateFaq} onCancel={onCancel}/>}
+            {deleteModal && <FaqDeleteCard onDeleteSucess={deleteSucess} open={deleteModal} faq={deleteFaq} onCancel={onCancel}/>}
 
         </Container>
     );

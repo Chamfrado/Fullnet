@@ -6,6 +6,7 @@ import HomeView from './View/HomeView';
 import FaqView from './View/FaqView';
 import UserView from './View/UserView';
 import { isAuthenticated, login, setUser, setUserRole } from './Services/TokenService';
+import ImageTest from './View/ImageTest';
 
 function App() {
 
@@ -49,6 +50,7 @@ function App() {
 				<Route path="/home" element={<ProtectedRoute element={HomeView} />} />
 				<Route path="/faqs" element={<ProtectedRoute element={FaqView}/>} />
 				<Route path="/users" element={ <ProtectedRoute element={UserView}/>} />
+				<Route path="/test" element={ <ProtectedRoute element={ImageTest}/>} />
 			</Routes>
       </Router>
 		</div>

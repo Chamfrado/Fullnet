@@ -2,8 +2,9 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from "react"
 import Header from "../Components/Header/Header"
-import { Alert, Card, CardBody, CardTitle, Label, Row } from "reactstrap"
+import { Alert, Card, CardBody, CardTitle, Label, Row, UncontrolledTooltip } from "reactstrap"
 import UserTable from "../Components/UserTable/UserTable"
+import { BsArrowRepeat } from "react-icons/bs"
 const UserView = ({ handleLogin }) => {
 
     const [saveAlert, setSaveAlert] = useState(false);
@@ -31,27 +32,30 @@ const UserView = ({ handleLogin }) => {
     const onDismissAdd = () => setAddAlert(false);
 
 
+    const [refresh, setRefresh] = useState(false);
+    const toggleRefresh = () => setRefresh(!refresh)
+
     return (
         <div>
-                <Header />
+            <Header />
 
-                <Row>
-                    <Card>
-                        <CardBody>
-                            <CardTitle>
-                                {saveAlert && <Alert isOpen={saveAlert} toggle={onDismissSave}>Usuário Atualizado com Sucesso!</Alert>}
-                                {deleteAlert && <Alert isOpen={deleteAlert} toggle={onDismissDelete}>Usuário Deletado com Sucesso!</Alert>}
-                                {addAlert && <Alert isOpen={addAlert} toggle={onDismissAdd}>Usuário Adicionado com Sucesso!</Alert>}
-                                <Label className='h1' style={{ display: 'flex', alignSelf: 'start', justifyContent: 'start' }}> Controle de Usuarios</Label>
-                            </CardTitle>
+            <Row>
+                <Card>
+                    <CardBody>
+                        <CardTitle>
+                            {saveAlert && <Alert isOpen={saveAlert} toggle={onDismissSave}>Usuário Atualizado com Sucesso!</Alert>}
+                            {deleteAlert && <Alert isOpen={deleteAlert} toggle={onDismissDelete}>Usuário Deletado com Sucesso!</Alert>}
+                            {addAlert && <Alert isOpen={addAlert} toggle={onDismissAdd}>Usuário Adicionado com Sucesso!</Alert>}
+                            <Label className='h1' > Controle de Usuarios <BsArrowRepeat size=".50em" id='refresh' onClick={toggleRefresh} style={{ color: "#0d6efd", cursor: "pointer" }} /></Label>
+                        </CardTitle>
 
-                            <Row>
-                                <UserTable onSaveSucess={onSaveSucessfull} onDeleteSucess={onDeleteSucessfull} onAddSucess={onAddSucessfull} />
-                            </Row>
-
-                        </CardBody>
-                    </Card>
-                </Row>
+                        <Row>
+                            <UserTable onRefresh={refresh} onSaveSucess={onSaveSucessfull} onDeleteSucess={onDeleteSucessfull} onAddSucess={onAddSucessfull} />
+                        </Row>
+                        <UncontrolledTooltip target="refresh" placement='bottom'  >Atualizar Dados</UncontrolledTooltip>
+                    </CardBody>
+                </Card>
+            </Row>
 
 
 

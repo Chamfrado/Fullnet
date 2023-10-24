@@ -68,7 +68,15 @@ const ProductCard = ({ item, Saved, Deleted }) => {
 
                 </ModalHeader>
                 <ModalBody>
+                    
+                    
+                <Row style={{ padding: 10 }}>
+                        <Label tag="h5">IP: </Label>
 
+                        <Label>{item.ip_address}</Label>
+
+
+                    </Row>
                     <Row style={{ padding: 10 }}>
                         <Label tag="h5">Descrição: </Label>
 

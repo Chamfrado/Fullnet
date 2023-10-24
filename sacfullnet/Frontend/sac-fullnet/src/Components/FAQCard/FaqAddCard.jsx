@@ -1,13 +1,13 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
-import { Button, Col, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Row } from "reactstrap";
+import { Button, Col, FormFeedback, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Row } from "reactstrap";
 import SacfullnetAPI from "../../Services/SacfullnetApi";
 import SelectProductForFaq from "../SelectProductForFaq/SelectProductForFaq";
 
 
 
-const FaqAddCard = ({ open, onAddSucess }) => {
+const FaqAddCard = ({ open, onAddSucess, onCancel }) => {
     const [modal, setModal] = useState(false);
     const [listProduct, setListProduct] = useState([]);
 
@@ -33,7 +33,7 @@ const FaqAddCard = ({ open, onAddSucess }) => {
         if (list != null) {
             let listArray = [];
             await list.map(equipamento => {
-                listArray.push({id: equipamento.id, nome: equipamento.nome});
+                listArray.push({ id: equipamento.id, nome: equipamento.nome });
             })
 
             setListProduct(listArray);
@@ -41,6 +41,62 @@ const FaqAddCard = ({ open, onAddSucess }) => {
 
 
     }
+
+
+    //Configuração do Form de Erro
+    const [errorForm, setErrorForm] = useState({
+        titulo: "",
+        solucao: ""
+    });
+
+    const [isEmpty, setIsEmpty] = useState(true)
+
+    //Validator do formulario
+    const [isFormValid, setIsFormValid] = useState(false);
+    useEffect(() => {
+        let isTituloValid = false;
+        let isSolucaoValid = false;
+        let isListValid = false;
+
+        if (faqForm.titulo === "") {
+            setErrorForm((prevErrorForm) => ({
+                ...prevErrorForm,
+                titulo: "Preencher o titulo é obrigatório!"
+            }));
+            isTituloValid = false;
+        } else {
+            setErrorForm((prevErrorForm) => ({
+                ...prevErrorForm,
+                titulo: ""
+            }));
+            isTituloValid = true;
+        }
+
+        if (faqForm.solucao === "") {
+            setErrorForm((prevErrorForm) => ({
+                ...prevErrorForm,
+                solucao: "Preencher a solução é obrigatório!"
+            }));
+            isSolucaoValid = false;
+        } else {
+            setErrorForm((prevErrorForm) => ({
+                ...prevErrorForm,
+                solucao: ""
+            }));
+            isSolucaoValid = true;
+        }
+
+        if (!Array.isArray(listProduct) || listProduct.length === 0) {
+            isListValid = false;
+            setIsEmpty(true);
+        } else {
+            isListValid = true;
+            setIsEmpty(false);
+        }
+
+
+        setIsFormValid(isListValid && isSolucaoValid && isTituloValid);
+    }, [faqForm, listProduct])
 
 
     const add = () => {
@@ -68,7 +124,7 @@ const FaqAddCard = ({ open, onAddSucess }) => {
     }, [open])
 
     return (
-        <Modal isOpen={modal} size="lg" toggle={toggle}>
+        <Modal isOpen={modal} size="lg" onClosed={onCancel} toggle={toggle}>
             <ModalHeader className="bg-primary" toggle={toggle}>Adicionar Nova FAQ</ModalHeader>
             <ModalBody>
                 <Row >
@@ -85,7 +141,11 @@ const FaqAddCard = ({ open, onAddSucess }) => {
                                 value={faqForm.titulo}
                                 type="text"
                                 onChange={handleChange}
+                                className={errorForm.titulo ? "is-invalid" : "is-valid"}
                             />
+                            {errorForm.titulo && (
+                                <FormFeedback>{errorForm.titulo}</FormFeedback>
+                            )}
                         </FormGroup>
                         <FormGroup>
                             <Label for="solucao">
@@ -98,7 +158,11 @@ const FaqAddCard = ({ open, onAddSucess }) => {
                                 type="textarea"
                                 value={faqForm.solucao}
                                 onChange={handleChange}
-                            />
+                                className={errorForm.solucao ? "is-invalid" : "is-valid"}
+                                />
+                                {errorForm.solucao && (
+                                    <FormFeedback>{errorForm.solucao}</FormFeedback>
+                                )}
                         </FormGroup>
 
                     </Col>
@@ -106,13 +170,13 @@ const FaqAddCard = ({ open, onAddSucess }) => {
 
                 </Row>
                 <Row>
-                    <SelectProductForFaq updateList={updateProduct} op={"add"} />
+                    <SelectProductForFaq updateList={updateProduct} op={"add"} isEmpty={isEmpty} />
                 </Row>
 
 
             </ModalBody>
             <ModalFooter>
-                <Button color="primary" onClick={add}>
+                <Button color="primary" className={isFormValid ? "" : "disabled"} onClick={add}>
                     Salvar
                 </Button>{' '}
                 <Button color="secondary" onClick={toggle}>

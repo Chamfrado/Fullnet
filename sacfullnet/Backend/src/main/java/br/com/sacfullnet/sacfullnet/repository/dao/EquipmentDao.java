@@ -24,4 +24,6 @@ public interface EquipmentDao {
 
     Equipment findById(int id);
 
+    Equipment findByName(String name);
+
 }
