@@ -1,13 +1,14 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 import Header from '../Components/Header/Header';
-import { Alert,    Button,    Card, CardBody, CardTitle,  Label, Row, UncontrolledTooltip } from 'reactstrap';
+import { Alert,        Button,        Card, CardBody, CardTitle,  Label, Row, UncontrolledTooltip } from 'reactstrap';
 import ProductList from '../Components/ProductList/ProductList';
 import { BsArrowRepeat } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
 
 
 const HomeView = () => {
+
     const navigate = useNavigate();
 
     const [saveAlert, setSaveAlert] = useState(false);
@@ -36,8 +37,7 @@ const HomeView = () => {
     return (
         <div>
             <Header />
-            
-            <Button onClick={() => navigate("/test")}>to test</Button>
+            <Button onClick={() => navigate("/test")} >to test</Button>
             <Card>
                 <CardBody>
                     <CardTitle style={{paddingLeft: 30}}>

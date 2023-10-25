@@ -6,8 +6,9 @@ public class File {
 
     private Integer id;
     private String filename;
-    private byte[] data;
     private String type;
+
+    private String filepath;
 
     private Integer id_equipamento;
 
@@ -15,17 +16,17 @@ public class File {
 
     }
 
-    public File(String filename, byte[] data, String type, Integer id_equipamento) {
+    public File(String filename, String filepath, String type, Integer id_equipamento) {
         this.filename = filename;
-        this.data = data;
+        this.filepath = filepath;
         this.type = type;
         this.id_equipamento = id_equipamento;
     }
 
-    public File(Integer id, String filename, byte[] data, String type, Integer id_equipamento) {
+    public File(Integer id, String filename, String filepath, String type, Integer id_equipamento) {
         this.id = id;
         this.filename = filename;
-        this.data = data;
+        this.filepath = filepath;
         this.type = type;
         this.id_equipamento = id_equipamento;
     }
@@ -46,12 +47,12 @@ public class File {
         this.filename = filename;
     }
 
-    public byte[] getData() {
-        return data;
+    public String getFilepath() {
+        return filepath;
     }
 
-    public void setData(byte[] data) {
-        this.data = data;
+    public void setFilepath(String filepath) {
+        this.filepath = filepath;
     }
 
     public String getType() {

@@ -28,7 +28,18 @@ VALUES
      
 
 
-
+INSERT INTO imagem (id_equipamento, filename, filepath, type)
+VALUES
+	(1, '1.jpeg', 'C:\Users\TI\Desktop\pastaTeste\tccdoscara\sacfullnet\Backend\images\1','image/jpeg'),
+	(2, '2.jpeg', 'C:\Users\TI\Desktop\pastaTeste\tccdoscara\sacfullnet\Backend\images\2','image/jpeg'),
+	(3, '3.jpeg', 'C:\Users\TI\Desktop\pastaTeste\tccdoscara\sacfullnet\Backend\images\3','image/jpeg'),
+	(4, '4.jpeg', 'C:\Users\TI\Desktop\pastaTeste\tccdoscara\sacfullnet\Backend\images\4','image/jpeg'),
+	(5, '5.jpeg', 'C:\Users\TI\Desktop\pastaTeste\tccdoscara\sacfullnet\Backend\images\5','image/jpeg'),
+	(6, '6.jpeg', 'C:\Users\TI\Desktop\pastaTeste\tccdoscara\sacfullnet\Backend\images\6','image/jpeg'),
+	(7, '7.jpeg', 'C:\Users\TI\Desktop\pastaTeste\tccdoscara\sacfullnet\Backend\images\7','image/jpeg'),
+	(8, '8.jpeg', 'C:\Users\TI\Desktop\pastaTeste\tccdoscara\sacfullnet\Backend\images\8','image/jpeg'),
+	(9, '9.jpeg', 'C:\Users\TI\Desktop\pastaTeste\tccdoscara\sacfullnet\Backend\images\9','image/jpeg'),
+	(10, '10.jpeg','C:\Users\TI\Desktop\pastaTeste\tccdoscara\sacfullnet\Backend\images\10','image/jpeg');
 
 
 -- Inserção de exemplos de FAQs relacionadas a configurações de equipamentos

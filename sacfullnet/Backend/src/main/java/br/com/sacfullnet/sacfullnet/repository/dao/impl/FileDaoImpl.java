@@ -13,19 +13,19 @@ import java.sql.*;
 @Repository
 public class FileDaoImpl implements FileDao {
     @Override
-    public File save(MultipartFile image, int id_equipamento) {
+    public File save(MultipartFile image, int id_equipamento, String filePath) {
         File imagem = new File();
         Connection connection = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         int id = -1;
         try {
-            imagem.setData(image.getBytes());
+            imagem.setFilepath(filePath);
             imagem.setFilename(image.getOriginalFilename());
             imagem.setType(image.getContentType());
             imagem.setId_equipamento(id_equipamento);
 
-            final String sql = "INSERT INTO imagem (id, id_equipamento, filename, data, type) VALUES (DEFAULT, ?, ?, ARRAY[?], ?)";
+            final String sql = "INSERT INTO imagem (id, id_equipamento, filename, filepath, type) VALUES (DEFAULT, ?, ?, ?, ?)";
 
             connection = ConnectionFactory.getConnection();
             connection.setAutoCommit(false);
@@ -33,7 +33,7 @@ public class FileDaoImpl implements FileDao {
             ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, imagem.getId_equipamento());
             ps.setString(2, imagem.getFilename());
-            ps.setBytes(3, imagem.getData()); // Here, 'data' should be an array of bytes (byte[])
+            ps.setString(3, imagem.getFilepath()); // Here, 'data' should be an array of bytes (byte[])
             ps.setString(4, imagem.getType());
 
 
@@ -49,8 +49,6 @@ public class FileDaoImpl implements FileDao {
             imagem.setId(id);
             return imagem;
 
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         } catch (SQLException e) {
             e.printStackTrace();
             try {
@@ -62,7 +60,6 @@ public class FileDaoImpl implements FileDao {
         }
     }
 
-
     @Override
     public File findImageById(int id) {
         Connection connection = null;
@@ -71,7 +68,7 @@ public class FileDaoImpl implements FileDao {
         File image = new File();
 
         try {
-            final String sql = "SELECT * FROM imagem WHERE id = ?";
+            final String sql = "SELECT * FROM imagem WHERE id_equipamento = ?";
 
             connection = ConnectionFactory.getConnection();
             ps = connection.prepareStatement(sql);
@@ -80,15 +77,7 @@ public class FileDaoImpl implements FileDao {
             rs = ps.executeQuery();
 
             if (rs.next()) {
-                // Retrieve the image data from the database
-               // byte[] imageData = rs.getBytes("data");
-               // int image_id = rs.get
-               // int id_equipamento = rs.getInt("id_equipamento");
-               // String filename = rs.getString("filename");
-               // String type = rs.getString("type");
-
                 image = loadValues(rs);
-
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -112,12 +101,96 @@ public class FileDaoImpl implements FileDao {
     }
 
     @Override
+    public  File update(MultipartFile image, int equipament_id, String filepath){
+        File imagem = new File();
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        int id = -1;
+        try {
+            imagem.setFilepath(filepath);
+            imagem.setFilename(image.getOriginalFilename());
+            imagem.setType(image.getContentType());
+            imagem.setId_equipamento(equipament_id);
+
+            final String sql = "UPDATE imagem SET filename=?, filepath=?, type=? WHERE id_equipamento = ?";
+
+            connection = ConnectionFactory.getConnection();
+            connection.setAutoCommit(false);
+
+            ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, imagem.getFilename());
+            ps.setString(2, imagem.getFilepath());
+            ps.setString(3, imagem.getType());
+            ps.setInt(4, imagem.getId_equipamento());
+
+
+            ps.execute();
+
+            rs = ps.getGeneratedKeys();
+
+            if (rs.next()) {
+                id = rs.getInt(1);
+            }
+
+            connection.commit();
+            imagem.setId(id);
+            return imagem;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                e.printStackTrace();
+            }
+            return imagem;
+        }
+    }
+    @Override
+    public boolean deleteFile(int equipamento_id){
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            final String sql = "Delete from imagem where id_equipamento = ?";
+
+            connection = ConnectionFactory.getConnection();
+            connection.setAutoCommit(false);
+
+            ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, equipamento_id);
+            ps.execute();
+
+            connection.commit();
+
+            System.out.println(sql);
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                e.printStackTrace();
+            }
+
+            return false;
+        } finally {
+            ConnectionFactory.close(connection, ps, rs);
+        }
+
+    }
+
+    @Override
     public File loadValues(ResultSet rs) throws SQLException {
         File file = new File();
 
         file.setId(rs.getInt("id"));
         file.setFilename(rs.getString("filename"));
-        file.setData(rs.getBytes("data"));
+        file.setFilepath(rs.getString("filepath"));
         file.setType(rs.getString("type"));
         file.setId_equipamento(rs.getInt("id_equipamento"));
         return file;

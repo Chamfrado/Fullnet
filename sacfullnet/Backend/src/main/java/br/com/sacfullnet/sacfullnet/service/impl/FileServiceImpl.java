@@ -14,13 +14,21 @@ public class FileServiceImpl implements FileService {
     FileDao fileDao;
 
     @Override
-    public File save(MultipartFile image, int equipament_id) {
-        return fileDao.save(image, equipament_id);
+    public File save(MultipartFile image, int equipament_id, String filepath) {
+        return fileDao.save(image, equipament_id, filepath);
+    }
+
+    public File update(MultipartFile image, int equipament_id, String filepath){
+        return fileDao.update(image, equipament_id, filepath);
     }
 
     @Override
     public File findImageById(int id) {
         return fileDao.findImageById(id);
+    }
+
+    public boolean deleteFile(int id){
+        return fileDao.deleteFile(id);
     }
 
 

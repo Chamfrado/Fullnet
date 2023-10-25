@@ -22,13 +22,13 @@ CREATE TABLE equipamento (
     FOREIGN KEY (id_tipo_equipamento) REFERENCES Tipo_Equipamento(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE TABLE public.imagem(
+CREATE TABLE imagem(
     id serial NOT NULL,
     id_equipamento integer NOT NULL,
     filename text NOT NULL,
-    data bytea[] NOT NULL,
+    filepath text NOT NULL,
     type text,
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
     FOREIGN KEY (id_equipamento) REFERENCES equipamento(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 

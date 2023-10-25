@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Button, Card, CardBody, Col, FormFeedback, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Row } from "reactstrap";
 import SacfullnetAPI from "../../Services/SacfullnetApi";
+import image from "../../Resources/image.jpeg"
 
 const ProductUpdateCard = ({ item, open, onSaveSucess }) => {
     const [modal, setModal] = useState(false);
@@ -17,25 +18,25 @@ const ProductUpdateCard = ({ item, open, onSaveSucess }) => {
 
 
     const handleChange = (event) => {
-		const { name, value } = event.target;
+        const { name, value } = event.target;
 
-		if(name === "cnpj" || name=== "telefone"){
-			setProductForm((prevFormData) => ({
-				...prevFormData,
-				[name]: value.replace(/\D/g, "")
-			}));
-		}else{
-			setProductForm((prevFormData) => ({
-				...prevFormData,
-				[name]: value
-			}));
-		}
-		
-	};
+        if (name === "cnpj" || name === "telefone") {
+            setProductForm((prevFormData) => ({
+                ...prevFormData,
+                [name]: value.replace(/\D/g, "")
+            }));
+        } else {
+            setProductForm((prevFormData) => ({
+                ...prevFormData,
+                [name]: value
+            }));
+        }
+
+    };
 
 
-     //Configuração do Form de Erro
-     const [errorForm, setErrorForm] = useState({
+    //Configuração do Form de Erro
+    const [errorForm, setErrorForm] = useState({
         nome: "",
         ip: "",
         config: "",
@@ -113,7 +114,7 @@ const ProductUpdateCard = ({ item, open, onSaveSucess }) => {
         setIsFormValid(isConfigValid && isDescValid && isIpValid && isNomeValid);
     }, [productForm])
 
-    
+
     function isValidIP(ip) {
         // Expressão regular para validar um IP no formato xxx.xxx.xxx.xxx
         const ipPattern = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/;
@@ -152,6 +153,9 @@ const ProductUpdateCard = ({ item, open, onSaveSucess }) => {
     };
 
     const save = () => {
+        const formData = new FormData();
+        formData.append('imagem', selectedImage);
+
         try {
             SacfullnetAPI.put("equipamento", {
                 id: item.id,
@@ -161,10 +165,20 @@ const ProductUpdateCard = ({ item, open, onSaveSucess }) => {
                 configuracao: productForm.config,
                 descricao: productForm.desc,
                 imagem: productForm.imagem
-            });
-            setSaveLoading(false)
-            onSaveSucess();
-            toggle();
+            }).then(() => {
+                SacfullnetAPI.post("equipamento/imagem/" + item.id, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                })
+                    .then(() => {
+                        setSaveLoading(false)
+                        onSaveSucess();
+                        toggle();
+                    })
+                    .catch(error => console.log("ErroNaImagem " + error));
+            }).catch(error => console.log(error))
+
 
         } catch (error) {
             alert(error);
@@ -172,9 +186,27 @@ const ProductUpdateCard = ({ item, open, onSaveSucess }) => {
 
     }
 
-
+    const [imageData, setImageData] = useState(image);
 
     const [selectedImage, setSelectedImage] = useState(null);
+
+    useEffect(() => {
+        fetchImage();
+    }, []) 
+
+    
+    const fetchImage = () => {
+
+        SacfullnetAPI.get("equipamento/download/" + item.id, { responseType: 'arraybuffer' })
+            .then((response) => {
+                const imageBlob = new Blob([response.data], { type: response.headers['content-type'] });
+                const imageUrl = URL.createObjectURL(imageBlob);
+                setImageData(imageUrl);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
 
     const handleImageUpload = (e) => {
         const imageFile = e.target.files[0];
@@ -187,19 +219,7 @@ const ProductUpdateCard = ({ item, open, onSaveSucess }) => {
     useEffect(() => {
         setModal(open);
     }, [open])
-
-    const [image, setImage] = useState(null);
-
-    useEffect(() => {
-        // Dynamically load the image when the component mounts ${item.imagem}
-        import(`../../../public/equipament_img/${item.imagem}.jpeg`)
-            .then((module) => {
-                setImage(module.default);
-            })
-            .catch((error) => {
-                console.error("Error loading image:", error);
-            });
-    }, [item.imagem]);
+;
 
 
     return (
@@ -210,33 +230,31 @@ const ProductUpdateCard = ({ item, open, onSaveSucess }) => {
                     <Col style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                         <Card>
                             <CardBody>
-                                {image && (
+                            {selectedImage ?
                                     <img
                                         id="equip1"
                                         style={{ width: "50vh", cursor: "pointer", padding: 10 }}
-                                        src={image}
+                                        src={URL.createObjectURL(selectedImage)}
                                         alt="logo"
                                     />
-                                )}
+                                    :
+                                    <img
+                                        id="equip1"
+                                        style={{ width: "50vh", cursor: "pointer", padding: 10 }}
+                                        src={imageData}
+                                        alt="logo"
+                                    />}
                             </CardBody>
 
                         </Card>
                         <div style={{ padding: 10 }}>
                             <Input type="file" onChange={handleImageUpload} />
-                            {selectedImage && (
-                                <img
-                                    src={URL.createObjectURL(selectedImage)}
-                                    alt="Preview"
-                                    width="200"
-                                    height="200"
-                                />
-                            )}
                         </div>
 
                     </Col>
 
                     <Col xs="6" >
-                    <FormGroup>
+                        <FormGroup>
                             <Label for="nome">
                                 Nome do Equipamento
                             </Label>
@@ -315,7 +333,7 @@ const ProductUpdateCard = ({ item, open, onSaveSucess }) => {
 
             </ModalBody>
             <ModalFooter>
-                <Button color="primary" className={isFormValid? "": "disabled"} onClick={handleSubmit}>
+                <Button color="primary" className={isFormValid ? "" : "disabled"} onClick={handleSubmit}>
                     Salvar
                 </Button>{' '}
                 <Button color="secondary" onClick={toggle}>

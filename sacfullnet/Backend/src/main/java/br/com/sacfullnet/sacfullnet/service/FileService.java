@@ -5,7 +5,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface FileService {
 
-    File save(MultipartFile image, int equipament_id);
+    File save(MultipartFile image, int equipament_id,String filepath);
+
+    File update(MultipartFile image, int equipament_id, String filepath);
 
     File findImageById(int id);
+
+    boolean deleteFile(int id);
 }

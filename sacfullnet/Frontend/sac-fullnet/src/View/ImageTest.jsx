@@ -43,7 +43,7 @@ const ImageTest = ({ open, onAddSucess, onCancel }) => {
         const formData = new FormData();
         formData.append('imagem', selectedImage);
 
-        SacfullnetAPI.post("equipamento/imagem", formData, {
+        SacfullnetAPI.post("equipamento/imagem/500", formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
@@ -122,11 +122,16 @@ const ImageTest = ({ open, onAddSucess, onCancel }) => {
     const [imageData, setImageData] = useState(null);
 
     const fetchTeste = () => {
-        SacfullnetAPI.get("auth/to/take", {imageName: "teste"}).then((image) => {
-            alert(image);
-        }).catch(error => alert(error))
-        
-    }
+        // Update the endpoint to "/equipamento/download/teste.jpg"
+        SacfullnetAPI.get("equipamento/download/4", { responseType: 'arraybuffer' })
+            .then((response) => {
+                const imageBlob = new Blob([response.data], { type: response.headers['content-type'] });
+                const imageUrl = URL.createObjectURL(imageBlob);
+                setImageData(imageUrl);
+            })
+            .catch((error) => alert(error));
+    };
+    
 
 
 
@@ -137,34 +142,30 @@ const ImageTest = ({ open, onAddSucess, onCancel }) => {
                 <Row >
                     <Col style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                         <Card>
-                            <CardBody>
-                                {selectedImage ?
-                                    <img
-                                        id="equip1"
-                                        style={{ width: "50vh", cursor: "pointer", padding: 10 }}
-                                        src={URL.createObjectURL(selectedImage)}
-                                        alt="logo"
-                                    />
-                                    :
-                                    <img
-                                        id="equip1"
-                                        style={{ width: "50vh", cursor: "pointer", padding: 10 }}
-                                        src={image}
-                                        alt="logo"
-                                    />}
+                            <Card>
+                                <CardBody>
+                                    {selectedImage ? (
+                                        <img
+                                            id="equip1"
+                                            style={{ width: "50vh", cursor: "pointer", padding: 10 }}
+                                            src={URL.createObjectURL(selectedImage)}
+                                            alt="logo"
+                                        />
+                                    ) : (
+                                        <img
+                                            id="equip1"
+                                            style={{ width: "50vh", cursor: "pointer", padding: 10 }}
+                                            src={image}
+                                            alt="logo"
+                                        />
+                                    )}
+                                    {imageData && (
+                                        <img src={imageData} alt="Your Image" style={{ width: "50vh", cursor: "pointer", padding: 10 }} />
 
+                                    )}
+                                </CardBody>
+                            </Card>
 
-
-                                {imageData && (
-                                    <img src={imageData} alt="Your Image"  />
-                                )}
-
-
-
-
-
-
-                            </CardBody>
 
                         </Card>
                         <div style={{ padding: 10 }}>
@@ -253,11 +254,14 @@ const ImageTest = ({ open, onAddSucess, onCancel }) => {
 
             </ModalBody>
             <ModalFooter>
-                <Button color="primary" onClick={fetchTeste}>
-                    {saveLoading ? <Spinner color="light" /> : "Salvar"}
+                <Button color="primary" onClick={fetchImagem}>
+                    {saveLoading ? <Spinner color="light" /> : "Fetch Imagem"}
                 </Button>{' '}
                 <Button color="secondary" onClick={toggle}>
                     Cancelar
+                </Button>
+                <Button color="primary" onClick={fetchTeste}>
+                    {saveLoading ? <Spinner color="light" /> : "Pegar Imagem"}
                 </Button>
             </ModalFooter>
         </Container>
@@ -266,3 +270,9 @@ const ImageTest = ({ open, onAddSucess, onCancel }) => {
 };
 
 export default ImageTest;
+
+
+
+
+
+

@@ -9,8 +9,13 @@ import java.sql.SQLException;
 
 public interface FileDao {
 
-    File save(MultipartFile image, int id_equipamento);
+    File save(MultipartFile image, int id_equipamento, String filePath);
+
+    File update(MultipartFile image, int equipament_id, String filepath);
+
     File findImageById(int id);
+
+    boolean deleteFile(int id);
 
     File loadValues(ResultSet resultSet) throws SQLException;
 }

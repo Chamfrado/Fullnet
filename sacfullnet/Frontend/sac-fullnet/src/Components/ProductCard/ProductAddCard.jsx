@@ -125,7 +125,7 @@ const ProductAddCard = ({ open, onAddSucess, onCancel }) => {
         try {
             SacfullnetAPI.get("equipamento/name/name?name=" + productForm.nome).then(({ data }) => {
                 if (data.id == 0) {
-                    
+
                     add();
                 } else {
                     setErrorForm((prevErrorForm) => ({
@@ -145,6 +145,8 @@ const ProductAddCard = ({ open, onAddSucess, onCancel }) => {
 
 
     const add = () => {
+        const formData = new FormData();
+        formData.append('imagem', selectedImage);
         try {
             SacfullnetAPI.post("equipamento", {
 
@@ -154,10 +156,22 @@ const ProductAddCard = ({ open, onAddSucess, onCancel }) => {
                 configuracao: productForm.config,
                 descricao: productForm.desc,
                 imagem: "image"
-            });
-            setSaveLoading(false)
-            onAddSucess();
-            toggle();
+            }).then((id) => {
+                SacfullnetAPI.post("equipamento/imagem/" + id.data, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                })
+                    .then(() => {
+                        setSaveLoading(false)
+                        onAddSucess();
+                        toggle();
+                    })
+                    .catch(error => alert("ErroNaImagem " + error));
+
+
+            }).catch(error => alert(error));
+
 
         } catch (error) {
             alert(error);
@@ -233,11 +247,6 @@ const ProductAddCard = ({ open, onAddSucess, onCancel }) => {
                                         src={image}
                                         alt="logo"
                                     />}
-
-
-
-
-
 
                             </CardBody>
 
@@ -328,8 +337,8 @@ const ProductAddCard = ({ open, onAddSucess, onCancel }) => {
 
             </ModalBody>
             <ModalFooter>
-                <Button color="primary" className={isFormValid? "": "disabled"} onClick={handleSubmit}>
-                   {saveLoading? <Spinner color="light"/> : "Salvar"}  
+                <Button color="primary" className={isFormValid ? "" : "disabled"} onClick={handleSubmit}>
+                    {saveLoading ? <Spinner color="light" /> : "Salvar"}
                 </Button>{' '}
                 <Button color="secondary" onClick={toggle}>
                     Cancelar
