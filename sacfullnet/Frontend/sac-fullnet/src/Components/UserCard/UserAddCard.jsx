@@ -105,7 +105,7 @@ const UserAddCard = ({ open, onAddSucess, onCancel }) => {
             toggle();
 
         } catch (error) {
-            alert(error);
+            console.log(error);
         }
 
     }
@@ -136,12 +136,12 @@ const UserAddCard = ({ open, onAddSucess, onCancel }) => {
                     <Col>
                         <FormGroup>
                             <Label for="login">
-                                Login
+                                Usuário
                             </Label>
                             <Input
                                 id="login"
                                 name="login"
-                                placeholder="Insira o login do usuario"
+                                placeholder="Insira o usuário"
                                 value={userForm.login}
                                 type="login"
                                 onChange={handleChange}
@@ -158,7 +158,7 @@ const UserAddCard = ({ open, onAddSucess, onCancel }) => {
                             <Input
                                 id="password"
                                 name="password"
-                                placeholder="Digite a password do usuario"
+                                placeholder="Digite a senha do usuário"
                                 type="password"
                                 value={userForm.password}
                                 onChange={handleChange}
@@ -170,7 +170,7 @@ const UserAddCard = ({ open, onAddSucess, onCancel }) => {
                         </FormGroup>
                         <FormGroup>
                             <Label for="role">
-                                role
+                                Tipo de Usuário
                             </Label>
                             <Input
                                 id="role"
@@ -182,7 +182,7 @@ const UserAddCard = ({ open, onAddSucess, onCancel }) => {
                                 className={errorForm.role ? "is-invalid" : "is-valid"}
                             >
                                 <option selected>
-                                    Selecione o tipo de Usuario!
+                                    Selecione o tipo do Usuario!
                                 </option>
                                 <option>
                                     ADMIN

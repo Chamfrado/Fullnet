@@ -72,7 +72,7 @@ const UserTable = ({ onSaveSucess, onDeleteSucess, onAddSucess, onRefresh }) => 
                 setTableData(newData);
 
             }).catch((error) => {
-                alert(error)
+                console.log(error)
 
             })
     }
@@ -95,7 +95,7 @@ const UserTable = ({ onSaveSucess, onDeleteSucess, onAddSucess, onRefresh }) => 
                         <Input
                             id="search"
                             name="searchQuery"
-                            placeholder="Digite o email desejado!"
+                            placeholder="Digite o usuário desejado!"
                             onChange={handleSearchChange}
                             type="search"
                         />
@@ -112,7 +112,7 @@ const UserTable = ({ onSaveSucess, onDeleteSucess, onAddSucess, onRefresh }) => 
                 <Table hover responsive>
                     <thead>
                         <tr>
-                            <th>Login</th>
+                            <th>Usuário</th>
                             <th>Tipo</th>
                             <th>Ações</th>
                         </tr>

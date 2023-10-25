@@ -24,7 +24,7 @@ const ProductDeleteCard = ({item, open, onDeleteSucess}) => {
                 onDeleteSucess();
                 toggle();
             }).catch((error) => {
-                alert(error)
+                console.log(error)
             })
         }
    

@@ -141,7 +141,7 @@ const SelfUserCard = ({ open, onCancel }) => {
 
 
         } catch (error) {
-            alert(error);
+            console.log(error);
         }
 
     }
@@ -164,7 +164,7 @@ const SelfUserCard = ({ open, onCancel }) => {
                     <Col>
                         <FormGroup>
                             <Label for="login">
-                                Login
+                                Usuário
                             </Label>
                             <Input
                                 id="login"
@@ -198,7 +198,7 @@ const SelfUserCard = ({ open, onCancel }) => {
                         </FormGroup>
                         {getUserRole() == "ADMIN" ? <FormGroup>
                             <Label for="role">
-                                role
+                                Tipo de Usuário
                             </Label>
                             <Input
                                 id="role"

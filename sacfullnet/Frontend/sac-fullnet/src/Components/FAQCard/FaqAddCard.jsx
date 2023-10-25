@@ -111,7 +111,7 @@ const FaqAddCard = ({ open, onAddSucess, onCancel }) => {
             toggle();
 
         } catch (error) {
-            alert(error);
+            console.log(error);
         }
 
     }

@@ -111,7 +111,7 @@ const FaqUpdateCard = ({ open, onUpdateSucess, faq , onCancel}) => {
             toggle();
 
         } catch (error) {
-            alert(error);
+            console.log(error);
         }
 
     }

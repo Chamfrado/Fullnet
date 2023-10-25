@@ -24,8 +24,135 @@ const ProductAddCard = ({ open, onAddSucess, onCancel }) => {
         ip: "",
         config: "",
         desc: "",
+        img: ""
     });
 
+
+    
+
+
+
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+
+
+        setProductForm((prevFormData) => ({
+            ...prevFormData,
+            [name]: value
+        }));
+
+
+    };
+
+    const [saveLoading, setSaveLoading] = useState(false);
+    const handleSubmit = async (event) => {
+        setSaveLoading(true);
+        event.preventDefault();
+        if (!isFormValid) {
+            setSaveLoading(false)
+            return;
+        }
+
+        try {
+            SacfullnetAPI.get("equipamento/name/name?name=" + productForm.nome).then(({ data }) => {
+                if (data.id == 0) {
+
+                    add();
+                } else {
+                    setErrorForm((prevErrorForm) => ({
+                        ...prevErrorForm,
+                        nome: "Equipamento ja cadastrado!"
+                    }));
+                    setSaveLoading(false)
+                }
+            }).catch(error => console.log(error));
+
+
+        } catch (error) {
+            console.log(error);
+        }
+
+    };
+
+
+    const add = () => {
+        const formData = new FormData();
+        formData.append('imagem', selectedImage);
+
+
+        try {
+            SacfullnetAPI.post("equipamento", {
+
+                id_tipo_equipamento: 1,
+                nome: productForm.nome,
+                ip_address: productForm.ip,
+                configuracao: productForm.config,
+                descricao: productForm.desc,
+                imagem: "image"
+            }).then((id) => {
+                SacfullnetAPI.post("equipamento/imagem/" + id.data, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                })
+                    .then(() => {
+                        setSaveLoading(false)
+                        onAddSucess();
+                        toggle();
+                    })
+                    .catch(error => console.log("ErroNaImagem " + error));
+
+
+            }).catch(error => console.log(error));
+
+
+        } catch (error) {
+            console.log(error);
+        }
+
+    }
+
+
+
+    const [selectedImage, setSelectedImage] = useState(null);
+
+    const handleImageUpload = (e) => {
+        const imageFile = e.target.files[0];
+        setSelectedImage(imageFile);
+    };
+
+    const toggle = () => setModal(!modal);
+
+
+    useEffect(() => {
+        setModal(open);
+    }, [open])
+
+
+
+    function isValidIP(ip) {
+        // Expressão regular para validar um IP no formato xxx.xxx.xxx.xxx
+        const ipPattern = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/;
+
+        if (ipPattern.test(ip)) {
+            // O formato está correto, agora vamos verificar os valores
+            const parts = ip.split('.'); // Dividir o IP em partes
+
+            // Verificar se cada parte está dentro do intervalo correto (0-255)
+            for (let i = 0; i < 4; i++) {
+                const part = parseInt(parts[i], 10);
+                if (part < 0 || part > 255) {
+                    return false; // Parte fora do intervalo
+                }
+            }
+
+            // Se todas as partes estiverem corretas, é um IP válido
+            return true;
+        }
+
+        // Se não corresponde ao formato xxx.xxx.xxx.xxx, é inválido
+        return false;
+    }
 
     //Validator do formulario
     const [isFormValid, setIsFormValid] = useState(false);
@@ -34,6 +161,7 @@ const ProductAddCard = ({ open, onAddSucess, onCancel }) => {
         let isIpValid = false;
         let isConfigValid = false;
         let isDescValid = false;
+        let isImgValid = false;
 
         if (productForm.nome === "") {
             setErrorForm((prevErrorForm) => ({
@@ -96,130 +224,25 @@ const ProductAddCard = ({ open, onAddSucess, onCancel }) => {
             }));
             isDescValid = true;
         }
-        setIsFormValid(isConfigValid && isDescValid && isIpValid && isNomeValid);
-    }, [productForm])
 
-
-
-    const handleChange = (event) => {
-        const { name, value } = event.target;
-
-
-        setProductForm((prevFormData) => ({
-            ...prevFormData,
-            [name]: value
-        }));
-
-
-    };
-
-    const [saveLoading, setSaveLoading] = useState(false);
-    const handleSubmit = async (event) => {
-        setSaveLoading(true);
-        event.preventDefault();
-        if (!isFormValid) {
-            setSaveLoading(false)
-            return;
+        if(selectedImage == null){
+            setErrorForm((prevErrorForm) => ({
+                ...prevErrorForm,
+                img: "Selecione uma imagem !"
+            }));
+            isImgValid = false;
+        }else {
+            setErrorForm((prevErrorForm) => ({
+                ...prevErrorForm,
+                img: ""
+            }));
+            isImgValid = true;
         }
 
-        try {
-            SacfullnetAPI.get("equipamento/name/name?name=" + productForm.nome).then(({ data }) => {
-                if (data.id == 0) {
-
-                    add();
-                } else {
-                    setErrorForm((prevErrorForm) => ({
-                        ...prevErrorForm,
-                        nome: "Equipamento ja cadastrado!"
-                    }));
-                    setSaveLoading(false)
-                }
-            }).catch(error => alert(error));
 
 
-        } catch (error) {
-            alert(error);
-        }
-
-    };
-
-
-    const add = () => {
-        const formData = new FormData();
-        formData.append('imagem', selectedImage);
-        try {
-            SacfullnetAPI.post("equipamento", {
-
-                id_tipo_equipamento: 1,
-                nome: productForm.nome,
-                ip_address: productForm.ip,
-                configuracao: productForm.config,
-                descricao: productForm.desc,
-                imagem: "image"
-            }).then((id) => {
-                SacfullnetAPI.post("equipamento/imagem/" + id.data, formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
-                })
-                    .then(() => {
-                        setSaveLoading(false)
-                        onAddSucess();
-                        toggle();
-                    })
-                    .catch(error => alert("ErroNaImagem " + error));
-
-
-            }).catch(error => alert(error));
-
-
-        } catch (error) {
-            alert(error);
-        }
-
-    }
-
-
-
-    const [selectedImage, setSelectedImage] = useState(null);
-
-    const handleImageUpload = (e) => {
-        const imageFile = e.target.files[0];
-        setSelectedImage(imageFile);
-    };
-
-    const toggle = () => setModal(!modal);
-
-
-    useEffect(() => {
-        setModal(open);
-    }, [open])
-
-
-
-    function isValidIP(ip) {
-        // Expressão regular para validar um IP no formato xxx.xxx.xxx.xxx
-        const ipPattern = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/;
-
-        if (ipPattern.test(ip)) {
-            // O formato está correto, agora vamos verificar os valores
-            const parts = ip.split('.'); // Dividir o IP em partes
-
-            // Verificar se cada parte está dentro do intervalo correto (0-255)
-            for (let i = 0; i < 4; i++) {
-                const part = parseInt(parts[i], 10);
-                if (part < 0 || part > 255) {
-                    return false; // Parte fora do intervalo
-                }
-            }
-
-            // Se todas as partes estiverem corretas, é um IP válido
-            return true;
-        }
-
-        // Se não corresponde ao formato xxx.xxx.xxx.xxx, é inválido
-        return false;
-    }
+        setIsFormValid(isConfigValid && isDescValid && isIpValid && isNomeValid && isImgValid);
+    }, [productForm, selectedImage])
 
 
 
@@ -231,7 +254,7 @@ const ProductAddCard = ({ open, onAddSucess, onCancel }) => {
             <ModalBody>
                 <Row >
                     <Col style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                        <Card>
+                        <Card style={errorForm.img? {borderColor: "red"} : {borderColor: "green"}}>
                             <CardBody>
                                 {selectedImage ?
                                     <img
@@ -251,7 +274,12 @@ const ProductAddCard = ({ open, onAddSucess, onCancel }) => {
                             </CardBody>
 
                         </Card>
+                        {errorForm.img && (
+                                <Label style={{color: "red"}}>{errorForm.img}</Label>
+                        )}
+                        
                         <div style={{ padding: 10 }}>
+                        
                             <Input type="file" onChange={handleImageUpload} />
                         </div>
 

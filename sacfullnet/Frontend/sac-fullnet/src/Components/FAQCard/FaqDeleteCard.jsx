@@ -23,7 +23,7 @@ const FaqDeleteCard = ({ open, onDeleteSucess, faq, onCancel }) => {
 
 
         } catch (error) {
-            alert(error);
+            console.log(error);
         }
 
     }

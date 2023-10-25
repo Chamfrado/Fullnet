@@ -107,7 +107,7 @@ const UserUpdateCard = ({ open, onSaveSucess, User, onCancel }) => {
 
 
         } catch (error) {
-            alert(error);
+            console.log(error);
         }
 
     }
@@ -139,7 +139,7 @@ const UserUpdateCard = ({ open, onSaveSucess, User, onCancel }) => {
                 <Col>
                         <FormGroup>
                             <Label for="login">
-                                Login
+                                Usuário
                             </Label>
                             <Input
                                 id="login"
@@ -173,7 +173,7 @@ const UserUpdateCard = ({ open, onSaveSucess, User, onCancel }) => {
                         </FormGroup>
                         <FormGroup>
                             <Label for="role">
-                                role
+                                Tipo de Usuário
                             </Label>
                             <Input
                                 id="role"

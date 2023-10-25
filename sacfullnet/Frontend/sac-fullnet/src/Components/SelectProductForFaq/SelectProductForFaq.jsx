@@ -77,7 +77,7 @@ const SelectProductForFaq = ({ updateList, initialSelectedProducts, op, isEmpty 
             })
             .catch((error) => {
                 setIsLoading(false);
-                alert(error);
+                console.log(error);
             });
     }
 

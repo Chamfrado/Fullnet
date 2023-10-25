@@ -181,7 +181,7 @@ const ProductUpdateCard = ({ item, open, onSaveSucess }) => {
 
 
         } catch (error) {
-            alert(error);
+            console.log(error);
         }
 
     }

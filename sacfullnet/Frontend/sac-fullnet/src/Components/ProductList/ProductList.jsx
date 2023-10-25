@@ -85,6 +85,10 @@ const ProductList = ({ onSaveSucess, onDeleteSucess, onAddSucess , onRefresh }) 
     );
   }
 
+  const onCancel = () => {
+    setAddModal(false);
+  }
+
   return (
     <Container id="TableProduct">
       <Row style={{ paddingTop: 30, paddingLeft: 50 }}>
@@ -120,7 +124,7 @@ const ProductList = ({ onSaveSucess, onDeleteSucess, onAddSucess , onRefresh }) 
         )}
 
       </Row>
-      {addModal && <ProductAddCard onAddSucess={addSucess} open={addModal} />}
+      {addModal && <ProductAddCard onCancel={onCancel} onAddSucess={addSucess} open={addModal} />}
 
       
     </Container>

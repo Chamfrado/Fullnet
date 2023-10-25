@@ -104,7 +104,7 @@ const Login = ({ handleLogin, handleLougout }) => {
                                                 type="username"
                                                 value={user.login}
                                             />
-                                            <Label for="username">Login</Label>
+                                            <Label for="username">Usuário</Label>
                                         </FormGroup>
                                     </Col>
                                 </Row>
@@ -119,7 +119,7 @@ const Login = ({ handleLogin, handleLougout }) => {
                                                 type="password"
                                                 value={user.password}
                                             />
-                                            <Label for="password">Password</Label>
+                                            <Label for="password">Senha</Label>
                                         </FormGroup>
                                     </Col>
                                 </Row>
