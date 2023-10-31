@@ -1,115 +1,75 @@
-<p align="center">
-  <a href="" rel="noopener">
-</p>
+# SAC Fullnet
 
-<h3 align="center">SAC Fullnet</h3>
-
-<div align="center">
-
-[![Status](https://img.shields.io/badge/status-active-success.svg)]()
-[![GitHub Issues](https://img.shields.io/github/issues/kylelobo/The-Documentation-Compendium.svg)](https://github.com/kylelobo/The-Documentation-Compendium/issues)
-[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/kylelobo/The-Documentation-Compendium.svg)](https://github.com/kylelobo/The-Documentation-Compendium/pulls)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
-
-</div>
-
----
-
-<p align="center"> Projeto em React Native + Java 17 Spring para uma central de SAC
-    <br> 
-</p>
-
-## 📝 Table of Contents
+## Table of Contents
 
 - [About](#about)
-- [Getting Started](#getting_started)
-- [Deployment](#deployment)
-- [Usage](#usage)
-- [Built Using](#built_using)
-- [TODO](../TODO.md)
+- [Backend Information](#backend-information)
+- [React Frontend Information](#react-frontend-information)
 - [Contributing](../CONTRIBUTING.md)
-- [Authors](#authors)
-- [Acknowledgments](#acknowledgement)
 
-## 🧐 About <a name = "about"></a>
+## About <a name = "about"></a>
 
-Propósito do projeto é treinar e aprender habilidades com o desenvolvimento de uma aplicação com React.js e com Java 17 e Spring
+The SAC Fullnet project is a full-stack application developed with React and Java 17 Spring for a SAC (Service Access Center). Its primary purpose is to provide a central platform for managing customer service interactions and support requests.
 
-Projeto desenvolvido do 0 , com a introdução de segurança , uso de APIs ,tratamento de dados e usuarios
+## Backend Information <a name = "backend-information"></a>
 
-## 🏁 Getting Started <a name = "getting_started"></a>
+### Project Structure
+
+The backend of the SAC Fullnet project is based on Spring Boot, and its `pom.xml` file specifies the project's dependencies, including Java 17 and various Spring Boot starters.
+
+#### Backend Dependencies
+
+- `spring-boot-starter-web`: For setting up a Spring-based web application.
+- `jackson-databind`: The Jackson data-binding library for JSON processing.
+- `spring-boot-starter-security`: Provides security features for the Spring Boot application.
+- `spring-boot-starter-test`: Includes testing tools for Spring Boot applications.
+- `java-jwt`: Provides support for JSON Web Tokens (JWT).
+- `postgresql`: A PostgreSQL database driver.
 
 ### Prerequisites
 
-Para rodar o projeto precisamos configurar o ambiente de forma adequada.
+Before you begin with the backend portion of this project, ensure that you have the required prerequisites installed:
 
-Primeiro vamos verificar se temos o Java versão 17 e o Maven para isso vamos rodar o comando:
+- [Java 17](https://www.oracle.com/java/technologies/javase-downloads.html)
+- [Maven](https://maven.apache.org/download.cgi)
+
+You can verify that these prerequisites are installed using the following commands:
+
+# Check java Version
 
 ```
-mvn -v
+java -version
 ```
 
 ### Installing
 
-A step by step series of examples that tell you how to get a development env running.
+Follow these steps to set up the backend development environment:
 
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
+Clone the Repository: Clone this project repository to your local machine.
 
 ```
-until finished
+git clone https://github.com/Chamfrado/Fullnet
 ```
-
-End with an example of getting some data out of the system or using it for a little demo.
-
-## 🔧 Running the tests <a name = "tests"></a>
-
-Explain how to run the automated tests for this system.
-
-### Break down into end to end tests
-
-Explain what these tests test and why
+Navigate to the Backend Directory:
 
 ```
-Give an example
+cd  sacfullnet/Backend/
 ```
 
-### And coding style tests
-
-Explain what these tests test and why
+Build the Backend: Build the backend application using Maven.
 
 ```
-Give an example
+mvn clean install
 ```
 
-## 🎈 Usage <a name="usage"></a>
+Run the Backend: Start the Spring Boot backend.
+
+```
+mvn spring-boot:run
+```
+Access the Backend: The backend API can be accessed at http://localhost:8080. You can explore the available endpoints and test the API using tools like Postman or curl.
+
+
+## Usage <a name = "usage"></a>
 
 Add notes about how to use the system.
-
-## 🚀 Deployment <a name = "deployment"></a>
-
-Add additional notes about how to deploy this on a live system.
-
-## ⛏️ Built Using <a name = "built_using"></a>
-
-- [MongoDB](https://www.mongodb.com/) - Database
-- [Express](https://expressjs.com/) - Server Framework
-- [VueJs](https://vuejs.org/) - Web Framework
-- [NodeJs](https://nodejs.org/en/) - Server Environment
-
-## ✍️ Authors <a name = "authors"></a>
-
-- [@kylelobo](https://github.com/kylelobo) - Idea & Initial work
-
-See also the list of [contributors](https://github.com/kylelobo/The-Documentation-Compendium/contributors) who participated in this project.
-
-## 🎉 Acknowledgements <a name = "acknowledgement"></a>
-
-- Hat tip to anyone whose code was used
-- Inspiration
-- References
