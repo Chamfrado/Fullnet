@@ -35,10 +35,15 @@ Before you begin with the backend portion of this project, ensure that you have 
 
 You can verify that these prerequisites are installed using the following commands:
 
-# Check java Version
+### Check java Version
 
 ```
 java -version
+```
+
+### Check Maven Version
+```
+mvn -v
 ```
 
 ### Installing
@@ -70,6 +75,64 @@ mvn spring-boot:run
 Access the Backend: The backend API can be accessed at http://localhost:8080. You can explore the available endpoints and test the API using tools like Postman or curl.
 
 
-## Usage <a name = "usage"></a>
+## React Frontend Information <a name = "react-frontend-information"></a>
 
-Add notes about how to use the system.
+### Project Structure
+The frontend of the SAC Fullnet project is developed using React and managed by npm. The package.json file specifies the project's dependencies and scripts.
+
+### Frontend Dependencies
+axios: A promise-based HTTP client for making API requests.
+react-icons: Icons library for React applications.
+react-router-dom: Provides routing and navigation for React applications.
+reactstrap: A UI component library for React.
+
+### Prerequisites
+Before you begin with the React frontend, ensure that you have Node.js and npm installed on your system.
+
+You can verify that these prerequisites are installed using the following commands:
+
+```
+# Check Node.js version
+node -v
+
+# Check npm version
+npm -v
+```
+### Installing
+
+Follow these steps to set up the React frontend development environment:
+
+If you already got the project, ignore this part, Clone the Repository: Clone this project repository to your local machine.
+
+```
+git clone https://github.com/Chamfrado/Fullnet
+```
+
+Navigate to the Frontend Directory: Change your current working directory to the frontend directory.
+
+```
+cd sacfullnet/Frontend/sac-fullnet
+```
+
+Install Dependencies: Install the required project dependencies.
+
+```
+npm install
+```
+
+
+Start the Frontend: Start the React frontend application.
+
+```
+npm start
+```
+
+Access the Frontend: The React frontend can be accessed at http://localhost:3000 in your web browser. You can interact with the user interface and explore the features of the application.
+
+
+### Contributing
+If you would like to contribute to our project, please refer to our Contributing Guidelines for more information.
+
+We welcome contributions from the community and appreciate your support in making our project even better.
+
+Lohran Cintra aka Chamfrado - Project Maintainer
