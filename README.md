@@ -5,6 +5,7 @@
 - [About](#about)
 - [Backend Information](#backend-information)
 - [React Frontend Information](#react-frontend-information)
+- [PostgreSQL Information](#postgresSQL-Information)
 - [Contributing](../CONTRIBUTING.md)
 
 ## About <a name = "about"></a>
@@ -128,6 +129,49 @@ npm start
 ```
 
 Access the Frontend: The React frontend can be accessed at http://localhost:3000 in your web browser. You can interact with the user interface and explore the features of the application.
+
+## PostgreSQL Information <a name = "postgresSQL-Information"></a>
+
+### Installing
+Follow these steps to set up the PostgreSQL database for the fullnet application:
+
+Install PostgreSQL: If you haven't already, you can download and install PostgreSQL from the official website: PostgreSQL Downloads.
+
+Create the Database:
+
+Open a terminal or command prompt and log in to PostgreSQL using the psql command with a user that has the necessary privileges:
+
+```
+psql -U your_postgres_user
+```
+
+Replace your_postgres_user with the actual PostgreSQL username you want to use.
+
+Run DDL and DML Scripts:
+
+Navigate to the directory where you have stored the DDL and DML SQL scripts (e.g., Fullnet/Utilitys/BD).
+
+Use the psql command to run the DDL and DML scripts to create and populate the fullnet database:
+
+```
+psql -U your_postgres_user -d fullnet -a -f ddl_script.sql
+psql -U your_postgres_user -d fullnet -a -f dml_script.sql
+```
+Replace your_postgres_user with your PostgreSQL username and ddl_script.sql and dml_script.sql with the actual names of your DDL and DML SQL script files.
+
+Verify Database Creation:
+
+You can verify that the fullnet database has been created and populated by connecting to it:
+
+```
+psql -U your_postgres_user -d fullnet
+```
+This should open the PostgreSQL command-line interface for the fullnet database.
+
+After this just go to Backend\src\java\br\com\sacfullnet\sacfullnet\repository\connection and configure with your credentials
+
+Now, you have successfully installed the PostgreSQL database, created the fullnet database, and executed the DDL and DML scripts.
+
 
 
 ### Contributing
