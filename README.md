@@ -172,7 +172,13 @@ After this just go to Backend\src\java\br\com\sacfullnet\sacfullnet\repository\c
 
 Now, you have successfully installed the PostgreSQL database, created the fullnet database, and executed the DDL and DML scripts.
 
+### In App Credentials
+The default credentials is:
 
+```
+ADMIN ROLE: user: admin and password: 1524
+USER ROLE: user: user and password: 1524
+```
 
 ### Contributing
 If you would like to contribute to our project, please refer to our Contributing Guidelines for more information.
