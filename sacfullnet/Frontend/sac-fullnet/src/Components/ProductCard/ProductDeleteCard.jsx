@@ -33,10 +33,10 @@ const ProductDeleteCard = ({item, open, onDeleteSucess}) => {
     
         return (
             <Modal  isOpen={modal} toggle={toggle} >
-                <ModalHeader className="bg-danger" toggle={toggle}>Deletar Equipamento</ModalHeader>
+                <ModalHeader className="bg-danger" toggle={toggle}>Excluir Equipamento</ModalHeader>
                 <ModalBody>
                     
-                <Label>Você está prestes a deletar o equipamento {item.nome}</Label>
+                <Label>Você está prestes a excluir o equipamento {item.nome}</Label>
                 <Label> Confirma essa Operação?</Label>
             
     
