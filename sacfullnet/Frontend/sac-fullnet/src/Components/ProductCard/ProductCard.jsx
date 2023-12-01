@@ -116,7 +116,7 @@ const ProductCard = ({ item, Saved, Deleted }) => {
                             </DropdownToggle>
                             <DropdownMenu>
                                 <DropdownItem onClick={() => setUpdateModal(!updateModal)}>Atualizar</DropdownItem>
-                                <DropdownItem onClick={() => setDeleteModal(!deleteModal)}>Deletar</DropdownItem>
+                                <DropdownItem onClick={() => setDeleteModal(!deleteModal)}>Excluir</DropdownItem>
                             </DropdownMenu>
                         </Dropdown> : null}
 

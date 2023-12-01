@@ -4,9 +4,9 @@ import java.sql.*;
 
 public class ConnectionFactory {
     private static final String DATABASE = "fullnet";
-    private static final String PORT = "5433";
-    private static final String USERNAME = "root";
-    private static final String PASSWORD = "1524";
+    private static final String PORT = "5432";
+    private static final String USERNAME = "postgres";
+    private static final String PASSWORD = "postgres";
     private static final String URL = "jdbc:postgresql://localhost:" + PORT + "/" + DATABASE;
     private static Connection connection = null;
 

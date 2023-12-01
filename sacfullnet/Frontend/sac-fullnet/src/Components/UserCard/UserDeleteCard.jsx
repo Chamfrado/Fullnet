@@ -33,10 +33,10 @@ const UserDeleteCard = ({user, open, onDeleteSucess, onCancel}) => {
     
         return (
             <Modal onClosed={onCancel} isOpen={modal} toggle={toggle} >
-                <ModalHeader className="bg-danger" toggle={toggle}>Deletar Usuário</ModalHeader>
+                <ModalHeader className="bg-danger" toggle={toggle}>Excluir Usuário</ModalHeader>
                 <ModalBody>
                     
-                <Label>Você está prestes a deletar o usuário: {user.login}</Label>
+                <Label>Você está prestes a excluir o usuário: {user.login}</Label>
                 <Label> Confirma essa Operação?</Label>
             
     

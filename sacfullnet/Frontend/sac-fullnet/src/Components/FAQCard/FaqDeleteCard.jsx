@@ -37,7 +37,7 @@ const FaqDeleteCard = ({ open, onDeleteSucess, faq, onCancel }) => {
 
     return (
         <Modal isOpen={modal} onClosed={onCancel} size="l" toggle={toggle}>
-            <ModalHeader className="bg-danger" toggle={toggle}>Deletar FAQ</ModalHeader>
+            <ModalHeader className="bg-danger" toggle={toggle}>Excluir FAQ</ModalHeader>
             <ModalBody>
                 <Row>
                     <Label>Deseja excluir a FAQ com o título de:</Label>

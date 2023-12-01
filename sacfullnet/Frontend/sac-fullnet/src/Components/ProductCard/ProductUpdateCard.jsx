@@ -166,6 +166,7 @@ const ProductUpdateCard = ({ item, open, onSaveSucess }) => {
                 descricao: productForm.desc,
                 imagem: productForm.imagem
             }).then(() => {
+
                 SacfullnetAPI.post("equipamento/imagem/" + item.id, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
@@ -176,7 +177,12 @@ const ProductUpdateCard = ({ item, open, onSaveSucess }) => {
                         onSaveSucess();
                         toggle();
                     })
-                    .catch(error => console.log("ErroNaImagem " + error));
+                    .catch(error => {
+                        console.log("ErroNaImagem " + error)
+                        setSaveLoading(false)
+                        onSaveSucess();
+                        toggle();
+                });
             }).catch(error => console.log(error))
 
 
